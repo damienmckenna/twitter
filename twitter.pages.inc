@@ -133,6 +133,11 @@ function _twitter_account_list_row($account) {
     	'#type' => 'checkbox',
     	'#default_value' => user_access('import own tweets') ? $account->import : '',
     );
+
+    $form['include_retweets'] = array(
+    	'#type' => 'checkbox',
+    	'#default_value' => user_access('import own tweets') ? $account->include_retweets : '',
+    );
   }
 
 
@@ -146,7 +151,7 @@ function _twitter_account_list_row($account) {
 function theme_twitter_account_list_form($form) {
 
   if (user_access('import own tweets')) {
-    $header = array('', t('Name'), t('Description'), t('Private'), t('Import'), t('Delete'));
+    $header = array('', t('Name'), t('Description'), t('Private'), t('Import'), t('Retweets'), t('Delete'));
   }else {
     $header = array('', t('Name'), t('Description'), t('Private'), t('Delete'));
   }
@@ -166,6 +171,7 @@ function theme_twitter_account_list_form($form) {
       drupal_render($element['description']),
       drupal_render($element['protected']),
       drupal_render($element['import']),
+      drupal_render($element['include_retweets']),
       drupal_render($element['delete']),
       );
     }else {
