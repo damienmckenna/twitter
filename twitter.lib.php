@@ -255,7 +255,17 @@ class Twitter {
 
     switch ($format) {
       case 'json':
-        return json_decode($response, TRUE);
+        $response_decoded = json_decode($response, TRUE);
+        if ($response_decoded['id_str']) {
+          // if we're getting a single object back as JSON
+          $response_decoded['id'] = $response_decoded['id_str'];
+        } else {
+          // if we're getting an array of objects back as JSON
+          foreach ($response_decoded as &$item) {
+            $item['id'] = $item['id_str'];
+          }
+        }
+        return $response_decoded;
     }
   }
 
