@@ -53,6 +53,7 @@ function twitter_account_load($id) {
   $account->set_auth($values);
   $account->uid = $values['uid'];
   $account->import = $values['import'];
+  $account->include_retweets = $values['include_retweets'];
   $account->is_global = $values['is_global'];
   
   return $account;
@@ -98,6 +99,10 @@ function twitter_fetch_user_timeline($id) {
   $params = array();
   if ($since) {
     $params['since_id'] = $since;
+  }
+  
+  if ($account->include_retweets) {
+    $params['include_rts'] = true;
   }
 
   $statuses = $twitter->user_timeline($account->id, $params, $account->protected);
