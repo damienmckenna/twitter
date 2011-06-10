@@ -258,11 +258,15 @@ function twitter_account_form($form_state, $account = NULL) {
       '#required' => TRUE,
       '#title' => t('Twitter user name'),
     );
-    $form['password'] = array(
-      '#type' => 'password',
-      '#title' => t('Password'),
-      '#description' => t("If your Twitter account is protected, or you wish to post to Twitter from Drupal, you must enter the Twitter account's password.")
-    );
+    
+    // only display the password field if OAuth is installed
+    if (_twitter_use_oauth()) {
+      $form['password'] = array(
+        '#type' => 'password',
+        '#title' => t('Password'),
+        '#description' => t("If your Twitter account is protected, or you wish to post to Twitter from Drupal, you must enter the Twitter account's password.")
+      );
+    }
 
     $form['import'] = array(
       '#type' => 'checkbox',
@@ -293,15 +297,19 @@ function twitter_account_form_validate($form, &$form_state) {
   if (!empty($pass)) {
     $verify = TRUE;
   }
-
-  if ($verify) {
-    $twitter = new Twitter($name, $pass);
+  
+  $twitter = new Twitter($name, $pass);
+  // to verify, oauth must be installed
+  if ($verify && _twitter_use_oauth()) {
     $account = $twitter->verify_credentials();
     if (!$account) {
       form_set_error("password", t('Twitter authentication failed. Please check your account name and try again.'));
     }
-    $form_state['twitter_account'] = $account;
+  } else {
+    // if we're not verify credentials, simply load the user data, without oauth
+    $account = $twitter->users_show($name, false);
   }
+  $form_state['twitter_account'] = $account;
 }
 
 function twitter_account_form_submit($form, &$form_state) {
@@ -309,7 +317,9 @@ function twitter_account_form_submit($form, &$form_state) {
 
   if (!empty($form_state['values']['screen_name'])) {
     $account = $form_state['twitter_account'];
-    $account->set_auth($form_state['values']);
+    if (_twitter_use_oauth()) {
+      $account->set_auth($form_state['values']);
+    }
     twitter_account_save($account, TRUE);
   }
 }

@@ -27,7 +27,7 @@ class Twitter {
   /**
    * @var $host The host to query against
    */
-  protected $host = 'twitter.com';
+  protected $host = 'api.twitter.com';
 
   /**
    * @var $source the twitter api 'source'
@@ -48,9 +48,7 @@ class Twitter {
    * Constructor for the Twitter class
    */
   public function __construct($username = NULL, $password = NULL) {
-    if (!empty($username) && !empty($password)) {
-      $this->set_auth($username, $password);
-    }
+    $this->set_auth($username, $password);
   }
 
   /**
@@ -153,7 +151,7 @@ class Twitter {
    *
    * @see http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-users%C2%A0show
    */
-  public function users_show($id) {
+  public function users_show($id, $use_auth = TRUE) {
     $params = array();
     if (is_numeric($id)) {
       $params['user_id'] = $id;
@@ -162,7 +160,7 @@ class Twitter {
       $params['screen_name'] = $id;
     }
 
-    $values = $this->call('users/show', $params, 'GET', TRUE);
+    $values = $this->call('users/show', $params, 'GET', $use_auth);
     return new TwitterUser($values);
   }
 
@@ -184,7 +182,7 @@ class Twitter {
    */
   public function call($path, $params = array(), $method = 'GET', $use_auth = FALSE) {
     $url = $this->create_url($path);
-
+    
     try {
       if ($use_auth) {
         $response = $this->auth_request($url, $params, $method);
