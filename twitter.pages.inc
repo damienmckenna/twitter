@@ -326,7 +326,7 @@ function twitter_account_form_submit($form, &$form_state) {
     if (_twitter_use_oauth()) {
       $account->set_auth($form_state['values']);
     }
-    twitter_account_save($account, TRUE);
+    twitter_account_save($account, TRUE, user_load($form_state['values']['uid']));
   }
 }
 
