@@ -67,7 +67,7 @@ function twitter_status_save($status) {
   $status->screen_name = $status->user->screen_name;
   $status->created_time = strtotime($status->created_at);
   
-  if (db_result(db_query("SELECT 1 FROM {twitter} WHERE twitter_id = %d", $status->id))) {
+  if (db_result(db_query("SELECT 1 FROM {twitter} WHERE twitter_id = %s", $status->id))) {
     drupal_write_record('twitter', $status, array('twitter_id'));
   }
   else {
