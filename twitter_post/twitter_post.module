@@ -86,6 +86,7 @@ function twitter_post_form_alter(&$form, $form_state, $form_id) {
     $form['twitter'] = array(
       '#type' => 'fieldset',
       '#title' => t('Post to twitter.com'),
+      '#group' => 'additional_settings',
       '#collapsible' => TRUE,
       '#collapsed' => FALSE,
       '#tree' => TRUE,
@@ -128,6 +129,23 @@ function twitter_post_form_alter(&$form, $form_state, $form_id) {
 
     twitter_include_token_fields($form);
   }
+}
+
+/**
+ * Implementation of hook_content_extra_fields().
+ */
+function twitter_post_content_extra_fields($type) {
+  $allowed_types = variable_get('twitter_types', array('story' => 'story', 'blog' => 'blog'));
+
+  if (empty($allowed_types[$type])) {
+    return;
+  }
+  $extras['twitter'] = array(
+    'label' => t('Twitter'),
+    'description' => t('Form to send new content to twitter'),
+    'weight' => 100,
+  );
+  return $extras;
 }
 
 /**
