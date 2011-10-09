@@ -182,7 +182,7 @@ class Twitter {
    */
   public function call($path, $params = array(), $method = 'GET', $use_auth = FALSE) {
     $url = $this->create_url($path);
-    
+
     try {
       if ($use_auth) {
         $response = $this->auth_request($url, $params, $method);
@@ -235,7 +235,7 @@ class Twitter {
     }
 
     $response = drupal_http_request($url, $headers, $method, $data);
-    if (!$response->error) {
+    if (!property_exists($response, 'error')) {
       return $response->data;
     }
     else {
@@ -491,7 +491,7 @@ class TwitterUser {
     }
     $this->utc_offset = $values['utc_offset'];
 
-    if ($values['status']) {
+    if (isset($values['status'])) {
       $this->status = new TwitterStatus($values['status']);
     }
   }
