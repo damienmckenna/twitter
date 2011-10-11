@@ -2,4 +2,4 @@ name = Twitter Post
 description = Enables posting to twitter
 core = 6.x
 dependencies[] = twitter
-dependencies[] = oauth_common
+dependencies[] = oauth
