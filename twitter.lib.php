@@ -192,6 +192,8 @@ class Twitter {
       }
     }
     catch (TwitterException $e) {
+      watchdog('twitter', '!message', array('!message' => $e->__toString()), WATCHDOG_ERROR);
+      drupal_set_message('Twitter returned an error: ' . $e->getMessage(), 'error');
       return FALSE;
     }
 
@@ -256,7 +258,7 @@ class Twitter {
     switch ($format) {
       case 'json':
         $response_decoded = json_decode($response, TRUE);
-        if ($response_decoded['id_str']) {
+        if (isset($response_decoded['id_str'])) {
           // if we're getting a single object back as JSON
           $response_decoded['id'] = $response_decoded['id_str'];
         } else {
