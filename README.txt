@@ -15,7 +15,12 @@ bug when cancelling an account. You can find it here: http://drupal.org/node/116
 
 Once OAuth has been enabled, go to admin/config/services/twitter and follow instructions.
 
-Twitter Signin
-==============
+Create a block with Tweets
+==========================
+Read the following step by step guide: http://drupal.org/node/1253026
+
+Sign in with Twitter
+====================
 Follow this step by step guide to sign in with your Twitter account:
 http://drupal.org/node/649714
+
