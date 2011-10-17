@@ -460,8 +460,6 @@ class TwitterUser {
 
   public $status;
 
-  protected $password;
-
   protected $oauth_token;
 
   protected $oauth_token_secret;
@@ -499,11 +497,10 @@ class TwitterUser {
   }
 
   public function get_auth() {
-    return array('password' => $this->password, 'oauth_token' => $this->oauth_token, 'oauth_token_secret' => $this->oauth_token_secret);
+    return array('oauth_token' => $this->oauth_token, 'oauth_token_secret' => $this->oauth_token_secret);
   }
 
   public function set_auth($values) {
-    $this->password = $values['password'];
     $this->oauth_token = $values['oauth_token'];
     $this->oauth_token_secret = $values['oauth_token_secret'];
   }
