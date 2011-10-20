@@ -76,7 +76,7 @@ function twitter_user($op, &$edit, &$account, $category = NULL) {
       return array(
         array(
           'name' => 'twitter',
-          'title' => 'Twitter accounts',
+          'title' => t('Twitter accounts'),
           'weight' => 3,
         ),
       );
