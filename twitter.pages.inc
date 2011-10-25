@@ -155,7 +155,8 @@ function _twitter_account_list_row($account) {
 function theme_twitter_account_list_form($form) {
   if (variable_get('twitter_import', TRUE) && user_access('import own tweets')) {
     $header = array('', t('Name'), t('Description'), t('Private'), t('Import'), t('Retweets'), t('Delete'));
-  }else {
+  } 
+  else {
     $header = array('', t('Name'), t('Description'), t('Private'), t('Delete'));
   }
 
@@ -177,7 +178,8 @@ function theme_twitter_account_list_form($form) {
       drupal_render($element['include_retweets']),
       drupal_render($element['delete']),
       );
-    } else {
+    } 
+    else {
       $row = array(
       drupal_render($element['image']),
       drupal_render($element['id']) . drupal_render($element['screen_name']) . drupal_render($element['visible_name']),
