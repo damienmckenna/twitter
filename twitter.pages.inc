@@ -128,15 +128,19 @@ function _twitter_account_list_row($account) {
     '#value' => empty($account->protected) ? t('No') : t('Yes'),
   );
 
-  if (user_access('import own tweets')){ // Here we use user_access('import own tweets') to check permission instead of user_access('import own tweets', $account->uid) is because we allow roles with sufficient permission to overwrite the user's import settings.
+  // Here we use user_access('import own tweets') to check permission
+  // instead of user_access('import own tweets', $account->uid)
+  // because we allow roles with sufficient permission to overwrite
+  // the user's import settings.
+  if (variable_get('twitter_import', TRUE) && user_access('import own tweets')) {
     $form['import'] = array(
-    	'#type' => 'checkbox',
-    	'#default_value' => user_access('import own tweets') ? $account->import : '',
+      '#type' => 'checkbox',
+      '#default_value' => user_access('import own tweets') ? $account->import : '',
     );
 
     $form['include_retweets'] = array(
-    	'#type' => 'checkbox',
-    	'#default_value' => user_access('import own tweets') ? $account->include_retweets : '',
+      '#type' => 'checkbox',
+      '#default_value' => user_access('import own tweets') ? $account->include_retweets : '',
     );
   }
 
@@ -149,8 +153,7 @@ function _twitter_account_list_row($account) {
 }
 
 function theme_twitter_account_list_form($form) {
-
-  if (user_access('import own tweets')) {
+  if (variable_get('twitter_import', TRUE) && user_access('import own tweets')) {
     $header = array('', t('Name'), t('Description'), t('Private'), t('Import'), t('Retweets'), t('Delete'));
   }else {
     $header = array('', t('Name'), t('Description'), t('Private'), t('Delete'));
@@ -164,7 +167,7 @@ function theme_twitter_account_list_form($form) {
 
   foreach (element_children($form['accounts']) as $key) {
     $element = &$form['accounts'][$key];
-    if (user_access('import own tweets')) {
+    if (variable_get('twitter_import', TRUE) && user_access('import own tweets')) {
       $row = array(
       drupal_render($element['image']),
       drupal_render($element['id']) . drupal_render($element['screen_name']) . drupal_render($element['visible_name']),
@@ -174,7 +177,7 @@ function theme_twitter_account_list_form($form) {
       drupal_render($element['include_retweets']),
       drupal_render($element['delete']),
       );
-    }else {
+    } else {
       $row = array(
       drupal_render($element['image']),
       drupal_render($element['id']) . drupal_render($element['screen_name']) . drupal_render($element['visible_name']),
