@@ -304,7 +304,9 @@ function twitter_install() {
  * We're safe just running the basic install for update_1.
  */
 function twitter_update_6000() {
+  $ret = array();
   twitter_install();
+  return $ret;
 }
 
 /**
