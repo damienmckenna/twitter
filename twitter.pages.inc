@@ -251,6 +251,14 @@ function twitter_user_make_global_submit($form, &$form_state) {
   $form_state['redirect'] = 'user/'. $form_state['values']['uid'] .'/edit/twitter';
 }
 
+/**
+ * Form to add a Twitter account
+ *
+ * If OAuth is not enabled, a text field lets users to add their
+ * Twitter screen name. If it is, a submit button redirects to
+ * Twitter.com asking for authorisation.
+ */
+
 function twitter_account_form($form_state, $account = NULL) {
   if (empty($account)) {
     global $user;
@@ -272,22 +280,12 @@ function twitter_account_form($form_state, $account = NULL) {
       '#title' => t('Twitter user name'),
     );
     
-    // only display the password field if OAuth is installed
-    if (_twitter_use_oauth()) {
-      $form['password'] = array(
-        '#type' => 'password',
-        '#title' => t('Password'),
-        '#description' => t("If your Twitter account is protected, or you wish to post to Twitter from Drupal, you must enter the Twitter account's password.")
-      );
-    }
-
     $form['import'] = array(
       '#type' => 'checkbox',
       '#title' => t('Import statuses from this account'),
       '#default_value' => TRUE,
       '#access' => FALSE,
     );
-
   }
 
   $form['submit'] = array(
@@ -298,44 +296,14 @@ function twitter_account_form($form_state, $account = NULL) {
   return $form;
 }
 
-function twitter_account_form_validate($form, &$form_state) {
+function twitter_account_form_submit($form, &$form_state) {
   module_load_include('lib.php', 'twitter');
   module_load_include('inc', 'twitter');
 
-  $values = $form_state['values'];
-  $verify = FALSE;
-
-  $pass = isset($values['password'])?$values['password']:NULL;
-  $name = $values['screen_name'];
-
-  if (!empty($pass)) {
-    $verify = TRUE;
-  }
-  
-  $twitter = new Twitter($name, $pass);
-  // to verify, oauth must be installed
-  if ($verify && _twitter_use_oauth()) {
-    $account = $twitter->verify_credentials();
-    if (!$account) {
-      form_set_error("password", t('Twitter authentication failed. Please check your account name and try again.'));
-    }
-  } else {
-    // if we're not verify credentials, simply load the user data, without oauth
-    $account = $twitter->users_show($name, false);
-  }
-  $form_state['twitter_account'] = $account;
-}
-
-function twitter_account_form_submit($form, &$form_state) {
-  module_load_include('inc', 'twitter');
-
-  if (!empty($form_state['values']['screen_name'])) {
-    $account = $form_state['twitter_account'];
-    if (_twitter_use_oauth()) {
-      $account->set_auth($form_state['values']);
-    }
-    twitter_account_save($account, TRUE, user_load($form_state['values']['uid']));
-  }
+  $name = $form_state['values']['screen_name'];
+  $twitter = new Twitter($name);
+  $account = $twitter->users_show($name, false);
+  twitter_account_save($account, TRUE, user_load($form_state['values']['uid']));
 }
 
 function twitter_account_oauth_validate($form, &$form_state) {
