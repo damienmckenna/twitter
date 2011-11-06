@@ -347,6 +347,7 @@ function twitter_account_oauth_validate($form, &$form_state) {
   $twitter = new TwitterOAuth($key, $secret);
   $token = $twitter->get_request_token();
 
+  $_SESSION['twitter_oauth']['account'] = user_load($form['uid']['#value']);  
   $_SESSION['twitter_oauth']['token'] = $token;
   $_SESSION['twitter_oauth']['destination'] = $_GET['q'];
   drupal_goto($twitter->get_authorize_url($token));
@@ -389,15 +390,21 @@ function twitter_oauth_callback_validate($form, &$form_state) {
   $form_state['twitter_oauth']['response'] = $response;
 }
 
+/**
+ * Implements hook_form_FORM_ID_submit()
+ *
+ * Attaches a Twitter account to a Drupal user.
+ */
 function twitter_oauth_callback_submit(&$form, &$form_state) {
   $key = variable_get('twitter_consumer_key', '');
   $secret = variable_get('twitter_consumer_secret', '');
   $response = $form_state['twitter_oauth']['response'];
 
   $twitter = new TwitterOAuth($key, $secret, $response['oauth_token'], $response['oauth_token_secret']);
-  $account = $twitter->users_show($response['screen_name']);
-  $account->set_auth($response);
-  twitter_account_save($account, TRUE);
+  $twitter_account = $twitter->users_show($response['screen_name']);
+  $twitter_account->set_auth($response);
+  $account = $form_state['twitter_oauth']['account'];
+  twitter_account_save($twitter_account, TRUE, $account);
   $form_state['redirect'] = $form_state['twitter_oauth']['destination'];
   $form['#programmed'] = FALSE;
 }
