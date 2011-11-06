@@ -296,6 +296,11 @@ function twitter_account_form($form_state, $account = NULL) {
   return $form;
 }
 
+/**
+ * Implements hook_FORM_ID_submit()
+ *
+ * Loads Twitter account details and adds them to the user account
+ */
 function twitter_account_form_submit($form, &$form_state) {
   module_load_include('lib.php', 'twitter');
   module_load_include('inc', 'twitter');
