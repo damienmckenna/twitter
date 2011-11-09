@@ -51,6 +51,8 @@ function twitter_actions_set_status_action_form($context = array()) {
     '#title'         => t('Twitter account name'),
     '#options'       => $options,
     '#default_value' => $context['screen_name'],
+    '#description'   => t('The Twitter account which will be used to post to Twitter. It can be ' .
+                          'added by editing a user account.'),
     '#required'      => TRUE,
   );
 
