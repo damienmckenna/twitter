@@ -40,11 +40,17 @@ function twitter_actions_set_status_action_form($context = array()) {
     'message' => '',
   );
 
+
+  $options = array();
+  $results = db_query("SELECT screen_name FROM {twitter_account}");
+  while ($row = db_fetch_array($results)) {
+    $options[$row['screen_name']] = $row['screen_name'];
+  }
   $form['screen_name'] = array(
-    '#type'          => 'textfield',
+    '#type'          => 'select',
     '#title'         => t('Twitter account name'),
+    '#options'       => $options,
     '#default_value' => $context['screen_name'],
-    '#size'          => 25,
     '#required'      => TRUE,
   );
 
@@ -54,7 +60,7 @@ function twitter_actions_set_status_action_form($context = array()) {
     '#default_value' => $context['message'],
     '#cols' => '80',
     '#rows' => '3',
-    '#description' => t('The message that should be sent. You may include the following variables: %site_name, %username, %node_url, %node_type, %title, %teaser, %body, %tinyurl. Not all variables will be available in all contexts.'),
+    '#description' => t('The message that should be sent. You must include at least one of the following variables or Twitter will comply for tryting to post duplicate tweets: %site_name, %username, %node_url, %node_type, %title, %teaser, %body, %tinyurl. Not all variables will be available in all contexts.'),
     '#required'      => TRUE,
   );
   return $form;
@@ -62,7 +68,7 @@ function twitter_actions_set_status_action_form($context = array()) {
 
 function twitter_actions_set_status_action_validate($form, $form_state) {
   if (!_twitter_use_oauth()) {
-    form_set_error('screen_name', t('Oath has not yet been setup.'));
+    form_set_error('screen_name', t('Oauth has not been setup yet.'));
   }
   if (!db_result(db_query("SELECT twitter_uid FROM {twitter_account} WHERE screen_name = '%s'", $form_state['values']['screen_name']))) {
     form_set_error('screen_name', t('Twitter authentication failed. Please check your account name and try again.'));
@@ -110,7 +116,7 @@ function twitter_actions_set_status_action($object, $context) {
       if (isset($context['node'])) {
         $node = $context['node'];
       }
-      elseif ($context['recipient'] == '%author') {
+      elseif (isset($context['recipient']) && $context['recipient'] == '%author') {
         // If we don't have a node, we don't have a node author.
         watchdog('error', 'Cannot use %author token in this context.');
         return;
