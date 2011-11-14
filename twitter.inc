@@ -113,6 +113,11 @@ function twitter_fetch_user_timeline($id) {
   db_query("UPDATE {twitter_account} SET last_refresh = %d WHERE twitter_uid=%d", time(), $account->id);
 }
 
+/**
+ * Deletes a Twitter account
+ *
+ * Removes entries from twitter_account and authmap tables
+ */
 function twitter_user_delete($twitter_uid, $screen_name = NULL) {
   $sql = "DELETE FROM {twitter_account} WHERE twitter_uid = %d";
   $args = array($twitter_uid);
@@ -121,5 +126,6 @@ function twitter_user_delete($twitter_uid, $screen_name = NULL) {
     $args[] = $screen_name;
   }
   db_query($sql, $args);
+  db_query("DELETE FROM {authmap} WHERE authname = %d AND module = 'twitter'", $twitter_uid);
 }
 
