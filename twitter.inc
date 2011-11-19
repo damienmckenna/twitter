@@ -118,14 +118,16 @@ function twitter_fetch_user_timeline($id) {
  *
  * Removes entries from twitter_account and authmap tables
  */
-function twitter_user_delete($twitter_uid, $screen_name = NULL) {
+function twitter_user_delete($twitter_uid) {
+  $account = twitter_account_load($twitter_uid);
+
   $sql = "DELETE FROM {twitter_account} WHERE twitter_uid = %d";
-  $args = array($twitter_uid);
-  if (!empty($screen_name)) {
-    $sql .= " AND screen_name = '%s'";
-    $args[] = $screen_name;
-  }
-  db_query($sql, $args);
-  db_query("DELETE FROM {authmap} WHERE authname = %d AND module = 'twitter'", $twitter_uid);
+  db_query($sql, $twitter_uid);
+
+  $sql = "DELETE FROM {twitter} WHERE screen_name = '%s'";
+  db_query($sql, $account->screen_name);
+
+  $sql = "DELETE FROM {authmap} WHERE authname = %d AND module = 'twitter'";
+  db_query($sql, $twitter_uid);
 }
 

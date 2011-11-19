@@ -210,7 +210,7 @@ function twitter_account_list_form_submit($form, &$form_state) {
       drupal_set_message(t('The Twitter account settings were updated.'));
     }
     else {
-      twitter_user_delete($account['id'], $account['screen_name']);
+      twitter_user_delete($account['id']);
       drupal_set_message(t('The Twitter account was deleted.'));
     }
   }
