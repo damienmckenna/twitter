@@ -12,8 +12,8 @@ OAuth
 Except for just listing tweets, OAuth module is required to authenticate against Twitter. If you 
 just want to list tweets in a block, follow the steps at http://drupal.org/node/1253026.
 
-If you download the OAuth module, get version  2.02 as 3.0 is not compatible with twitter 6.x-3.x.
-You can find it here: http://drupal.org/node/476824
+If you download the OAuth module, get version 3.0 or higher as previous ones are not compatible
+anymore. You can find it here: http://drupal.org/project/oauth.
 
 Once OAuth has been enabled, go to admin/settings/twitter and follow instructions.
 
