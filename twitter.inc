@@ -8,7 +8,7 @@
  * Connect to the API using the 'proper' version (Oauth vs. standard)
  */
 function twitter_connect($account) {
-  module_load_include('lib.php', 'twitter');
+  module_load_include('php', 'oauth_common','lib/OAuth');
   $auth = $account->get_auth();
   if (_twitter_use_oauth() && $auth['oauth_token'] && $auth['oauth_token_secret']) {
     module_load_include('lib.php', 'oauth');
