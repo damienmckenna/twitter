@@ -392,9 +392,7 @@ class TwitterOAuth extends Twitter {
  * Twitter search is not used in this module yet
  */
 class TwitterSearch extends Twitter {
-  public function search($params = array()) {
-
-  }
+  public function search($params = array()) {}
 }
 
 /**

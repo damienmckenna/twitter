@@ -62,7 +62,6 @@ function twitter_signin_button() {
  */
 function twitter_signin_redirect() {
   module_load_include('php', 'oauth_common','lib/OAuth');
-  module_load_include('lib.php', 'twitter');
   module_load_include('inc', 'twitter');
 
   $key = variable_get('twitter_consumer_key', '');
@@ -175,7 +174,6 @@ function twitter_signin_user($op, &$edit, &$account, $category = NULL) {
     case 'login':
       if (isset($_SESSION['twitter']['values'])) {
         module_load_include('lib.php', 'oauth');
-        module_load_include('lib.php', 'twitter');
         module_load_include('inc', 'twitter');
         $key = variable_get('twitter_consumer_key', '');
         $secret = variable_get('twitter_consumer_secret', '');

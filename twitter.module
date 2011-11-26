@@ -1,4 +1,11 @@
 <?php
+/**
+ * @file
+ *
+ * Establishes an interface to communicate with Twitter
+ */
+
+module_load_include('lib.php', 'twitter');
 
 /**
  * Implementation of hook_meu()
@@ -99,7 +106,6 @@ function twitter_shorten_url($url) {
     return shorten_url($url);
   }
   else {
-    module_load_include('lib.php', 'twitter');
     $conf = TwitterConf::instance();
     $response = drupal_http_request("http://" . $conf->get('tiny_url') . "/api-create.php?url=" . $url);
     if ($response->code == 200) {
@@ -199,7 +205,6 @@ function twitter_filter_tips($delta, $format, $long = FALSE) {
  */
 function twitter_link_filter($text, $prefix = '@', $destination = '') {
   if ($destination == '') {
-    module_load_include('lib.php', 'twitter');
     $conf = TwitterConf::instance();
     $destination = 'http://' . $conf->get('host') . '/';
   }

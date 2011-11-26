@@ -302,7 +302,6 @@ function twitter_account_form($form_state, $account = NULL) {
  * Loads Twitter account details and adds them to the user account
  */
 function twitter_account_form_submit($form, &$form_state) {
-  module_load_include('lib.php', 'twitter');
   module_load_include('inc', 'twitter');
 
   $name = $form_state['values']['screen_name'];
@@ -313,7 +312,6 @@ function twitter_account_form_submit($form, &$form_state) {
 
 function twitter_account_oauth_validate($form, &$form_state) {
   module_load_include('php', 'oauth_common', 'lib/OAuth');
-  module_load_include('lib.php', 'twitter');
 
   $key = variable_get('twitter_consumer_key', '');
   $secret = variable_get('twitter_consumer_secret', '');
@@ -355,7 +353,6 @@ function twitter_oauth_callback_validate($form, &$form_state) {
   }
 
   module_load_include('php', 'oauth_common','lib/OAuth');
-  module_load_include('lib.php', 'twitter');
   module_load_include('inc', 'twitter');
 
   $twitter = new TwitterOAuth($key, $secret, $token['oauth_token'], $token['oauth_token_secret']);
