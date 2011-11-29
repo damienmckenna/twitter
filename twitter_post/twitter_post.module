@@ -24,6 +24,13 @@ function twitter_post_menu() {
 }
 
 /**
+ * Implementation of hook_perm()
+ */
+function twitter_post_perm() {
+  return array('post to twitter');
+}
+
+/**
  * Implementation of hook_form_alter().
  */
 function twitter_post_form_alter(&$form, $form_state, $form_id) {
@@ -214,6 +221,9 @@ function twitter_post_form($account = NULL) {
     $account = $user;
   }
 
+  if (!user_access('post to twitter', $account)) {
+    return;
+  }
   $twitter_accounts = twitter_get_user_accounts($account->uid);
   $options = array();
   foreach ($twitter_accounts as $twitter_account) {
