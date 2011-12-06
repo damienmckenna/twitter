@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Implementation of hook_schema).
+ * Implementation of hook_schema()
  */
 function twitter_schema() {
   $schema['twitter'] = array(
@@ -108,11 +108,6 @@ function twitter_schema() {
         'description' => t("The unique login name of the {twitter_account} user."),
         'type' => 'varchar',
         'length' => 255
-      ),
-      'password' => array(
-        'description' => t("The password for the Twitter account."),
-        'type' => 'varchar',
-        'length' => 64
       ),
       'oauth_token' => array(
         'description' => t('The token_key for oauth-based access.'),
@@ -542,12 +537,14 @@ function twitter_update_6300() {
                  'type' => 'varchar',
                  'length' => 255,
                ));
+
   db_add_field($ret, 'twitter_account', 'password',
                array(
                  'description' => t("The password for the Twitter account."),
                  'type' => 'varchar',
                  'length' => 64
                ));
+
   db_add_field($ret, 'twitter_account', 'oauth_token',
                array(
                  'description' => t('The token_key for oauth-based access.'),
@@ -679,8 +676,8 @@ function twitter_update_6300() {
                  'not null' => TRUE,
                  'default' => 0
                ));
-               
-               
+
+
   if (db_table_exists('twitter_user')) {
     $result = db_query("SELECT * FROM {twitter_user} ORDER BY uid DESC");
     while ($row = db_fetch_array($result)) {
@@ -721,6 +718,15 @@ function twitter_update_6302() {
   if ($default_setting === NULL) {
     variable_set('twitter_post_default_state', 'create');
   }
+  return $ret;
+}
+
+/**
+ * Remove passwords no longer stored/used.
+ */
+function twitter_update_6303() {
+  $ret = array();
+  db_drop_field($ret, 'twitter_account', 'password');
   return $ret;
 }
 
