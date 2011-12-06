@@ -176,8 +176,11 @@ class Twitter {
       $params['source'] = $this->source;
     }
     $values = $this->call('statuses/update', $params, 'POST', TRUE);
-
-    return new TwitterStatus($values);
+    // If $values is null then there was an error with Twitter
+    // and it has has already been set with drupal_set_message().
+    if (is_array($values)) {
+      return new TwitterStatus($values);
+    }
   }
 
 
@@ -212,7 +215,16 @@ class Twitter {
 
 
   /**
-   * Method for calling any twitter api resource
+   * Calls a twitter api resource
+   *
+   * @param $path
+   *   string REST resource to be called
+   * @param $params
+   *   array of settings to be sent along
+   * @param $method
+   *   string method to be used (GET or POST)
+   * @param $use_oauth
+   *   boolean indicating if the call should use OAuth authentication of not
    */
   public function call($path, $params = array(), $method = 'GET', $use_auth = FALSE) {
     $url = $this->create_url($path);

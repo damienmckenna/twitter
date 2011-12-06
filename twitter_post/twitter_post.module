@@ -189,14 +189,10 @@ function twitter_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
 
         try {
           $result = twitter_set_status($twitter_account, $status);
-          
-          // // TODO: resolve this failure, see http://drupal.org/node/335459
-          // if (!$result) {
-          //   $result = new stdClass;
-          //   $result->error = 'Sorry, there was an unkown error connecting to Twitter!';
-          //   throw new TwitterException();
-          // }
-          drupal_set_message(t('Successfully posted to Twitter'));
+
+          if ($result) {
+            drupal_set_message(t('Successfully posted to Twitter'));
+          }
         }
         catch (TwitterException $e) {
           drupal_set_message(t('An error occurred when posting to twitter: %code %error',
