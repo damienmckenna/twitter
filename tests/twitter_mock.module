@@ -1,0 +1,65 @@
+<?php
+/* @file
+* Module for Mock Web Services.
+*
+* Allows easy testing of functions that call web services without depending
+* on the web service working at the time the test is performed.
+*
+* Call mock_web with a url of the form:
+*   mock_web?data=return-this-data&code=return-this-status
+* Return-this-status is returned as the HTTP status code in the header.
+* Return-this-data is returned after the headers.
+*
+* Note: Paramaters are used instead of RESTful arguments so that ebmedded
+* slashes can be part of the data returned. Remember that Apache won't
+* accept urlencoded slashes in certain configurations.
+*
+* @code
+* // Verify module handles 404 error.
+* $result = drupalGet(mock_web_url('', 404));
+* $this->assert...
+* @endcode
+*/
+
+/*
+* Implementation of hook_menu().
+*/
+function twitter_mock_menu() {
+  $items = array();
+
+  $items['mock_web'] = array(
+    'page callback' => 'twitter_mock_page',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+
+  return $items;
+}
+
+/*
+* Menu page callback. Returns HTTP status and data based on url params.
+*/
+function twitter_mock_page() {
+  if (isset($_GET['code'])) {
+    drupal_set_header('HTTP/1.1 ' . $_GET['code']);
+  }
+  echo urldecode($_GET['data']);
+}
+
+/*
+* Utility function to easily construct a url for mock_web.
+*
+* @param $data
+*   This is the data you want returned.
+* @param $code
+*   The HTTP status code you want returned.
+* @return
+*   The constructed url that will return the above data and status code.
+*/
+function twitter_mock_url($data = '', $code = 200) {
+  return url('mock_web', array(
+    'absolute' => TRUE,
+    'query' => array('data' => $data, 'code' => $code)
+    )
+  );
+}

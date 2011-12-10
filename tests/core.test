@@ -2,18 +2,18 @@
 
 /**
  * @file
- * Functional tests for the twitter Module.
+ * Functional tests for the twitter module without OAuth.
  */
 
 class TwitterTest extends DrupalWebTestCase {
-  /*'
+  /*
    * The getInfo() method provides information about the test.
    * In order for the test to be run, the getInfo() method needs
    * to be implemented.
    */
   public static function getInfo() {
     return array(
-      'name' => t('Twitter tests'),
+      'name' => t('Twitter core witout OAuth'),
       'description' => t('Tests main module functionality.'),
       'group' => t('Twitter'),
     );
@@ -27,9 +27,9 @@ class TwitterTest extends DrupalWebTestCase {
   }
 
   /**
-   * Tests account addition without Oauth module activated
+   * Tests account addition process
    */
-  public function testAccountAdditionNoOauth() {
+  public function testAccountAddition() {
     // Create user
     $this->user = $this->drupalCreateUser(array(
       'add twitter accounts',
