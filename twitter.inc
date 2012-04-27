@@ -69,7 +69,8 @@ function twitter_status_save($status) {
   else {
     drupal_write_record('twitter', $status);
   }
-  
+  // Let other modules know that an status has been just saved.
+  module_invoke_all('twitter_status_save', $status);
 }
 
 /**
