@@ -271,3 +271,12 @@ function _twitter_use_oauth() {
 function twitter_views_api() {
   return array('api' => 2);
 }
+
+/**
+ * Helper function to generate twitter profile URLs.
+ */
+function twitter_profile_url($twitter_screen_name) {
+  $name = check_plain($twitter_screen_name);
+
+  return 'http://www.twitter.com/'. $name;
+}

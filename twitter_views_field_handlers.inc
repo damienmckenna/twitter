@@ -65,3 +65,18 @@ class twitter_views_handler_field_profile_image extends views_handler_field {
   }
 }
 
+class twitter_views_handler_field_profile_url extends views_handler_field {
+  function construct() {
+    parent::construct();
+    $this->additional_fields['screen_name'] = 'screen_name';
+  }
+  function query() {
+    $this->ensure_my_table();
+    $this->add_additional_fields();
+  }
+  function render($values) {
+    $value = $values->{$this->aliases['screen_name']};
+    return twitter_profile_url($value);
+  }
+}
+
