@@ -59,9 +59,24 @@ class twitter_views_handler_field_xss extends views_handler_field {
  * Field handler to provide simple renderer that turns a URL into a clickable link.
  */
 class twitter_views_handler_field_profile_image extends views_handler_field {
+  // Ensure we have the account name field to be used
+  // as alt and title attributes of the image.
+  function construct() {
+    parent::construct();
+    $this->additional_fields['name'] = 'name';
+  }
+
+  function query() {
+    parent::query();
+    $this->ensure_my_table();
+    $this->add_additional_fields();
+  }
+
   function render($values) {
+    $name = $values->{$this->aliases['name']};
     $value = $values->{$this->field_alias};
-    return theme('image', $value, '', '', array(), FALSE);
+
+    return theme('image', $value, $name, t("@name's twitter picture", array('@name' => $name)), array(), FALSE);
   }
 }
 
