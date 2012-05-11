@@ -5,7 +5,10 @@
  * Establishes an interface to communicate with Twitter
  */
 
-module_load_include('lib.php', 'twitter');
+define ('TWITTER_HOST',         'http://twitter.com');
+define ('TWITTER_API',          'https://api.twitter.com');
+define ('TWITTER_SEARCH',       'http://search.twitter.com');
+define ('TWITTER_TINYURL',      'http://tinyurl.com');
 
 /**
  * Implementation of hook_meu()
@@ -90,6 +93,9 @@ function twitter_user($op, &$edit, &$account, $category = NULL) {
   }
 }
 
+/**
+ * Implements hook_theme()
+ */
 function twitter_theme() {
   return array(
     'twitter_account_list_form' => array(
@@ -106,8 +112,7 @@ function twitter_shorten_url($url) {
     return shorten_url($url);
   }
   else {
-    $conf = TwitterConf::instance();
-    $response = drupal_http_request("http://" . $conf->get('tiny_url') . "/api-create.php?url=" . $url);
+    $response = drupal_http_request(variable_get('twitter_tinyurl', TWITTER_TINYURL) . "/api-create.php?url=" . $url);
     if ($response->code == 200) {
       return $response->data;
     }
@@ -174,8 +179,8 @@ function twitter_filter($op, $delta = 0, $format = -1, $text = '') {
         case 0:
           return twitter_link_filter($text);
         case 1:
-          $conf = TwitterConf::instance();
-          return twitter_link_filter($text, '#', 'http://' . $conf->get('search') . '/search?q=%23');
+          $destination = variable_get('twitter_search', TWITTER_SEARCH) . '/search?q=%23';
+          return twitter_link_filter($text, '#', $destination);
         default:
           return $text;
       }
@@ -205,8 +210,7 @@ function twitter_filter_tips($delta, $format, $long = FALSE) {
  */
 function twitter_link_filter($text, $prefix = '@', $destination = '') {
   if ($destination == '') {
-    $conf = TwitterConf::instance();
-    $destination = 'http://' . $conf->get('host') . '/';
+    $destination = variable_get('twitter_host', TWITTER_HOST) . '/';
   }
   $matches = array(
     '/\>' . $prefix . '([a-z0-9_]+)/i',
@@ -274,9 +278,13 @@ function twitter_views_api() {
 
 /**
  * Helper function to generate twitter profile URLs.
+ *
+ * @param $twitter_screen_name
+ *   string with the Twitter screen name
+ * @return
+ *   string full URL to its Twitter profile.
  */
 function twitter_profile_url($twitter_screen_name) {
   $name = check_plain($twitter_screen_name);
-
-  return 'http://www.twitter.com/'. $name;
+  return variable_get('twitter_host', TWITTER_HOST) . '/'. $name;
 }
