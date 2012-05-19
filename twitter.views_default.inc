@@ -5,10 +5,9 @@ function twitter_views_default_views() {
   $view->name = 'tweets';
   $view->description = 'Displays Twitter.com status messages for users who have associated Twitter accounts.';
   $view->tag = '';
-  $view->view_php = '';
   $view->base_table = 'twitter';
-  $view->is_cacheable = '0';
-  $view->api_version = 2;
+  $view->core = 0;
+  $view->api_version = '2';
   $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
   $handler = $view->new_display('default', 'Tweets', 'default');
   $handler->override_option('fields', array(
@@ -80,19 +79,19 @@ function twitter_views_default_views() {
       'validate_argument_vocabulary' => array(),
       'validate_argument_type' => 'tid',
       'validate_argument_php' => '$uid = arg(1);
-                                  if (!empty($uid)) {
-                                    $account = user_load($uid);
-                                    $twitter_accounts = twitter_twitter_accounts($account);
-                                    if (count($twitter_accounts)) {
-                                      return TRUE;
-                                    }
-                                    else {
-                                      return FALSE;
-                                    }
-                                  }',
+                                    if (!empty($uid)) {
+                                      $account = user_load($uid);
+                                      $twitter_accounts = twitter_twitter_accounts($account);
+                                      if (count($twitter_accounts)) {
+                                        return TRUE;
+                                      }
+                                      else {
+                                        return FALSE;
+                                      }
+                                    }',
       'validate_user_argument_type' => 'uid',
       'validate_user_roles' => array(
-        '2' => 0,
+        2 => 0,
       ),
       'default_options_div_prefix' => '',
       'validate_argument_transform' => 0,
@@ -119,6 +118,9 @@ function twitter_views_default_views() {
     'type' => 'none',
     'role' => array(),
     'perm' => '',
+  ));
+  $handler->override_option('cache', array(
+    'type' => 'none',
   ));
   $handler->override_option('use_pager', 'mini');
   $handler->override_option('style_plugin', 'table');
@@ -153,12 +155,16 @@ function twitter_views_default_views() {
   $handler->override_option('menu', array(
     'type' => 'tab',
     'title' => 'Twitter',
+    'description' => '',
     'weight' => '1',
+    'name' => 'navigation',
   ));
   $handler->override_option('tab_options', array(
     'type' => 'none',
     'title' => '',
+    'description' => '',
     'weight' => 0,
+    'name' => 'navigation',
   ));
   $handler = $view->new_display('block', 'Block', 'block');
   $handler->override_option('fields', array(
@@ -181,6 +187,7 @@ function twitter_views_default_views() {
       'relationship' => 'none',
     ),
   ));
+  $handler->override_option('arguments', array());
   $handler->override_option('items_per_page', 5);
   $handler->override_option('use_more', 1);
   $handler->override_option('style_plugin', 'list');
@@ -192,6 +199,7 @@ function twitter_views_default_views() {
     'separator' => ' &#8212; ',
   ));
   $handler->override_option('block_description', 'User Tweets');
+  $handler->override_option('block_caching', -1);
 
   return array('tweets' => $view);
 }
