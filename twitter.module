@@ -5,6 +5,7 @@
  * Establishes an interface to communicate with Twitter
  */
 
+module_load_include('lib.php', 'twitter');
 define ('TWITTER_HOST',         'http://twitter.com');
 define ('TWITTER_API',          'https://api.twitter.com');
 define ('TWITTER_SEARCH',       'http://search.twitter.com');

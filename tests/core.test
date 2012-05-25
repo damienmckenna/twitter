@@ -13,8 +13,8 @@ class TwitterTest extends DrupalWebTestCase {
    */
   public static function getInfo() {
     return array(
-      'name' => t('Main'),
-      'description' => t('Tests main module features such as adding accounts or loading tweets.'),
+      'name' => t('Twitter core witout OAuth'),
+      'description' => t('Tests main module functionality.'),
       'group' => t('Twitter'),
     );
   }
@@ -23,13 +23,13 @@ class TwitterTest extends DrupalWebTestCase {
    * Prepares the testing environment
    */
   function setUp() {
-    parent::setUp('autoload', 'libraries', 'twitter', 'views', 'twitter_mock');
+    parent::setUp('autoload', 'twitter', 'views');
   }
 
   /**
    * Tests account addition process
    */
-  public function testAccountAdditionNoOauth() {
+  public function testAccountAddition() {
     // Create user
     $this->user = $this->drupalCreateUser(array(
       'add twitter accounts',
