@@ -1,24 +1,23 @@
 <?php
-
 /**
- * Twitter API functions
+ * @file
+ * Twitter functions that interact with the API wrapper.
  */
 
+module_load_include('php', 'oauth_common', 'lib/OAuth');
 require_once(libraries_get_path('twitter') . '/twitter.lib.php');
 
 /**
- * Connect to the API using the 'proper' version (Oauth vs. standard)
+ * Connect to the API.
  */
 function twitter_connect($account) {
-  module_load_include('php', 'oauth_common','lib/OAuth');
   $auth = $account->get_auth();
-  if (_twitter_use_oauth() && $auth['oauth_token'] && $auth['oauth_token_secret']) {
-    module_load_include('lib.php', 'oauth');
-    return new TwitterOAuth(variable_get('twitter_consumer_key', ''), variable_get('twitter_consumer_secret', ''),
+  if ($auth['oauth_token'] && $auth['oauth_token_secret']) {
+    return new Twitter(variable_get('twitter_consumer_key', ''), variable_get('twitter_consumer_secret', ''),
                             $auth['oauth_token'], $auth['oauth_token_secret']);
   }
   else {
-    return new Twitter;
+    return FALSE;
   }
 }
 
@@ -64,7 +63,7 @@ function twitter_status_save($status) {
   $status->twitter_id = $status->id;
   $status->screen_name = $status->user->screen_name;
   $status->created_time = strtotime($status->created_at);
-  
+
   if (db_result(db_query("SELECT 1 FROM {twitter} WHERE twitter_id = %s", $status->id))) {
     drupal_write_record('twitter', $status, array('twitter_id'));
   }
@@ -97,12 +96,8 @@ function twitter_fetch_user_timeline($id) {
   if ($since) {
     $params['since_id'] = $since;
   }
-  
-  if ($account->include_retweets) {
-    $params['include_rts'] = true;
-  }
 
-  $statuses = $twitter->user_timeline($account->id, $params, $account->protected);
+  $statuses = $twitter->user_timeline($account->id, $params);
   foreach ($statuses as $status) {
     twitter_status_save($status);
   }
