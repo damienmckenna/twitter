@@ -3,4 +3,3 @@ description = Adds support for "Sign in with Twitter"
 php = 5.1
 core = 6.x
 dependencies[] = twitter
-dependencies[] = oauth_common

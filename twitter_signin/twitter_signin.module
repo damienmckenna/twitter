@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file
+ * Hook implementations for twitter_signin module.
+ */
 
 /**
  * Implementation of hook_menu().
@@ -38,12 +42,9 @@ function twitter_signin_block($op = 'list', $delta = 0, $edit = array()) {
       return $block;
     case 'view':
       global $user;
-      
-      if (!$user->uid && _twitter_use_oauth()) {
-        $block['subject'] = t('Sign in with Twitter');
-        $block['content'] = twitter_signin_button();
-        return $block;
-      }
+      $block['subject'] = t('Sign in with Twitter');
+      $block['content'] = twitter_signin_button();
+      return $block;
   }
 }
 
@@ -77,12 +78,11 @@ function theme_twitter_signin_button() {
  * Submit handler for twitter signin
  */
 function twitter_signin_redirect() {
-  module_load_include('php', 'oauth_common','lib/OAuth');
   module_load_include('inc', 'twitter');
 
   $key = variable_get('twitter_consumer_key', '');
   $secret = variable_get('twitter_consumer_secret', '');
-  $twitter = new TwitterOAuth($key, $secret);
+  $twitter = new Twitter6($key, $secret);
   $token = $twitter->get_request_token();
 
   $_SESSION['twitter_oauth']['token'] = $token;
@@ -95,11 +95,6 @@ function twitter_signin_redirect() {
  * Implementation of hook_form_alter()
  */
 function twitter_signin_form_alter(&$form, $form_state, $form_id) {
-  // This only applies if we've got OAuth / signin enabled.
-  if (!_twitter_use_oauth()) {
-    return;
-  }
-  
   if ($form_id == 'twitter_oauth_callback' && isset($_SESSION['twitter_oauth']['signin'])) {
     $form['#submit'] = array_merge(array('twitter_signin_oauth_callback_submit'), $form['#submit']);
   }
@@ -195,7 +190,7 @@ function twitter_signin_user($op, &$edit, &$account, $category = NULL) {
         $secret = variable_get('twitter_consumer_secret', '');
         $response = $_SESSION['twitter']['values'];
 
-        $twitter = new TwitterOAuth($key, $secret, $response['oauth_token'], $response['oauth_token_secret']);
+        $twitter = new Twitter6($key, $secret, $response['oauth_token'], $response['oauth_token_secret']);
         $twitter_account = $twitter->users_show($response['screen_name']);
         $twitter_account->set_auth($response);
         twitter_account_save($twitter_account, TRUE, $account);
@@ -206,5 +201,4 @@ function twitter_signin_user($op, &$edit, &$account, $category = NULL) {
       }
       break;
   }
-
 }
