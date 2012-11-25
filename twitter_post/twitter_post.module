@@ -17,7 +17,6 @@ function twitter_post_menu() {
     'file' => 'twitter_post.pages.inc',
     'type' => MENU_LOCAL_TASK,
     'weight' => 3
-    
   );
 
   return $items;

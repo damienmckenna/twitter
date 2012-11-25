@@ -6,6 +6,7 @@
 
 module_load_include('php', 'oauth_common', 'lib/OAuth');
 require_once(libraries_get_path('twitter') . '/twitter.lib.php');
+require('twitter.lib.php');
 
 /**
  * Connect to the API.
@@ -13,7 +14,7 @@ require_once(libraries_get_path('twitter') . '/twitter.lib.php');
 function twitter_connect($account) {
   $auth = $account->get_auth();
   if ($auth['oauth_token'] && $auth['oauth_token_secret']) {
-    return new Twitter(variable_get('twitter_consumer_key', ''), variable_get('twitter_consumer_secret', ''),
+    return new Twitter6(variable_get('twitter_consumer_key', ''), variable_get('twitter_consumer_secret', ''),
                             $auth['oauth_token'], $auth['oauth_token_secret']);
   }
   else {
@@ -79,7 +80,7 @@ function twitter_status_save($status) {
  */
 function twitter_set_status($twitter_account, $status) {
   $twitter = twitter_connect($twitter_account);
-  $twitter->status_update($status);
+  $twitter->statuses_update($status);
 }
 
 /**

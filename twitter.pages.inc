@@ -327,7 +327,7 @@ function twitter_account_form_validate($form, &$form_state) {
 function twitter_account_form_submit($form, &$form_state) {
   $key = variable_get('twitter_consumer_key', '');
   $secret = variable_get('twitter_consumer_secret', '');
-  $twitter = new Twitter($key, $secret);
+  $twitter = new Twitter6($key, $secret);
   $token = $twitter->get_request_token();
 
   if ($token) {
@@ -385,7 +385,7 @@ function twitter_oauth_callback_validate($form, &$form_state) {
     form_set_error('oauth_token', t('Invalid OAuth token.'));
   }
 
-  $twitter = new Twitter($key, $secret, $token['oauth_token'], $token['oauth_token_secret']);
+  $twitter = new Twitter6($key, $secret, $token['oauth_token'], $token['oauth_token_secret']);
   $response = $twitter->get_access_token();
   $form_state['twitter_oauth']['response'] = $response;
 }
@@ -400,7 +400,7 @@ function twitter_oauth_callback_submit(&$form, &$form_state) {
   $secret = variable_get('twitter_consumer_secret', '');
   $response = $form_state['twitter_oauth']['response'];
 
-  $twitter = new Twitter($key, $secret, $response['oauth_token'], $response['oauth_token_secret']);
+  $twitter = new Twitter6($key, $secret, $response['oauth_token'], $response['oauth_token_secret']);
   $twitter_account = $twitter->users_show($response['screen_name']);
   $twitter_account->set_auth($response);
   $account = $form_state['twitter_oauth']['account'];
