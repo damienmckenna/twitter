@@ -373,7 +373,3 @@ function twitter_views_data_alter(&$data) {
     'field' => 'uid',
   );
 }
-
-/**
- * @}
- */

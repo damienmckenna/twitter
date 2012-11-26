@@ -93,4 +93,3 @@ class twitter_views_handler_field_profile_url extends views_handler_field {
     return twitter_profile_url($value);
   }
 }
-
