@@ -58,7 +58,7 @@ function twitter_account_save($twitter_user, $save_auth = FALSE) {
   }
 
   // Save or update the Twitter account.
-  if (db_result(db_query("SELECT 1 FROM {twitter_account} WHERE twitter_uid = %d", $values['id']))) {
+  if (db_result(db_query("SELECT 1 FROM {twitter_account} WHERE twitter_uid = %d", $values['twitter_uid']))) {
     drupal_write_record('twitter_account', $values, array('twitter_uid'));
   }
   else {
@@ -81,6 +81,7 @@ function twitter_account_save($twitter_user, $save_auth = FALSE) {
  */
 function twitter_account_load($id) {
   if ($values = db_fetch_array(db_query("SELECT * FROM {twitter_account} WHERE twitter_uid = %d", $id))) {
+    $values['id'] = $values['twitter_uid'];
     $account = new TwitterUser($values);
     $account->set_auth($values);
     $account->import = $values['import'];
@@ -103,8 +104,8 @@ function twitter_account_load_all() {
                       FROM {twitter_account}
                       WHERE added_by_uid <> 0
                       ORDER BY screen_name');
-  foreach ($result as $account) {
-    $accounts[] = twitter_account_load($account->twitter_uid);
+  while ($row = db_fetch_array($result)) {
+    $accounts[] = twitter_account_load($row['twitter_uid']);
   }
   return $accounts;
 }

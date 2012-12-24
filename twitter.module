@@ -304,7 +304,7 @@ function twitter_user_delete($account) {
  *   boolean TRUE if both the Twitter Application key and secret are set.
  */
 function twitter_api_keys() {
-  $key = variable_get('twitter_consumer_key');
-  $secret = variable_get('twitter_consumer_secret');
+  $key = variable_get('twitter_consumer_key', NULL);
+  $secret = variable_get('twitter_consumer_secret', NULL);
   return !(empty($key) && empty($secret));
 }

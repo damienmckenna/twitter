@@ -79,7 +79,7 @@ function twitter_admin_form() {
 function twitter_user_settings() {
   // Verify OAuth keys.
   if (!twitter_api_keys()) {
-    $output = t('<p>You need to authenticate at least one Twitter account in order to use the Twitter API. Please fill out the OAuth fields at <a href="/admin/config/services/twitter/settings">Twitter Settings</a> and then return here.</p>');
+    $output = t('<p>You need to authenticate at least one Twitter account in order to use the Twitter API. Please fill out the OAuth fields at <a href="/admin/settings/twitter/settings">Twitter Settings</a> and then return here.</p>');
   }
   else {
     module_load_include('inc', 'twitter');
@@ -88,34 +88,32 @@ function twitter_user_settings() {
     $output = array();
     if (count($twitter_accounts)) {
       // List Twitter accounts.
-      $output['header'] = array(
-        '#value' => t('<p>Tweets are pulled from Twitter by ' .
+      $output = t('<p>Tweets are pulled from Twitter by ' .
             '<a href="/admin/reports/status/run-cron?destination=admin/settings/twitter">running cron</a>. ' .
-            'You can view the full list of tweets at the <a href="/tweets">Tweets</a> view.</p>'),
-      );
-      $output['list_form'] = drupal_get_form('twitter_account_list_form', $twitter_accounts);
+            'You can view the full list of tweets at the <a href="/tweets">Tweets</a> view.</p>');
+      $output .= drupal_get_form('twitter_account_list_form', $twitter_accounts);
     }
     else {
       // No accounts added. Inform about how to add one.
-      $output['header'] = array(
-        '#value' => t('<p>No Twitter accounts have been added yet. Click on the following button to add one.</p>'),
-      );
+      $output = t('<p>No Twitter accounts have been added yet. Click on the following button to add one.</p>');
     }
 
-    $output['add_account'] = array(
+    $add_account = array(
       '#type' => 'fieldset',
       '#title' => t('Add Twitter accounts'),
       '#weight' => 5,
       '#collapsible' => TRUE,
       '#collapsed' => FALSE,
+      '#children' => '',
     );
 
     if (user_access('add authenticated twitter accounts')) {
-      $output['add_account']['form'] = drupal_get_form('twitter_auth_account_form');
+      $add_account['#children'] .= drupal_get_form('twitter_auth_account_form');
     }
     if (twitter_connect()) {
-      $output['add_account']['non_auth'] = drupal_get_form('twitter_non_auth_account_form');
+      $add_account['#children'] .= drupal_get_form('twitter_non_auth_account_form');
     }
+    $output .= drupal_render($add_account);
   }
 
   return $output;
@@ -124,7 +122,7 @@ function twitter_user_settings() {
 /**
  * Formats each Twitter account as a row within a form.
  */
-function twitter_account_list_form($form, $form_state, $twitter_accounts = array()) {
+function twitter_account_list_form($form_state, $twitter_accounts = array()) {
   $form['#tree'] = TRUE;
   $form['accounts'] = array();
 
@@ -159,7 +157,7 @@ function _twitter_account_list_row($account) {
   );
 
   $form['image'] = array(
-    '#value' => theme('image', array('path' => $account->profile_image_url)),
+    '#value' => theme('image', $account->profile_image_url, '', '', array(), FALSE),
   );
 
   $form['visible_name'] = array(
@@ -208,9 +206,7 @@ function _twitter_account_list_row($account) {
 /**
  * Themes the list of Twitter accounts.
  */
-function theme_twitter_account_list_form($variables) {
-  $form = $variables['form'];
-
+function theme_twitter_account_list_form($form) {
   $header = array(
     '',
     t('Name'),
@@ -266,12 +262,7 @@ function twitter_account_list_form_submit($form, &$form_state) {
 /**
  * Form to add an authenticated Twitter account.
  */
-function twitter_auth_account_form($form, $form_state, $account = NULL) {
-  if (empty($account)) {
-    global $user;
-    $account = $user;
-  }
-
+function twitter_auth_account_form(&$form_state) {
   $form['submit'] = array(
     '#type' => 'submit',
     '#value' => t('Go to Twitter to add an authenticated account'),
@@ -415,7 +406,7 @@ function twitter_oauth_callback_submit($form, &$form_state) {
 /**
  * Form to add a non-authenticated Twitter account.
  */
-function twitter_non_auth_account_form($form, $form_state) {
+function twitter_non_auth_account_form(&$form_state) {
   $form['screen_name'] = array(
     '#type' => 'textfield',
     '#required' => TRUE,
