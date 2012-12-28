@@ -143,11 +143,11 @@ function twitter_status_save($status) {
     'truncated' => (int) $status->truncated,
   );
 
-  if (db_result(db_query("SELECT 1 FROM {twitter} WHERE twitter_id = %s", $status->id))) {
-    drupal_write_record('twitter', $status, array('twitter_id'));
+  if (db_result(db_query("SELECT 1 FROM {twitter} WHERE twitter_id = %s", $row['twitter_id']))) {
+    drupal_write_record('twitter', $row, array('twitter_id'));
   }
   else {
-    drupal_write_record('twitter', $status);
+    drupal_write_record('twitter', $row);
   }
 
   // Let other modules know that a status has been saved.
