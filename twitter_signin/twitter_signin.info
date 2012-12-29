@@ -1,5 +1,4 @@
 name = Twitter Signin
 description = Adds support for "Sign in with Twitter"
-core = 7.x
+core = 6.x
 dependencies[] = twitter
-configure = admin/config/services/twitter/signin

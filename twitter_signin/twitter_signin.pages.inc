@@ -7,7 +7,7 @@
 /**
  * Settings form for Twitter Signin.
  */
-function twitter_signin_admin_settings($form, &$form_state) {
+function twitter_signin_admin_settings() {
   $form = array();
 
   $img_path = drupal_get_path('module', 'twitter_signin') . '/images';
@@ -15,7 +15,7 @@ function twitter_signin_admin_settings($form, &$form_state) {
 
   $options = array();
   foreach ($results as $image) {
-    $options[$image->filename] = theme('image', array('path' => $image->uri));
+    $options[$image->basename] = theme('image', $image->filename);
   }
 
   $form['twitter_signin_button'] = array(

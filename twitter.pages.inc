@@ -298,6 +298,7 @@ function twitter_auth_account_form_submit($form, &$form_state) {
   $twitter = new Twitter($key, $secret);
   $token = $twitter->get_request_token();
   if ($token) {
+    $_SESSION['twitter_oauth']['account'] = user_load($form['uid']['#value']);
     $_SESSION['twitter_oauth']['token'] = $token;
     $_SESSION['twitter_oauth']['destination'] = $_GET['q'];
     drupal_goto($twitter->get_authorize_url($token));
