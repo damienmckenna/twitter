@@ -298,7 +298,6 @@ function twitter_auth_account_form_submit($form, &$form_state) {
   $twitter = new Twitter($key, $secret);
   $token = $twitter->get_request_token();
   if ($token) {
-    $_SESSION['twitter_oauth']['account'] = user_load($form['uid']['#value']);
     $_SESSION['twitter_oauth']['token'] = $token;
     $_SESSION['twitter_oauth']['destination'] = $_GET['q'];
     drupal_goto($twitter->get_authorize_url($token));
@@ -382,7 +381,7 @@ function twitter_oauth_callback_validate($form, &$form_state) {
  * Handle a Twitter OAuth return request and store the account creds
  * in the DB.
  */
-function twitter_oauth_callback_submit($form, &$form_state) {
+function twitter_oauth_callback_submit(&$form, &$form_state) {
   $key = variable_get('twitter_consumer_key', '');
   $secret = variable_get('twitter_consumer_secret', '');
   $response = $form_state['twitter_oauth']['response'];
@@ -390,17 +389,18 @@ function twitter_oauth_callback_submit($form, &$form_state) {
   $twitter = new Twitter($key, $secret, $response['oauth_token'], $response['oauth_token_secret']);
   try {
     $twitter_account = $twitter->users_show($response['screen_name']);
+    // Save the new Twitter account and set the user's uid who added it.
+    $twitter_account->set_auth($response);
+    global $user;
+    $twitter_account->added_by_uid = $user->uid;
+    twitter_account_save($twitter_account, TRUE);
+    drupal_set_message(t('Twitter account added successfully'));
   } catch (TwitterException $e) {
     form_set_error('screen_name', t('Request failed: @message.', array('@message' => $e->getMessage())));
     return;
   }
-  // Save the new Twitter account and set the user's uid who added it.
-  $twitter_account->set_auth($response);
-  global $user;
-  $twitter_account->added_by_uid = $user->uid;
-  twitter_account_save($twitter_account, TRUE);
 
-  $form_state['#programmed'] = FALSE;
+  $form['#programmed'] = FALSE;
   $form_state['redirect'] = $form_state['twitter_oauth']['destination'];
 }
 
