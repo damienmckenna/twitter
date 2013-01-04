@@ -337,7 +337,6 @@ function twitter_uninstall() {
   variable_del('twitter_consumer_secret');
   variable_del('twitter_import');
   variable_del('twitter_expire');
-  variable_del('twitter_post_types');
   variable_del('twitter_host');
   variable_del('twitter_api');
   variable_del('twitter_search');

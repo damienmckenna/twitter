@@ -1,5 +1,4 @@
 name = Twitter Post
-description = Enables posting to twitter
-core = 7.x
+description = Enables posting to Twitter
+core = 6.x
 dependencies[] = twitter
-configure = admin/config/services/twitter/post
