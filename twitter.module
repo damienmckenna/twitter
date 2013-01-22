@@ -28,7 +28,7 @@ function twitter_menu() {
     'title' => 'Twitter',
     'description' => 'Twitter accounts and settings.',
     'page callback' => 'twitter_user_settings',
-    'access callback' => 'twitter_account_access',
+    'access arguments' => array('administer twitter accounts'),
     'file' => 'twitter.pages.inc',
   );
 
@@ -47,14 +47,28 @@ function twitter_menu() {
     'type' => MENU_LOCAL_TASK,
   );
 
+  $items['user/%user/edit/twitter'] = array(
+    'title' => 'Twitter accounts',
+    'page callback' => 'twitter_user_settings',
+    'page arguments' => array(1),
+    'access callback' => 'twitter_account_access',
+    'weight' => 10,
+    'file' => 'twitter.pages.inc',
+    'type' => MENU_LOCAL_TASK,
+  );
+
   return $items;
 }
 
 /**
- * Implements hook_permission().
+ * Implements hook_perm().
  */
-function twitter_permission() {
-  return array('add twitter accounts', 'add authenticated twitter accounts');
+function twitter_perm() {
+  return array(
+    'add twitter accounts',
+    'add authenticated twitter accounts',
+    'administer twitter accounts',
+  );
 }
 
 /**
@@ -75,7 +89,30 @@ function twitter_theme() {
     'twitter_account_list_form' => array(
       'arguments' => array('form' => NULL),
     ),
+    'twitter_user_accounts' => array(
+      'arguments' => array('accounts' => NULL),
+    ),
   );
+}
+
+/**
+ * Default callback for theme('twitter_user_accounts');
+ *
+ * Renders a list of Twitter accounts for the user profile page.
+ */
+function theme_twitter_user_accounts($accounts) {
+  $items = array();
+  foreach ($accounts as $twitter_account) {
+    $tweets = twitter_tweets($twitter_account->screen_name);
+    // If we have tweets for this Twitter account, link to the View. If not, link to Twitter.
+    if (count($tweets)) {
+      $items[] = l('@' . $twitter_account->screen_name, 'tweets/' . $twitter_account->screen_name);
+    }
+    else {
+      $items[] = _twitter_user_profile($twitter_account->screen_name);
+    }
+  }
+  return theme('item_list', $items);
 }
 
 /**
@@ -259,6 +296,16 @@ function twitter_user($op, &$edit, &$account, $category = NULL) {
         twitter_account_delete($twitter_account->id);
       }
       break;
+    case 'view':
+      if (!empty($account->twitter_accounts)) {
+        $account->content['summary']['twitter'] = array(
+          '#title' => t('Twitter accounts'),
+          '#type' => 'user_profile_item',
+          '#weight' => 10,
+          '#value' => theme('twitter_user_accounts', $account->twitter_accounts),
+        );
+      }
+      break;
   }
 }
 
@@ -284,17 +331,6 @@ function twitter_twitter_accounts($account) {
 }
 
 /**
- * Implements hook_user_delete().
- *
- * Removes user's Twitter accounts and tweets
- */
-function twitter_user_delete($account) {
-  foreach ($account->twitter_accounts as $twitter_account) {
-    twitter_account_delete($twitter_account->id);
-  }
-}
-
-/**
  * Checks if the Twitter Application keys are set.
  *
  * @return
@@ -304,4 +340,11 @@ function twitter_api_keys() {
   $key = variable_get('twitter_consumer_key', NULL);
   $secret = variable_get('twitter_consumer_secret', NULL);
   return !(empty($key) && empty($secret));
+}
+
+/**
+ * Helper to build a Twitter profile URL
+ */
+function _twitter_user_profile($screen_name) {
+  return l('@' . $screen_name, TWITTER_HOST . '/' . $screen_name);
 }

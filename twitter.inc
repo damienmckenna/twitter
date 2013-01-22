@@ -214,6 +214,27 @@ function twitter_fetch_mentions_timeline($id) {
 }
 
 /**
+ * Pulls tweets from the database.
+ *
+ * @param string $screen_name
+ *   Optionally provide a screen_name to filter.
+ */
+function twitter_tweets($screen_name = NULL) {
+  if (empty($screen_name)) {
+    $result = db_query('SELECT * FROM {twitter}');
+  }
+  else {
+    $result = db_query("SELECT * FROM {twitter} WHERE screen_name = '%s'", $screen_name);
+  }
+
+  $tweets = array();
+  while ($row = db_fetch_object($result)) {
+    $tweets[] = $row;
+  }
+  return $tweets;
+}
+
+/**
  * Delete a twitter account and its statuses.
  *
  * @param $twitter_uid
