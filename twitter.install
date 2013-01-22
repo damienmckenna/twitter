@@ -301,7 +301,7 @@ function twitter_schema() {
         'not null' => TRUE,
         'default' => 0,
       ),
-      'added_by_uid' => array(
+      'uid' => array(
         'description' => "The uid of the user who added this Twitter account",
         'type' => 'int',
         'unsigned' => TRUE,
@@ -816,12 +816,10 @@ function twitter_update_6501() {
 
 /**
  * Drops field uid at twitter_account.
+ *
+ * This update has been set empty afterwards as the field is actually needed.
  */
-function twitter_update_6502() {
-  $ret = array();
-  db_drop_field($ret, 'twitter_account', 'uid');
-  return $ret;
-}
+function twitter_update_6502() {}
 
 /**
  * Makes the import field not enabled by default at twitter_account table.
@@ -842,16 +840,26 @@ function twitter_update_6503() {
 
 /**
  * Adds field added_by_uid to twitter_account table.
+ *
+ * This update has been set empty afterwards as the existing field twitter_account.uid is used.
  */
-function twitter_update_6504() {
+function twitter_update_6504() {}
+
+/**
+ * Renames twitter_account.added_by_uid to twitter_account.uid.
+ *
+ * This reverts updates 6502 and 6504.
+ */
+function twitter_update_6505() {
   $ret = array();
-  $data = array(
-    'description' => "The uid of the user who added this Twitter account",
-    'type' => 'int',
-    'unsigned' => TRUE,
-    'not null' => TRUE,
-    'default' => 0,
+  $spec = array(
+   'description' => "The uid of the user who added this Twitter account",
+   'type' => 'int',
+   'unsigned' => TRUE,
+   'not null' => TRUE,
+   'default' => 0,
   );
-  db_add_field($ret, 'twitter_account', 'added_by_uid', $data);
+
+  db_change_field($ret, 'twitter_account', 'added_by_uid', 'uid', $spec);
   return $ret;
 }
