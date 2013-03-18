@@ -84,7 +84,8 @@ function twitter_admin_form() {
 function twitter_user_settings($account = NULL) {
   // Verify OAuth keys.
   if (!twitter_api_keys()) {
-    $output = t('<p>You need to authenticate at least one Twitter account in order to use the Twitter API. Please fill out the OAuth fields at <a href="/admin/settings/twitter/settings">Twitter Settings</a> and then return here.</p>');
+    $variables = array('@twitter-settings' => url('admin/settings/twitter/settings'));
+    $output = '<p>' . t('You need to authenticate at least one Twitter account in order to use the Twitter API. Please fill out the OAuth fields at <a href="@twitter-settings">Twitter Settings</a> and then return here.', $variables) . '</p>';
   }
   else {
     module_load_include('inc', 'twitter');
@@ -95,19 +96,21 @@ function twitter_user_settings($account = NULL) {
       $twitter_accounts = twitter_twitter_accounts($account);
     }
 
-    $output = '';
+    $output = '<p>';
     if (count($twitter_accounts)) {
       // List Twitter accounts.
       if (user_access('administer site configuration')) {
-        $output .= t('<p>Tweets are pulled from Twitter by ' .
-          '<a href="/admin/reports/status/run-cron?destination=admin/settings/twitter">running cron</a>. ');
+        $variables = array('@run-cron' => url('admin/reports/status/run-cron', array('query' => array('destination' => 'admin/settings/twitter'))));
+        $output .= t('Tweets are pulled from Twitter by <a href="@run-cron">running cron</a>.', $variables) . ' ';
       }
-      $output .= t('You can view the full list of tweets at the <a href="/tweets">Tweets</a> view.</p>');
+      $variables = array('@tweets' => url('tweets'));
+      $output .= t('You can view the full list of tweets at the <a href="@tweets">Tweets</a> view.', $variables);
+      $output .= '</p>';
       $output .= drupal_get_form('twitter_account_list_form', $twitter_accounts);
     }
     else {
       // No accounts added. Inform about how to add one.
-      $output = t('<p>No Twitter accounts have been added yet. Click on the following button to add one.</p>');
+      $output = '<p>' . t('No Twitter accounts have been added yet. Click on the following button to add one.') . '</p>';
     }
 
     $add_account = array(
