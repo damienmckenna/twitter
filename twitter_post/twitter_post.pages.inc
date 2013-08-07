@@ -14,7 +14,7 @@ function twitter_post_admin_settings($form, &$form_state) {
     '#type' => 'checkboxes',
     '#description' => t('Choose which node types should support posting to Twitter.'),
     '#options' => node_type_get_names(),
-    '#default_value' => variable_get('twitter_post_types', NULL),
+    '#default_value' => variable_get('twitter_post_types', array()),
   );
 
   $form['twitter_post_default_format'] = array(
