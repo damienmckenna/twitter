@@ -6,7 +6,7 @@
 
 define ('TWITTER_HOST',         'http://twitter.com');
 define ('TWITTER_API',          'https://api.twitter.com');
-define ('TWITTER_SEARCH',       'http://search.twitter.com');
+define ('TWITTER_SEARCH',       'http://twitter.com');
 define ('TWITTER_TINYURL',      'http://tinyurl.com');
 
 /**
@@ -240,8 +240,8 @@ function _twitter_filter_tip_username($filter, $format, $long = FALSE) {
  */
 function _twitter_filter_tip_hashtag($format, $long = FALSE) {
   return t('Twitter-style #hashtags are linked to !url.', array(
-    '!url' => '<a href="http://search.twitter.com/">search.twitter.com</a>')
-  );
+    '!url' => l(TWITTER_SEARCH, TWITTER_SEARCH),
+  ));
 }
 
 /**

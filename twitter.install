@@ -427,3 +427,10 @@ function twitter_update_7500() {
     db_change_field('twitter_account', 'added_by_uid', 'uid', $spec);
   }
 }
+
+/**
+ * Updates twitter_search variable to point to http://twitter.com
+ */
+function twitter_update_7501(&$sandbox) {
+  variable_set('twitter_search', 'http://twitter.com');
+}
