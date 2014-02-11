@@ -35,3 +35,11 @@ function hook_twitter_status_save($status) {}
  * @see twitter_account_save()
  */
 function hook_twitter_account_save($account, $values) {}
+
+/**
+ * Alter the twitter user settings page.
+ *
+ * @param array $output
+ *   A render array containing the user settings data.
+ */
+function hook_twitter_user_settings_alter(&$output) {}
