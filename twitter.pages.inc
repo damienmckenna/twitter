@@ -137,6 +137,9 @@ function twitter_user_settings($account = NULL) {
     }
   }
 
+  // Give a chance to other modules to alter the output.
+  drupal_alter('twitter_user_settings', $output);
+
   return $output;
 }
 
