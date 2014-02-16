@@ -60,11 +60,8 @@ function twitter_actions_set_status($message, $sender) {
     // No Twitter authenticated account found.
     return;
   }
-
   // Send tweet.
-  module_load_include('inc', 'twitter');
-  $twitter_account = twitter_account_load($twitter_uid);
-  twitter_set_status($twitter_account, $message);
+  twitter_actions_post($twitter_uid, $message);
 }
 
 /**

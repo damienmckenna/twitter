@@ -1231,7 +1231,7 @@ class Twitter {
     }
     catch (TwitterException $e) {
       watchdog('twitter', '!message', array('!message' => $e->__toString()), WATCHDOG_ERROR);
-      return FALSE;
+      throw $e;
     }
 
     if (!$response) {
@@ -1285,6 +1285,19 @@ class TwitterStatus {
     if (isset($values['user'])) {
       $this->user = new TwitterUser($values['user']);
     }
+  }
+
+  /**
+   * Returns the status URL at Twitter.com
+   *
+   * @return
+   *   String URL or FALSE if no user object is present.
+   */
+  public function getURL() {
+    if (empty($this->user->screen_name)) {
+      return FALSE;
+    }
+    return TWITTER_HOST . '/' . $this->user->screen_name . '/status/' . $this->id;
   }
 }
 
