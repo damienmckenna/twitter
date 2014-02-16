@@ -146,8 +146,10 @@ function twitter_signin_oauth_callback_submit(&$form, &$form_state) {
     // No existing user account, let's see if we can register.
     if (variable_get('twitter_signin_register', 0)) {
       // Check for a nickname collision.
-      $account = array_shift(user_load_multiple(array(), array('name' => $response['screen_name'])));
+      $accounts = user_load_multiple(array(), array('name' => $response['screen_name']));
+      $account = array_shift($accounts);
       if (empty($account->uid)) {
+        $account = new stdClass;
         $password = user_password();
         $account->name = $response['screen_name'];
         $account->pass = $password;
