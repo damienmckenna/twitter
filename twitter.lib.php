@@ -143,10 +143,15 @@ class Twitter {
       return $response->data;
     }
     else {
+      // Extract response error.
       $error = $response->error;
-      $data = $this->parse_response($response->data);
-      if (isset($data['error'])) {
-        $error = $data['error'];
+      // See if there is an error message in the response's data.
+      // This will be an error message from the Twitter API.
+      if (isset($response->data)) {
+        $data = $this->parse_response($response->data);
+        if (isset($data['error'])) {
+          $error .= "\n" . $data['error'];
+        }
       }
       throw new TwitterException($error);
     }
