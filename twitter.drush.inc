@@ -42,7 +42,8 @@ function drush_twitter_search($keyword) {
   $twitter = twitter_connect();
 
   if (empty($twitter)) {
-    drush_set_error('OAuth credentials at admin/config/services/twitter/settings must be set in order to perform a search.');
+    drush_set_error('At least one Twitter account must be authenticated at admin/config/services/twitter ' .
+                    'in order to perform requests to the Twitter API.');
     return;
   }
 
