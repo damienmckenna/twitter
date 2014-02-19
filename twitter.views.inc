@@ -157,6 +157,16 @@ function twitter_views_data() {
     ),
   );
 
+  // Tweet image.
+  $data['twitter']['image'] = array(
+    'title' => t('Image'),
+    'help' => t('The image attached to the tweet.'),
+    'field' => array(
+      'real field' => 'entities',
+      'handler' => 'twitter_views_handler_field_image',
+    ),
+  );
+
   // Renders a formatted tweet.
   $data['twitter']['formatted_tweet'] = array(
     'title' => t('Formatted tweet'),

@@ -1269,6 +1269,8 @@ class TwitterStatus {
 
   public $user;
 
+  public $entities;
+
   /**
    * Constructor for TwitterStatus
    */
@@ -1282,6 +1284,7 @@ class TwitterStatus {
     $this->in_reply_to_status_id = $values['in_reply_to_status_id'];
     $this->in_reply_to_user_id = $values['in_reply_to_user_id'];
     $this->in_reply_to_screen_name = $values['in_reply_to_screen_name'];
+    $this->entities = $values['entities'];
     if (isset($values['user'])) {
       $this->user = new TwitterUser($values['user']);
     }

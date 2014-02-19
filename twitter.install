@@ -109,6 +109,13 @@ function twitter_schema() {
         'not null' => TRUE,
         'default' => 0,
       ),
+      'entities' => array(
+        'type' => 'blob',
+        'not null' => FALSE,
+        'size' => 'big',
+        'serialize' => TRUE,
+        'description' => 'A serialized array of {twitter} post entities.',
+      ),
     ),
     'indexes' => array('screen_name' => array('screen_name')),
     'primary key' => array('twitter_id'),
@@ -433,4 +440,19 @@ function twitter_update_7500() {
  */
 function twitter_update_7501(&$sandbox) {
   variable_set('twitter_search', 'http://twitter.com');
+}
+
+/**
+ * Add entities field to the twitter post table.
+ */
+function twitter_update_7502(&$sandbox) {
+  if (!db_field_exists('twitter', 'entities')) {
+    db_add_field('twitter', 'entities', array(
+      'type' => 'blob',
+      'not null' => FALSE,
+      'size' => 'big',
+      'serialize' => TRUE,
+      'description' => 'A serialized array of {twitter} post entities.',
+    ));
+  }
 }

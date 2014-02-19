@@ -138,8 +138,14 @@ function twitter_load_authenticated_accounts() {
  *   An instance of stdClass object with the Tweet data or FALSE.
  */
 function twitter_status_load($status_id) {
-  return db_query("SELECT * FROM {twitter} WHERE twitter_id = :status_id",
-           array(':status_id' => $status_id))->fetchObject();
+  $row = db_query("SELECT * FROM {twitter} WHERE twitter_id = :status_id",
+            array(':status_id' => $status_id))->fetchObject();
+
+  if (!empty($row->entities)) {
+    $row->entities = unserialize($row->entities);
+  }
+
+  return $row;
 }
 
 /**
@@ -156,6 +162,7 @@ function twitter_status_save($status) {
     'in_reply_to_user_id' => (int) $status->in_reply_to_user_id,
     'in_reply_to_screen_name' => $status->in_reply_to_screen_name,
     'truncated' => (int) $status->truncated,
+    'entities' => isset($status->entities) ? serialize($status->entities) : NULL,
   );
   db_merge('twitter')
     ->key(array('twitter_id' => $row['twitter_id']))
@@ -240,6 +247,9 @@ function twitter_tweets($screen_name = NULL) {
 
   $tweets = array();
   foreach ($result as $row) {
+    if (!empty($row->entitites)) {
+      $row->entities = unserialize($row->entities);
+    }
     $tweets[] = $row;
   }
   return $tweets;
