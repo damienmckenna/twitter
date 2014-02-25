@@ -42,10 +42,9 @@ function twitter_schema() {
     'fields' => array(
       'twitter_id' => array(
         'description' => "Unique identifier for each {twitter} post.",
-        'type' => 'numeric',
+        'type' => 'int',
         'unsigned' => TRUE,
-        'precision' => 20,
-        'scale' => 0,
+        'size' => 'big',
         'not null' => TRUE,
         'default' => 0,
       ),
@@ -455,4 +454,28 @@ function twitter_update_7502(&$sandbox) {
       'description' => 'A serialized array of {twitter} post entities.',
     ));
   }
+}
+
+
+/**
+ * Update the twitter_id column to a big int, rather than a float-type value
+ */
+function twitter_update_7503() {
+  db_drop_primary_key('twitter');
+  $spec = array(
+    'description' => "Unique identifier for each {twitter} post.",
+    'type' => 'int',
+    'unsigned' => TRUE,
+    'size' => 'big',
+    'not null' => TRUE,
+    'default' => 0,
+  );
+  $index_spec = array(
+    'primary key' => array('twitter_id'),
+    );
+  db_change_field('twitter',
+    'twitter_id',
+    'twitter_id',
+    $spec,
+    $index_spec);
 }
