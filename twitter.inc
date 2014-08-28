@@ -116,6 +116,9 @@ function twitter_status_save($status) {
   $twitter_status->truncated = (int) $status->truncated;
   $twitter_status->is_new = entity_load_single('twitter_status', $twitter_status->twitter_id) ? FALSE : TRUE;
   entity_save('twitter_status', $twitter_status);
+
+  // Let other modules know that a status has been saved.
+  module_invoke_all('twitter_status_save', $status);
 }
 
 /**
