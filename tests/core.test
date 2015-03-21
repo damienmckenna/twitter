@@ -33,7 +33,7 @@ class TwitterTest extends DrupalWebTestCase {
     // Create user
     $this->user = $this->drupalCreateUser(array(
       'add twitter accounts',
-      'import own tweets',
+      'add authenticated twitter accounts',
     ));
     $this->drupalLogin($this->user);
 

@@ -17,6 +17,7 @@ By juampy: Improved the error message when a Twitter account is not set for
 #1637380 by peterpoe: Warning and notices in
   twitter_signin_oauth_callback_submit().
 By DamienMcKenna: Initial CHANGELOG.txt file.
+#2402317 by helmo: A permission was renamed which caused tests to fail.
 
 
 Twitter 7.x-5.8, 2013-06-03
