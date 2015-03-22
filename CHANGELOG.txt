@@ -26,6 +26,8 @@ By DamienMcKenna: Initial CHANGELOG.txt file.
   Post fieldset on node forms can be controlled.
 #2457169 by DamienMcKenna: Allow Twitter Post option to be controlled via the
   content type edit form.
+#1884064 by jgSnell, e0ipso: Link path to configure is wrong in
+  hook_requirements().
 
 
 Twitter 7.x-5.8, 2013-06-03
