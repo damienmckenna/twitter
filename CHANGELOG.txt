@@ -6,6 +6,9 @@ Twitter 7.x-6.x-dev, xxxx-xx-xx
 #2142177 by kevinchampion: Fixed API function not invoked:
   hook_twitter_status_save.
 By DamienMcKenna: Initial CHANGELOG.txt file.
+#2402317 by helmo: A permission was renamed which caused tests to fail.
+#2369833 by Jorrit, baldwinlouie: twitter_twitter_accounts() shouldn't return
+  any accounts for the anonymous user.
 
 
 Twitter 7.x-6.0-alpha2, 2013-03-13
