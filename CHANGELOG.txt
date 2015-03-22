@@ -4,6 +4,7 @@ Twitter 6.x-5.x-dev, xxxx-xx-xx
 By DamienMcKenna: Initial CHANGELOG.txt file.
 #2369833 by Jorrit: twitter_twitter_accounts() shouldn't return any accounts
   for the anonymous user.
+#1953280 by lifecoderua: Wrong API declaration for hook_twitter_account_save().
 
 
 Twitter 6.x-5.1, 2013-04-19

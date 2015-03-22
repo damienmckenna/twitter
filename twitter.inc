@@ -65,7 +65,8 @@ function twitter_account_save($twitter_user, $save_auth = FALSE) {
     drupal_write_record('twitter_account', $values);
   }
 
-  // Notify other modules of the twitter account save
+  // Triggers hook_twitter_account_save().
+  // Notify other modules of the twitter account save.
   module_invoke_all('twitter_account_save', $values);
 }
 
