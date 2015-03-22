@@ -11,6 +11,9 @@ By DamienMcKenna: Initial CHANGELOG.txt file.
   any accounts for the anonymous user.
 #2337219 by dysproseum: Update 7400 fails if the 'mentions' field already
   exists.
+#1884064 by jgSnell, e0ipso: Link path to configure is wrong in
+  hook_requirements().
+
 
 Twitter 7.x-6.0-alpha2, 2013-03-13
 ----------------------------------
