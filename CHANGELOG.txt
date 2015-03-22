@@ -2,6 +2,8 @@ Twitter 6.x-5.x-dev, xxxx-xx-xx
 -------------------------------
 #1045304 by escore: Rules: Post to current user's Twitter account.
 By DamienMcKenna: Initial CHANGELOG.txt file.
+#2369833 by Jorrit: twitter_twitter_accounts() shouldn't return any accounts
+  for the anonymous user.
 
 
 Twitter 6.x-5.1, 2013-04-19
