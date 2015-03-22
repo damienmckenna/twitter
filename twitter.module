@@ -313,10 +313,15 @@ function twitter_user_load($accounts) {
 /**
  * Implements hook_twitter_accounts().
  *
- * @return
- *   array with Twitter accounts
+ * @return array
+ *   All Twitter accounts for this user; the anonymous user will return an
+ *   empty array.
  */
 function twitter_twitter_accounts($account) {
+  if ($account->uid == 0) {
+    return array();
+  }
+
   module_load_include('inc', 'twitter');
 
   $query = db_select('twitter_account', 'ta')

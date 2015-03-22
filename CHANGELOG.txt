@@ -18,6 +18,8 @@ By juampy: Improved the error message when a Twitter account is not set for
   twitter_signin_oauth_callback_submit().
 By DamienMcKenna: Initial CHANGELOG.txt file.
 #2402317 by helmo: A permission was renamed which caused tests to fail.
+#2369833 by Jorrit: twitter_twitter_accounts() shouldn't return any accounts
+  for the anonymous user.
 
 
 Twitter 7.x-5.8, 2013-06-03
