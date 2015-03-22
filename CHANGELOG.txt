@@ -9,7 +9,8 @@ By DamienMcKenna: Initial CHANGELOG.txt file.
 #2402317 by helmo: A permission was renamed which caused tests to fail.
 #2369833 by Jorrit, baldwinlouie: twitter_twitter_accounts() shouldn't return
   any accounts for the anonymous user.
-
+#2337219 by dysproseum: Update 7400 fails if the 'mentions' field already
+  exists.
 
 Twitter 7.x-6.0-alpha2, 2013-03-13
 ----------------------------------
