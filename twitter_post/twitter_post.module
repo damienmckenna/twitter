@@ -161,3 +161,24 @@ function twitter_post_form($account = NULL) {
     return $form;
   }
 }
+
+/**
+ * Implementation of hook_field_extra_fields().
+ */
+function twitter_post_field_extra_fields() {
+  $types = variable_get('twitter_post_types', array());
+
+  foreach ($types as $type) {
+    $extra['node'][$type] = array(
+      'form' => array(
+        'twitter' => array(
+          'label' => t('Twitter post'),
+          'description' => t('Optionally post to Twitter.'),
+          'weight' => 1,
+        ),
+      ),
+    );
+  }
+
+  return $extra;
+}

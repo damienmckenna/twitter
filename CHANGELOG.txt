@@ -22,6 +22,8 @@ By DamienMcKenna: Initial CHANGELOG.txt file.
   for the anonymous user.
 #2337219 by dysproseum: Update 7400 fails if the 'mentions' field already
   exists.
+#604530 by DamienMcKenna: Implement hook_field_extra_fields() so the Twitter
+  Post fieldset on node forms can be controlled.
 
 
 Twitter 7.x-5.8, 2013-06-03
