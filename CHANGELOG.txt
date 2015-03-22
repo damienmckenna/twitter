@@ -1,0 +1,93 @@
+Twitter 7.x-6.x-dev, xxxx-xx-xx
+-------------------------------
+#1963524 by Sheldon Rampton: Fixed search_tweets() method not working in
+  Twitter API library.
+#2015965 by Jaypan, juampy: Twitter settings page cannot be overridden.
+#2142177 by kevinchampion: Fixed API function not invoked:
+  hook_twitter_status_save.
+By DamienMcKenna: Initial CHANGELOG.txt file.
+
+
+Twitter 7.x-6.0-alpha2, 2013-03-13
+----------------------------------
+#1933908 by mfernea: Fix urls in admin interface.
+#1924808 by Jos Doekbrijder, hermes_costell: Fixed Twitter accounts table is
+  skewed.
+#1934768 by barry6575: Fixed Twitter Post issue.
+#1944174 by yanniboi | Jennifer Norell: Error with Web Intents field.
+#1924478 by botanic_spark | k9kiko: Invalid Twitter OAuth request.
+By juampy: Fixed bug when saving whether to save mentions or not.
+By juampy: Added twitter_account_save() so it takes care of setting is_new
+  property.
+#1973470 by xopoc: Fixed Import and views handler bugs.
+By juampy: Removed debug statements.
+
+
+Twitter 7.x-6.0-alpha1, 2013-03-13
+----------------------------------
+#1895274 by juampy: Turn tweets and twitter accounts into entities.
+
+
+Twitter 7.x-5.5, 2013-02-02
+---------------------------
+
+
+Twitter 7.x-5.4, 2013-01-21
+---------------------------
+
+
+Twitter 7.x-5.3, 2013-01-08
+---------------------------
+
+
+Twitter 7.x-5.2, 2012-12-31
+---------------------------
+
+
+Twitter 7.x-5.1, 2012-12-24
+---------------------------
+
+
+Twitter 7.x-5.0, 2012-12-23
+---------------------------
+
+
+Twitter 7.x-4.1, 2012-11-18
+---------------------------
+
+
+Twitter 7.x-4.0, 2012-11-18
+---------------------------
+
+
+Twitter 7.x-3.3, 2012-10-24
+---------------------------
+
+
+Twitter 7.x-3.2, 2012-08-10
+---------------------------
+
+
+Twitter 7.x-3.1, 2012-06-10
+---------------------------
+
+
+Twitter 7.x-3.0, 2012-06-02
+---------------------------
+
+
+Twitter 7.x-3.0-beta4, 2011-12-03
+---------------------------------
+
+
+Twitter 7.x-3.0-beta3, 2011-11-03
+---------------------------------
+
+
+Twitter 7.x-3.0-beta2, 2011-10-18
+---------------------------------
+
+
+Twitter 7.x-3.0-beta1, 2011-10-14
+---------------------------------
+First port of D7 module.
