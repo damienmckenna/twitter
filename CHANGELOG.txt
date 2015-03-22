@@ -24,6 +24,8 @@ By DamienMcKenna: Initial CHANGELOG.txt file.
   exists.
 #604530 by DamienMcKenna: Implement hook_field_extra_fields() so the Twitter
   Post fieldset on node forms can be controlled.
+#2457169 by DamienMcKenna: Allow Twitter Post option to be controlled via the
+  content type edit form.
 
 
 Twitter 7.x-5.8, 2013-06-03

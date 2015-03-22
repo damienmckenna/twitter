@@ -33,6 +33,42 @@ function twitter_post_permission() {
 }
 
 /**
+ * Implements hook_form_FORM_ID_alter() for node_type_form().
+ */
+function twitter_post_form_node_type_form_alter(&$form, $form_state, $form_id) {
+  $type = $form['#node_type']->type;
+  $allowed_types = variable_get('twitter_post_types', array());
+
+  $form['workflow']['twitter_post'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('May be posted to twitter.com'),
+    '#default_value' => !empty($allowed_types[$type]),
+    '#description' => t('There are also <a href="@url">global options</a> that affect this option.', array('@url' => url('admin/config/services/twitter/post'))),
+  );
+
+  $form['#submit'][] = 'twitter_post_form_node_type_form_submit';
+}
+
+/**
+ * FormAPI submission callback for node_type_form().
+ *
+ * @see twitter_post_form_node_type_form_alter().
+ */
+function twitter_post_form_node_type_form_submit($form, $form_state) {
+  $type = $form_state['values']['type'];
+  $allowed_types = variable_get('twitter_post_types', array());
+
+  if (!empty($form_state['values']['twitter_post'])) {
+    $allowed_types[$type] = $type;
+  }
+  else {
+    $allowed_types[$type] = 0;
+  }
+
+  variable_set('twitter_post_types', $allowed_types);
+}
+
+/**
  * Implements hook_form_alter().
  */
 function twitter_post_form_alter(&$form, $form_state, $form_id) {
