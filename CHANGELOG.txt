@@ -13,6 +13,7 @@ By DamienMcKenna: Initial CHANGELOG.txt file.
   exists.
 #1884064 by jgSnell, e0ipso: Link path to configure is wrong in
   hook_requirements().
+#2402317 by DamienMcKenna, helmo: (temporarily) Fixed the 7.x-5.x branch tests.
 
 
 Twitter 7.x-6.0-alpha2, 2013-03-13
