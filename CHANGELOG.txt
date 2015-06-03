@@ -37,6 +37,8 @@ By DamienMcKenna: Initial CHANGELOG.txt file.
   message for retweets.
 #1985708 by DamienMcKenna, ingaro: Internal API incorrectly assumed numeric
   screen names were actually account IDs.
+#1895320 by Drave Robber, DamienMcKenna: Update API documentation for
+  hook_twitter_account_save().
 
 
 Twitter 7.x-5.8, 2013-06-03
