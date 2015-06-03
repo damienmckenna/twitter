@@ -139,7 +139,7 @@ function twitter_status_save($status) {
     'text' => $status->text,
     'source' => $status->source,
     'in_reply_to_status_id' => ($status->in_reply_to_status_id > 0) ? (string) $status->in_reply_to_status_id : NULL,
-    'in_reply_to_user_id' => (int) $status->in_reply_to_user_id,
+    'in_reply_to_user_id' => $status->in_reply_to_user_id,
     'in_reply_to_screen_name' => $status->in_reply_to_screen_name,
     'truncated' => (int) $status->truncated,
   );
