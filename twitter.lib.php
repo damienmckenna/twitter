@@ -1264,6 +1264,8 @@ class TwitterStatus {
 
   public $user;
 
+  public $retweeted_status;
+
   /**
    * Constructor for TwitterStatus
    */
@@ -1279,6 +1281,11 @@ class TwitterStatus {
     $this->in_reply_to_screen_name = $values['in_reply_to_screen_name'];
     if (isset($values['user'])) {
       $this->user = new TwitterUser($values['user']);
+    }
+
+    // Load full retweeted_status (original tweet) if retweet detected.
+    if (isset($values['retweeted_status'])) {
+      $this->retweeted_status = new TwitterStatus($values['retweeted_status']);
     }
   }
 }

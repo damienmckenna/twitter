@@ -11,6 +11,8 @@ By DamienMcKenna: Initial CHANGELOG.txt file.
   hook_requirements().
 #2205277 by AdamPS: Do not convert in_reply_to_user_id field to integer when it
   must allow larger values.
+#1929126 by colin_vanarts, leewillis77, AdamPS, DamienMcKenna: Store the entire
+  message for retweets.
 
 
 Twitter 6.x-5.1, 2013-04-19
