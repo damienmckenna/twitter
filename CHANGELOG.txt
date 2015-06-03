@@ -16,6 +16,8 @@ By DamienMcKenna: Initial CHANGELOG.txt file.
 #2402321 by DamienMcKenna, helmo: (temporarily) Fixed the 7.x-6.x branch tests.
 #2205277 by AdamPS: Do not convert in_reply_to_user_id field to integer when it
   must allow larger values.
+#1996606 by rdtome: [screen_name] token in Views display not available for use
+  with the "name" field.
 
 
 Twitter 7.x-6.0-alpha2, 2013-03-13
