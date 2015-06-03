@@ -176,7 +176,7 @@ class Twitter {
   protected function parse_response($response) {
     // http://drupal.org/node/985544 - json_decode large integer issue
     $length = strlen(PHP_INT_MAX);
-    $response = preg_replace('/"(id|in_reply_to_status_id)":(\d{' . $length . ',})/', '"\1":"\2"', $response);
+    $response = preg_replace('/"(id|in_reply_to_status_id|in_reply_to_user_id)":(\d{' . $length . ',})/', '"\1":"\2"', $response);
     return json_decode($response, TRUE);
   }
   /**

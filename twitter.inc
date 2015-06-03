@@ -111,7 +111,7 @@ function twitter_status_save($status) {
   $twitter_status->text = $status->text;
   $twitter_status->source = $status->source;
   $twitter_status->in_reply_to_status_id = ($status->in_reply_to_status_id > 0) ? (string) $status->in_reply_to_status_id : NULL;
-  $twitter_status->in_reply_to_user_id = (int) $status->in_reply_to_user_id;
+  $twitter_status->in_reply_to_user_id = $status->in_reply_to_user_id;
   $twitter_status->in_reply_to_screen_name = $status->in_reply_to_screen_name;
   $twitter_status->truncated = (int) $status->truncated;
   $twitter_status->is_new = entity_load_single('twitter_status', $twitter_status->twitter_id) ? FALSE : TRUE;
