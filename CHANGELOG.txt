@@ -33,6 +33,8 @@ By DamienMcKenna: Initial CHANGELOG.txt file.
   must allow larger values.
 #1996606 by rdtome: [screen_name] token in Views display not available for use
   with the "name" field.
+#1929126 by colin_vanarts, leewillis77, AdamPS, DamienMcKenna: Store the entire
+  message for retweets.
 
 
 Twitter 7.x-5.8, 2013-06-03
