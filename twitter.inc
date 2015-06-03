@@ -73,15 +73,27 @@ function twitter_account_save($twitter_user, $save_auth = FALSE) {
 /**
  * Load a Twitter account from {twitter_account}.
  *
- * @param $id
- *   Twitter UID
+ * @param mixed $id
+ *   Either the Twitter User ID or screen name.
+ * @param boolean $type
+ *   By default the $id is assumed to be a Twitter UID, set to FALSE if $id is a
+ *   screen name.
  *
  * @return
  *   TwitterUser object or NULL.
- *
  */
-function twitter_account_load($id) {
-  if ($values = db_fetch_array(db_query("SELECT * FROM {twitter_account} WHERE twitter_uid = %d", $id))) {
+function twitter_account_load($id, $is_uid = TRUE) {
+  // The ID is the Twitter UID.
+  if ($is_uid) {
+    $query = "SELECT * FROM {twitter_account} WHERE twitter_uid = %d";
+  }
+  else {
+    $query = "SELECT * FROM {twitter_account} WHERE screen_name = %s";
+  }
+
+  $values = db_fetch_array(db_query($query, $id));
+
+  if (!empty($values)) {
     $values['id'] = $values['twitter_uid'];
     $account = new TwitterUser($values);
     $account->set_auth($values);

@@ -13,6 +13,8 @@ By DamienMcKenna: Initial CHANGELOG.txt file.
   must allow larger values.
 #1929126 by colin_vanarts, leewillis77, AdamPS, DamienMcKenna: Store the entire
   message for retweets.
+#1985708 by DamienMcKenna, ingaro: Internal API incorrectly assumed numeric
+  screen names were actually account IDs.
 
 
 Twitter 6.x-5.1, 2013-04-19
