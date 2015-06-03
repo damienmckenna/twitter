@@ -143,7 +143,7 @@ class twitter_views_handler_field_formatted_tweet extends views_handler_field {
 
     // Load tweet and author.
     $status = twitter_status_load($values->twitter_id);
-    $author = twitter_account_load($status->screen_name);
+    $author = twitter_account_load($status->screen_name, FALSE);
 
     // Format the timestamp.
     $time_diff = REQUEST_TIME - $values->twitter_created_time;
