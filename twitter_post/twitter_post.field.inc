@@ -134,6 +134,9 @@ function twitter_post_field_is_empty($item, $field) {
  * Adds a select field to choose a Twitter account.
  */
 function twitter_post_field_attach_form($entity_type, $entity, &$form, &$form_state, $langcode) {
+  if (empty($form_state['field'])) {
+    return;
+  }
   $langcode = empty($langcode) ? entity_language($entity_type, $entity) : $langcode;
   $options = array();
   module_load_include('inc', 'twitter');

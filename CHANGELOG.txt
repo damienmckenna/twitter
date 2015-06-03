@@ -18,6 +18,7 @@ By DamienMcKenna: Initial CHANGELOG.txt file.
   must allow larger values.
 #1996606 by rdtome: [screen_name] token in Views display not available for use
   with the "name" field.
+#2139117 by maximpodorov: Don't assume all entity forms have fields.
 
 
 Twitter 7.x-6.0-alpha2, 2013-03-13
