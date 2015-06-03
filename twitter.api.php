@@ -26,17 +26,6 @@ function hook_twitter_accounts($account) {}
 function hook_twitter_status_save($status) {}
 
 /**
- * Notifies of a saved twitter account.
- *
- * @param $account
- *   User account object.
- * @param $values
- *   Twitter account values.
- * @see twitter_account_save()
- */
-function hook_twitter_account_save($account, $values) {}
-
-/**
  * Alter the twitter user settings page.
  *
  * @param array $output

@@ -19,6 +19,8 @@ By DamienMcKenna: Initial CHANGELOG.txt file.
 #1996606 by rdtome: [screen_name] token in Views display not available for use
   with the "name" field.
 #2139117 by maximpodorov: Don't assume all entity forms have fields.
+#1895320 by DamienMcKenna: Remove mention of hook_twitter_account_save() from
+  the API docs as the hook was removed.
 
 
 Twitter 7.x-6.0-alpha2, 2013-03-13
