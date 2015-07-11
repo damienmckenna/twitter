@@ -108,9 +108,9 @@ class twitter_views_handler_field_web_intents extends views_handler_field {
 
   function render($values) {
     drupal_add_js('//platform.twitter.com/widgets.js', 'external');
-    return '<span><a href="https://twitter.com/intent/tweet?in_reply_to=' . $values->twitter_id . '">Reply</a></span> ' .
-      '<span><a href="https://twitter.com/intent/retweet?tweet_id=' . $values->twitter_id . '">Retweet</a></span> ' .
-      '<span><a href="https://twitter.com/intent/favorite?tweet_id=' . $values->twitter_id . '">Favorite</a></span>';
+    return '<span><a href="https://twitter.com/intent/tweet?in_reply_to=' . $values->twitter_id . '">' . t('Reply') . '</a></span> ' .
+      '<span><a href="https://twitter.com/intent/retweet?tweet_id=' . $values->twitter_id . '">' . t('Retweet') . '</a></span> ' .
+      '<span><a href="https://twitter.com/intent/favorite?tweet_id=' . $values->twitter_id . '">' . t('Favorite') . '</a></span>';
   }
 }
 
@@ -124,7 +124,7 @@ class twitter_views_handler_field_follow extends views_handler_field {
 
   function render($values) {
     drupal_add_js('//platform.twitter.com/widgets.js', 'external');
-    return '<span><a href="https://twitter.com/intent/user?screen_name=' . $values->twitter_screen_name . '">Follow</a></span>';
+    return '<span><a href="https://twitter.com/intent/user?screen_name=' . $values->twitter_screen_name . '">' . t('Follow') . '</a></span>';
   }
 }
 
@@ -160,6 +160,9 @@ class twitter_views_handler_field_formatted_tweet extends views_handler_field {
     return theme('twitter_status', array(
       'status' => $twitter_status,
       'author' => $twitter_account,
+      'reply' => t('Reply'),
+      'retweet' => t('Retweet'),
+      'favorite' => t('Favorite'),
     ));
   }
 }

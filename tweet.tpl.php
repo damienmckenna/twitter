@@ -32,12 +32,12 @@
 
   <ul class="actions">
     <li><a href=
-    "https://twitter.com/intent/tweet?in_reply_to=<?php print $status->twitter_id; ?>">Reply</a></li>
+    "https://twitter.com/intent/tweet?in_reply_to=<?php print $status->twitter_id; ?>"><?php print $reply; ?></a></li>
 
     <li><a href=
-    "https://twitter.com/intent/retweet?tweet_id=<?php print $status->twitter_id; ?>">Retweet</a></li>
+    "https://twitter.com/intent/retweet?tweet_id=<?php print $status->twitter_id; ?>"><?php print $retweet; ?></a></li>
 
     <li><a href=
-    "https://twitter.com/intent/favorite?tweet_id=<?php print $status->twitter_id; ?>">Favorite</a></li>
+    "https://twitter.com/intent/favorite?tweet_id=<?php print $status->twitter_id; ?>"><?php print $favorite; ?></a></li>
   </ul>
 </div>
