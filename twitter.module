@@ -6,7 +6,7 @@
 
 define ('TWITTER_HOST',         'http://twitter.com');
 define ('TWITTER_API',          'https://api.twitter.com');
-define ('TWITTER_SEARCH',       'http://search.twitter.com');
+define ('TWITTER_SEARCH',       'http://twitter.com');
 define ('TWITTER_TINYURL',      'http://tinyurl.com');
 
 /**
@@ -232,7 +232,7 @@ function twitter_filter_tips($delta, $format, $long = FALSE) {
     case 0:
       return t('Twitter-style @usersnames are linked to their Twitter account pages.');
     case 1:
-      return t('Twitter-style #hashtags are linked to !url.', array('!url' => '<a href="http://search.twitter.com/">search.twitter.com</a>'));
+      return t('Twitter-style #hashtags are linked to !url.', array('!url' => '<a href="http://twitter.com/">twitter.com</a>'));
     case 2:
       return t('Twitter links within a message are opened in new tabs and have nofollo attribute.');
   }

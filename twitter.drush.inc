@@ -39,7 +39,7 @@ function twitter_drush_command() {
 function drush_twitter_search($keyword) {
   $keyword = urlencode($keyword);
   // This is not even using the Twitter library at twitter.lib.inc, but it will.
-  $url = 'http://search.twitter.com/search.json?rpp=100&q=';
+  $url = 'http://twitter.com/search.json?rpp=100&q=';
 
   $response = drupal_http_request($url . $keyword);
 

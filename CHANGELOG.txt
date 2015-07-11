@@ -15,6 +15,7 @@ By DamienMcKenna: Initial CHANGELOG.txt file.
   message for retweets.
 #1985708 by DamienMcKenna, ingaro: Internal API incorrectly assumed numeric
   screen names were actually account IDs.
+#2049187 by Xano: search.twitter.com is no longer active.
 
 
 Twitter 6.x-5.1, 2013-04-19
