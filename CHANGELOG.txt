@@ -39,6 +39,7 @@ By DamienMcKenna: Initial CHANGELOG.txt file.
   screen names were actually account IDs.
 #1895320 by Drave Robber, DamienMcKenna: Update API documentation for
   hook_twitter_account_save().
+#1943728 by frankdk, plopesc: Some text strings weren't translated.
 
 
 Twitter 7.x-5.8, 2013-06-03

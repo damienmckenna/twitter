@@ -97,6 +97,9 @@ function twitter_theme() {
       'variables' => array(
         'status' => NULL,
         'author' => NULL,
+        'reply' => NULL,
+        'retweet' => NULL,
+        'favorite' => NULL,
       ),
       'template' => 'tweet',
       'path' => drupal_get_path('module', 'twitter'),
