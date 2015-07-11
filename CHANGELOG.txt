@@ -16,6 +16,9 @@ By DamienMcKenna: Initial CHANGELOG.txt file.
 #1985708 by DamienMcKenna, ingaro: Internal API incorrectly assumed numeric
   screen names were actually account IDs.
 #2049187 by Xano: search.twitter.com is no longer active.
+#2055951 by xurizaemon, leewillis77, drupal_jon, DamienMcKenna: Change the
+  twitter_id field to a BIGINT field, to allow room for Twitter's larger-than-
+  32bit unique IDs.
 
 
 Twitter 6.x-5.1, 2013-04-19

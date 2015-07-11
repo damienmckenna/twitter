@@ -42,10 +42,9 @@ function twitter_schema() {
     'fields' => array(
       'twitter_id' => array(
         'description' => "Unique identifier for each {twitter} post.",
-        'type' => 'numeric',
+        'type' => 'int',
         'unsigned' => TRUE,
-        'precision' => 20,
-        'scale' => 0,
+        'size' => 'big',
         'not null' => TRUE,
         'default' => 0,
       ),
@@ -862,5 +861,34 @@ function twitter_update_6505() {
   );
 
   db_change_field($ret, 'twitter_account', 'added_by_uid', 'uid', $spec);
+  return $ret;
+}
+
+/**
+ * Convert the twitter_id to a BIGINT. Yes, this is going back to how it was in
+ * twitter_update_6003(). Sorry.
+ */
+function twitter_update_6506() {
+  $ret = array();
+  $spec = array(
+    'description' => t("Unique identifier for each {twitter} post."),
+    'type' => 'int',
+    'unsigned' => TRUE,
+    'size' => 'big',
+    'not null' => TRUE,
+    'default' => 0,
+  );
+  $keys = array(
+    'primary key' => array(
+      'twitter_id',
+    ),
+  );
+
+  // Drop the existing primary key.
+  db_drop_primary_key($ret, 'twitter');
+
+  // Adjust the table, adding back the primary key again.
+  db_change_field($ret, 'twitter', 'twitter_id', 'twitter_id', $spec, $keys);
+
   return $ret;
 }
