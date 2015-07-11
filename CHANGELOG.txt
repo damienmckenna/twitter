@@ -40,6 +40,8 @@ By DamienMcKenna: Initial CHANGELOG.txt file.
 #1895320 by Drave Robber, DamienMcKenna: Update API documentation for
   hook_twitter_account_save().
 #1943728 by frankdk, plopesc: Some text strings weren't translated.
+#969454 by caligari, DamienMcKenna: New text-only option for Twitter signin
+  button.
 
 
 Twitter 7.x-5.8, 2013-06-03
