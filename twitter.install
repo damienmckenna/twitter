@@ -43,10 +43,9 @@ function twitter_schema() {
     'fields' => array(
       'twitter_id' => array(
         'description' => "Unique identifier for each {twitter} post.",
-        'type' => 'numeric',
+        'type' => 'int',
         'unsigned' => TRUE,
-        'precision' => 20,
-        'scale' => 0,
+        'size' => 'big',
         'not null' => TRUE,
         'default' => 0,
       ),
@@ -429,4 +428,36 @@ function twitter_update_7500() {
     );
     db_change_field('twitter_account', 'added_by_uid', 'uid', $spec);
   }
+}
+
+/**
+ * Skipped to match the 7.x-5.x branch. This was originally from
+ * https://www.drupal.org/node/2138341 which is not relevant to the 7.x-6.x
+ * branch.
+ */
+function twitter_update_7501() {}
+
+/**
+ * Skipped to match the 7.x-5.x branch. This was originally from
+ * https://www.drupal.org/node/1936598 and will need to be backported.
+ */
+function twitter_update_7502() {}
+
+/**
+ * Update the twitter_id column to a big int, rather than a float-type value.
+ */
+function twitter_update_7503() {
+  db_drop_primary_key('twitter');
+  $spec = array(
+    'description' => 'Unique identifier for each {twitter} post.',
+    'type' => 'int',
+    'unsigned' => TRUE,
+    'size' => 'big',
+    'not null' => TRUE,
+    'default' => 0,
+  );
+  $index_spec = array(
+    'primary key' => array('twitter_id'),
+  );
+  db_change_field('twitter', 'twitter_id', 'twitter_id', $spec, $index_spec);
 }
