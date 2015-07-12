@@ -43,6 +43,8 @@ By DamienMcKenna: Initial CHANGELOG.txt file.
 #969454 by caligari, DamienMcKenna: New text-only option for Twitter signin
   button.
 #1899594 by Jaypan: Change login element into a render array.
+#1825680 by lyricnz, DamienMcKenna: Add width/height attributes to the profile
+  images.
 
 
 Twitter 7.x-5.8, 2013-06-03
