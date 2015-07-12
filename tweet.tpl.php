@@ -7,9 +7,9 @@
 ?>
 <div class="twitter-status clearfix">
   <div class="avatar">
-    <a alt="<?php print $author->name; ?>" title="<?php print $author->name; ?>" href=
-    "https://twitter.com/<?php print $author->screen_name; ?>"><img src=
-    "<?php print $author->profile_image_url; ?>"></a>
+    <a href="https://twitter.com/<?php print $author->screen_name; ?>" title="<?php print $author->name; ?>">
+      <img src="<?php print $author->profile_image_url; ?>" alt="<?php print $author->name; ?>" />
+    </a>
   </div>
 
   <div class="timestamp">
