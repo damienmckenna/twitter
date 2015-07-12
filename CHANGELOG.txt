@@ -21,6 +21,7 @@ By DamienMcKenna: Initial CHANGELOG.txt file.
   32bit unique IDs.
 #1825680 by lyricnz, DamienMcKenna: Add width/height attributes to the profile
   images.
+#1929126 by DamienMcKenna: Remove redundant RT: bit from retweets.
 
 
 Twitter 6.x-5.1, 2013-04-19
