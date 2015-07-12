@@ -172,7 +172,7 @@ function _twitter_account_list_row($account) {
   );
 
   $form['image'] = array(
-    '#value' => theme('image', $account->profile_image_url, '', '', array(), FALSE),
+    '#value' => theme('image', $account->profile_image_url, '', '', array('width' => 48, 'height' => '48'), FALSE),
   );
 
   $form['visible_name'] = array(
