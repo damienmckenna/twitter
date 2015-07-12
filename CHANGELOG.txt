@@ -45,6 +45,7 @@ By DamienMcKenna: Initial CHANGELOG.txt file.
 #1899594 by Jaypan: Change login element into a render array.
 #1825680 by lyricnz, DamienMcKenna: Add width/height attributes to the profile
   images.
+#2354555 by Owen Barton: Tweets should place alt text on img, not link.
 
 
 Twitter 7.x-5.8, 2013-06-03
