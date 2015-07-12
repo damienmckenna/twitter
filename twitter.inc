@@ -164,16 +164,11 @@ function twitter_status_load($status_id) {
  * Saves a TwitterStatus object to {twitter}
  */
 function twitter_status_save($status) {
-  $text = $status->text;
-  if (!empty($status->retweeted_status)){
-    $text = 'RT @' . $status->retweeted_status->user->screen_name . ': ' . $text;
-  }
-
   $row = array(
     'twitter_id' => $status->id,
     'screen_name' => $status->user->screen_name,
     'created_time' => strtotime($status->created_at),
-    'text' => $text,
+    'text' => $status->text,
     'source' => $status->source,
     'in_reply_to_status_id' => ($status->in_reply_to_status_id > 0) ? (string) $status->in_reply_to_status_id : NULL,
     'in_reply_to_user_id' => $status->in_reply_to_user_id,
