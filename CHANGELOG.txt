@@ -22,6 +22,7 @@ By DamienMcKenna: Initial CHANGELOG.txt file.
 #1825680 by lyricnz, DamienMcKenna: Add width/height attributes to the profile
   images.
 #1929126 by DamienMcKenna: Remove redundant RT: bit from retweets.
+#1929126 by AdamPS, DamienMcKenna: Fix RT text.
 
 
 Twitter 6.x-5.1, 2013-04-19
