@@ -47,6 +47,7 @@ By DamienMcKenna: Initial CHANGELOG.txt file.
   images.
 #2354555 by Owen Barton: Tweets should place alt text on img, not link.
 #1929126 by DamienMcKenna: Remove redundant RT: bit from retweets.
+#1929126 by AdamPS, DamienMcKenna: Fix RT text.
 
 
 Twitter 7.x-5.8, 2013-06-03
