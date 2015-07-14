@@ -368,6 +368,23 @@ function twitter_user_view_alter(&$build) {
 }
 
 /**
+ * Implements hook_field_extra_fields().
+ */
+function twitter_field_extra_fields() {
+  $extra['user']['user'] = array(
+    'display' => array(
+      'twitter' => array(
+        'label' => t('Twitter'),
+        'description' => t('Twitter account'),
+        'weight' => 0,
+      )
+    )
+  );
+
+  return $extra;
+}
+
+/**
  * Checks if the Twitter Application keys are set.
  *
  * @return
