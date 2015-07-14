@@ -133,7 +133,7 @@ function twitter_post_node_insert($node) {
     $status = strtr($node->twitter['status'], $replacements);
     try {
       $status = twitter_set_status($twitter_account, $status);
-      drupal_set_message(t('Successfully posted %node to Twitter: <a href="@status" target="_blank">@status</a>', array(
+      drupal_set_message(t('Successfully posted "%node" to Twitter: <a href="@status" target="_blank">@status</a>', array(
         '@status' => _twitter_status_url($status),
         '%node' => $node->title,
       )));
