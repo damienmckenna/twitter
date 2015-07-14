@@ -44,7 +44,8 @@ function twitter_post_entity_insert($entity, $type) {
             $message = token_replace($message, array($type => $entity));
             $status = twitter_set_status($twitter_account, $message);
             if ($status) {
-              drupal_set_message(t('Successfully posted to Twitter: <a href="@status" target="_blank">@status</a>', array(
+              drupal_set_message(t('Successfully posted "%node" to Twitter: <a href="@status" target="_blank">@status</a>', array(
+                '%node' => isset($entity->title) ? $entity->title : '',
                 '@status' => _twitter_status_url($status),
               )));
             }

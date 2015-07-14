@@ -31,6 +31,8 @@ By DamienMcKenna: Initial CHANGELOG.txt file.
 #1825680 by lyricnz, DamienMcKenna: Add width/height attributes to the
   profile images.
 #2354555 by Owen Barton: Tweets should place alt text on img, not link.
+#2022485 by DamienMcKenna, Elijah Lynn: Improve status message upon posting to
+  Twitter.
 
 
 Twitter 7.x-6.0-alpha2, 2013-03-13
