@@ -123,7 +123,10 @@ function twitter_post_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
         }
 
         if (twitter_set_status($twitter_account, $status)) {
-          drupal_set_message(t('Successfully posted to Twitter'));
+          drupal_set_message(t('Successfully posted "%node" to Twitter: <a href="@status" target="_blank">@status</a>', array(
+            '@status' => _twitter_status_url($status),
+            '%node' => $node->title,
+          )));
         }
         else {
           drupal_set_message(t('Could not post to Twitter. Please check the site reports.'));

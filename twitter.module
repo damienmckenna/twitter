@@ -248,7 +248,7 @@ function _twitter_filter_username($text) {
 }
 
 /**
- * Callback for twitter #hashtag converter.
+ * Callback for Twitter #hashtag converter.
  */
 function _twitter_filter_hashtag($text) {
   $prefix = '#';
@@ -359,4 +359,14 @@ function twitter_api_keys() {
  */
 function _twitter_user_profile($screen_name) {
   return l('@' . $screen_name, TWITTER_HOST . '/' . $screen_name);
+}
+
+/**
+ * Helper to build a Twitter status URL.
+ *
+ * @param object $status
+ *   A TwitterStatus object.
+ */
+function _twitter_status_url($status) {
+  return TWITTER_HOST . '/' . $status->user->screen_name . '/status/' . $status->id;
 }
