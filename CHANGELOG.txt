@@ -50,6 +50,7 @@ By DamienMcKenna: Initial CHANGELOG.txt file.
 #1929126 by AdamPS, DamienMcKenna: Fix RT text.
 #2022485 by Elijah Lynn: Improve status message upon posting to Twitter.
 #2322683 by DamienMcKenna: Add Twitter to node extra fields list.
+By DamienMcKenna: Misspelling of "Twitter" in twitter.pages.inc.
 
 
 Twitter 7.x-5.8, 2013-06-03
