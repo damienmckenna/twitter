@@ -338,7 +338,7 @@ function twitter_auth_account_form_validate($form, &$form_state) {
 }
 
 /**
- * Form submit handler for adding a Twiter account.
+ * Form submit handler for adding a Twitter account.
  *
  * Loads Twitter account details and adds them to the user account
  */

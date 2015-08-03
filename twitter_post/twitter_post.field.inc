@@ -46,7 +46,7 @@ function twitter_post_field_widget_form(&$form, &$form_state, $field, $instance,
     ),
     'message' => array(
       '#type' => 'textfield',
-      '#title' => t('Twiter.com status'),
+      '#title' => t('Twitter.com status'),
       '#default_value' => $message,
       '#description' => t('The given text will be posted to Twitter.com. See Replacement Patterns below for a list of available tokens.'),
       '#maxlength' => 150,

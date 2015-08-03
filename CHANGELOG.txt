@@ -33,6 +33,7 @@ By DamienMcKenna: Initial CHANGELOG.txt file.
 #2354555 by Owen Barton: Tweets should place alt text on img, not link.
 #2022485 by DamienMcKenna, Elijah Lynn: Improve status message upon posting to
   Twitter.
+#2485211 by crazydrake: Misspelling of "Twitter" in twitter_post.field.inc.
 
 
 Twitter 7.x-6.0-alpha2, 2013-03-13
