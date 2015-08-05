@@ -51,6 +51,8 @@ By DamienMcKenna: Initial CHANGELOG.txt file.
 #2022485 by Elijah Lynn: Improve status message upon posting to Twitter.
 #2322683 by DamienMcKenna: Add Twitter to node extra fields list.
 By DamienMcKenna: Misspelling of "Twitter" in twitter.pages.inc.
+#1642522 by cinnamon, digitalhorde, stimalsina, DamienMcKenna: Protocol-relative
+  URLs for profile images.
 
 
 Twitter 7.x-5.8, 2013-06-03
