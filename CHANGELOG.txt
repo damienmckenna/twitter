@@ -26,6 +26,8 @@ By DamienMcKenna: Initial CHANGELOG.txt file.
 #2022485 by DamienMcKenna, Elijah Lynn: Improve status message upon posting to
   Twitter.
 By DamienMcKenna: Misspelling of "Twitter" in twitter.pages.inc.
+#1642522 by cinnamon, digitalhorde, stimalsina, DamienMcKenna: Protocol-relative
+  URLs for profile images.
 
 
 Twitter 6.x-5.1, 2013-04-19

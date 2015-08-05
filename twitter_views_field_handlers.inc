@@ -79,6 +79,10 @@ class twitter_views_handler_field_xss extends views_handler_field {
 class twitter_views_handler_field_profile_image extends views_handler_field {
   function render($values) {
     $path = $values->{$this->field_alias};
-    return theme('image', $path, '', '', array('width' => 48, 'height' => '48'), FALSE);
+    $output = theme('image', $path, '', '', array('width' => 48, 'height' => '48'), FALSE);
+
+    // Convert to a protocol-relative URL so that the same image tag will work
+    // regardless of whether the page is loaded via HTTP or HTTPS.
+    return str_replace('http:', '', $output);
   }
 }
