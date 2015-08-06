@@ -211,9 +211,20 @@ function _twitter_account_list_row($account) {
       '#type' => 'checkbox',
       '#default_value' => $account->mentions ? $account->mentions : '',
     );
+
+    $form['is_global'] = array(
+      '#type' => 'checkbox',
+      '#default_value' => $account->is_global ? $account->is_global : '',
+      '#attributes' => array(
+        'title' => t('By enabling this option, anyone may post using it.'),
+      ),
+    );
   }
   else {
     $form['mentions'] = array(
+      '#value' => '',
+    );
+    $form['is_global'] = array(
       '#value' => '',
     );
   }
@@ -242,6 +253,7 @@ function theme_twitter_account_list_form($form) {
     t('Private'),
     t('Tweets'),
     t('Mentions'),
+    t('Global'),
     t('Delete'),
   ));
 
@@ -262,6 +274,7 @@ function theme_twitter_account_list_form($form) {
       drupal_render($element['protected']),
       drupal_render($element['import']),
       drupal_render($element['mentions']),
+      drupal_render($element['is_global']),
       drupal_render($element['delete']),
     ));
     $rows[] = $row;

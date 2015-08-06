@@ -102,6 +102,16 @@ function twitter_post_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
         module_load_include('inc', 'twitter');
 
         $twitter_account = twitter_account_load($node->twitter['account']);
+
+        global $user;
+
+        // Only allow the tweet to be posted if the Twitter account is either a
+        // global account or it is tied to the current user.
+        if ($twitter_account->is_global || $twitter_account->uid == $user->uid) {
+          return;
+        }
+
+        // Prepare the string replacements for the status message.
         $replacements = array(
           '!title' => $node->title,
           '!url' => url('node/' . $node->nid, array('absolute' => TRUE, 'alias' => TRUE)),
@@ -145,7 +155,7 @@ function twitter_post_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
 function twitter_post_form($account = NULL) {
   if (empty($account)) {
     global $user;
-    $account = $user;
+    $account = user_load($user->uid);
   }
   if (!user_access('post to twitter', $account)) {
     return;
@@ -154,8 +164,12 @@ function twitter_post_form($account = NULL) {
   drupal_add_js(drupal_get_path('module', 'twitter_post') . '/twitter_post.js');
   $options = array();
   $twitter_accounts = twitter_load_authenticated_accounts();
+
+  // Only show Twitter accounts that are either global or are tied to this user.
   foreach ($twitter_accounts as $twitter_account) {
-    $options[$twitter_account->id] = $twitter_account->screen_name;
+    if ($twitter_account->is_global || $twitter_account->uid == $account->uid) {
+      $options[$twitter_account->id] = $twitter_account->screen_name;
+    }
   }
 
   if (count($options)) {
@@ -178,6 +192,7 @@ function twitter_post_form($account = NULL) {
       $form['account'] = array(
         '#type' => 'value',
         '#value' => array_pop($options_keys),
+        '#id' => 'twitter-account',
       );
     }
     return $form;

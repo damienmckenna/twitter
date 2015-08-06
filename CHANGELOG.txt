@@ -30,6 +30,8 @@ By DamienMcKenna: Misspelling of "Twitter" in twitter.pages.inc.
   URLs for profile images.
 #1895320 by Drave Robber, DamienMcKenna: Updated API docs for
   hook_twitter_account_save().
+#1970498 by nielsonm, arcovia, DamienMcKenna: Only allow users to tweet using
+  global or their personal accounts.
 
 
 Twitter 6.x-5.1, 2013-04-19
