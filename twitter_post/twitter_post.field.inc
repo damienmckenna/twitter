@@ -137,13 +137,22 @@ function twitter_post_field_attach_form($entity_type, $entity, &$form, &$form_st
   if (empty($form_state['field'])) {
     return;
   }
+
+  global $user;
+  $account = user_load($user->uid);
+
   $langcode = empty($langcode) ? entity_language($entity_type, $entity) : $langcode;
   $options = array();
   module_load_include('inc', 'twitter');
+
+  // Only show Twitter accounts that are either global or are tied to this user.
   $twitter_accounts = twitter_load_authenticated_accounts();
   foreach ($twitter_accounts as $twitter_account) {
-    $options[$twitter_account->twitter_uid] = $twitter_account->screen_name;
+    if ($twitter_account->is_global || $twitter_account->uid == $account->uid) {
+      $options[$twitter_account->twitter_uid] = $twitter_account->screen_name;
+    }
   }
+
   $twitter_uid = key($options);
   $screen_name = current($options);
   foreach ($form_state['field'] as $field_name => $field) {
@@ -161,6 +170,7 @@ function twitter_post_field_attach_form($entity_type, $entity, &$form, &$form_st
         $element['account'] = array(
           '#type' => 'value',
           '#value' => $twitter_uid,
+          '#id' => 'twitter-account',
         );
         $element['account_name'] = array(
           '#type' => 'item',

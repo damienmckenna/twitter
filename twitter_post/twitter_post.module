@@ -38,6 +38,15 @@ function twitter_post_entity_insert($entity, $type) {
           $status = $field_instance['status'];
           $message = $field_instance['message'];
           $twitter_account = entity_load_single('twitter_account', $field_instance['account']);
+
+          global $user;
+
+          // Only allow the tweet to be posted if the Twitter account is either
+          // a global account or it is tied to the current user.
+          if ($twitter_account->is_global || $twitter_account->uid == $user->uid) {
+            return;
+          }
+
           // Post to Twitter if the status checkbox is active.
           if ($status) {
             module_load_include('inc', 'twitter');

@@ -36,6 +36,8 @@ By DamienMcKenna: Initial CHANGELOG.txt file.
 #2485211 by crazydrake: Misspelling of "Twitter" in twitter_post.field.inc.
 #1642522 by cinnamon, digitalhorde, stimalsina, DamienMcKenna: Protocol-relative
   URLs for profile images."
+#1970498 by nielsonm, arcovia, DamienMcKenna: Only allow users to tweet using
+  global or their personal accounts.
 
 
 Twitter 7.x-6.0-alpha2, 2013-03-13
