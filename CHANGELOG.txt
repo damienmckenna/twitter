@@ -38,6 +38,7 @@ By DamienMcKenna: Initial CHANGELOG.txt file.
   URLs for profile images."
 #1970498 by nielsonm, arcovia, DamienMcKenna: Only allow users to tweet using
   global or their personal accounts.
+#1970498 by DamienMcKenna: Fixed the post logic.
 
 
 Twitter 7.x-6.0-alpha2, 2013-03-13
