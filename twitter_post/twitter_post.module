@@ -33,6 +33,15 @@ function twitter_post_permission() {
 }
 
 /**
+ * Implements hook_ctools_plugin_directory().
+ */
+function twitter_post_ctools_plugin_directory($owner, $plugin_type) {
+  if ($owner == 'ctools' && $plugin_type == 'content_types') {
+    return "plugins/$plugin_type";
+  }
+}
+
+/**
  * Implements hook_form_FORM_ID_alter() for node_type_form().
  */
 function twitter_post_form_node_type_form_alter(&$form, $form_state, $form_id) {

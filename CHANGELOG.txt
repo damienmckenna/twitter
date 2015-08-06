@@ -59,6 +59,7 @@ By DamienMcKenna: Misspelling of "Twitter" in twitter.pages.inc.
   global or their personal accounts.
 #1970498 by DamienMcKenna: Fixed the post logic.
 #2546686 by DamienMcKenna: Use FormAPI states logic to hide/show Post fields.
+#2395609 by DamienMcKenna: Custom Panels pane for submitting tweets.
 
 
 Twitter 7.x-5.8, 2013-06-03
