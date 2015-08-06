@@ -58,6 +58,7 @@ By DamienMcKenna: Misspelling of "Twitter" in twitter.pages.inc.
 #1970498 by nielsonm, arcovia, DamienMcKenna: Only allow users to tweet using
   global or their personal accounts.
 #1970498 by DamienMcKenna: Fixed the post logic.
+#2546686 by DamienMcKenna: Use FormAPI states logic to hide/show Post fields.
 
 
 Twitter 7.x-5.8, 2013-06-03

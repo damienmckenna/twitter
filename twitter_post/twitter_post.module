@@ -104,6 +104,19 @@ function twitter_post_form_alter(&$form, $form_state, $form_id) {
     $form['twitter']['status']['#default_value'] = variable_get('twitter_post_default_format', 'New post: !title !url-alias');
     $form['twitter']['status']['#description'] = t('The given text will be posted to twitter.com. You can use !url, !url-alias, !tinyurl, !title and !user as replacement text.');
     $form['twitter']['status']['#maxlength'] = 150;
+
+    // Only show the message field and account selector when the "Post" checkbox
+    // is checked.
+    $form['twitter']['status']['#states'] = array(
+      'visible' => array(
+        ':input[name="twitter[post]"]' => array(
+          'checked' => TRUE,
+        ),
+      ),
+    );
+    if ($form['twitter']['account']['#type'] == 'select') {
+      $form['twitter']['account']['#states'] = $form['twitter']['status']['#states'];
+    }
   }
 }
 
