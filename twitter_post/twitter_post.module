@@ -122,7 +122,7 @@ function twitter_post_node_insert($node) {
 
     // Only allow the tweet to be posted if the Twitter account is either a
     // global account or it is tied to the current user.
-    if ($twitter_account->is_global || $twitter_account->uid == $user->uid) {
+    if (!$twitter_account->is_global && $twitter_account->uid != $user->uid) {
       return;
     }
 
