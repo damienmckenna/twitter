@@ -1277,7 +1277,6 @@ class TwitterStatus {
    * Constructor for TwitterStatus
    */
   public function __construct($values = array()) {
-    dpm($values);
     $this->created_at = $values['created_at'];
     $this->id = $values['id'];
     $this->text = $values['text'];
