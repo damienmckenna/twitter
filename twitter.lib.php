@@ -1277,6 +1277,7 @@ class TwitterStatus {
    * Constructor for TwitterStatus
    */
   public function __construct($values = array()) {
+    dpm($values);
     $this->created_at = $values['created_at'];
     $this->id = $values['id'];
     $this->text = $values['text'];
@@ -1286,7 +1287,13 @@ class TwitterStatus {
     $this->in_reply_to_status_id = $values['in_reply_to_status_id'];
     $this->in_reply_to_user_id = $values['in_reply_to_user_id'];
     $this->in_reply_to_screen_name = $values['in_reply_to_screen_name'];
-    $this->entities = $values['entities'];
+
+    // This is not passed in for the first tweet added while attaching a new
+    // account to the system.
+    if (!empty($values['entities'])) {
+      $this->entities = $values['entities'];
+    }
+
     if (isset($values['user'])) {
       $this->user = new TwitterUser($values['user']);
     }

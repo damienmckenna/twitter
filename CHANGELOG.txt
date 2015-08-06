@@ -53,6 +53,8 @@ By DamienMcKenna: Initial CHANGELOG.txt file.
 By DamienMcKenna: Misspelling of "Twitter" in twitter.pages.inc.
 #1642522 by cinnamon, digitalhorde, stimalsina, DamienMcKenna: Protocol-relative
   URLs for profile images.
+#2546622 by DamienMcKenna: Undefined index error when adding non-authenticated
+  account.
 
 
 Twitter 7.x-5.8, 2013-06-03
