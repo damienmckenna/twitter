@@ -36,7 +36,7 @@ function twitter_connect($account = NULL) {
 }
 
 /**
- * Saves a TwitterUser object to {twitter_account}
+ * Saves a TwitterUser object to {twitter_account}.
  */
 function twitter_account_save($twitter_user, $save_auth = FALSE) {
   $values = (array) $twitter_user;
