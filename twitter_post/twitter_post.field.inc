@@ -54,6 +54,13 @@ function twitter_post_field_widget_form(&$form, &$form_state, $field, $instance,
         'js' => array(drupal_get_path('module', 'twitter_post') . '/twitter_post.js'),
       ),
       '#attributes' => array('class' => array('twitter-post-message')),
+      '#states' => array(
+        'visible' => array(
+          '#twitter-toggle' => array(
+            'checked' => TRUE,
+          ),
+        ),
+      ),
     ),
     'token_help' => array(
       '#title' => t('Replacement patterns'),
