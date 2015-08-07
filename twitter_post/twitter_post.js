@@ -8,7 +8,9 @@
       $(".twitter-post-message", context).keyup(function() {
         var charsLeft = (140 - $(this).val().length);
         var descDiv = $(this).next();
-        $(descDiv).html("<strong>" + charsLeft + "</strong> characters remaining");
+        var character = "<strong>1</strong> character remaining";
+        var characters = "<strong>@count</strong> characters remaining";
+        $(descDiv).html(Drupal.formatPlural(charsLeft, character, characters));
         if (charsLeft < 0) {
           $(descDiv).css('color', 'red');
         } else {
