@@ -61,6 +61,7 @@ By DamienMcKenna: Misspelling of "Twitter" in twitter.pages.inc.
 #2546686 by DamienMcKenna: Use FormAPI states logic to hide/show Post fields.
 #2395609 by DamienMcKenna: Custom Panels pane for submitting tweets.
 #652680 by steinmb, DamienMcKenna: Don't assume user registration is successful.
+#2378081 by nicrodgers, DamienMcKenna: users_show() only accepts a screen name.
 
 
 Twitter 7.x-5.8, 2013-06-03

@@ -1072,23 +1072,19 @@ class Twitter {
   }
 
   /**
-   * Returns a variety of information about the user specified by the
-   * required user_id or screen_name parameter.
+   * Returns a variety of information about the user specified by the required
+   * screen_name parameter.
    *
-   * @param mixed $id
-   *   The numeric id or screen name of a Twitter user.
+   * @param string $screen_name
+   *   The screen name of a Twitter user.
    * @param bool $include_entities
    *   Whether to include entities or not.
+   *
    * @see https://dev.twitter.com/docs/api/1.1/get/users/show
    */
-  public function users_show($id, $include_entities = NULL) {
+  public function users_show($screen_name, $include_entities = NULL) {
     $params = array();
-    if (is_numeric($id)) {
-      $params['user_id'] = $id;
-    }
-    else {
-      $params['screen_name'] = $id;
-    }
+    $params['screen_name'] = $screen_name;
     if ($include_entities !== NULL) {
       $params['include_entities'] = $include_entities;
     }
