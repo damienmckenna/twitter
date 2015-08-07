@@ -130,18 +130,21 @@ function twitter_signin_oauth_callback_submit(&$form, &$form_state) {
     $form_state['twitter_oauth']['account'] = $account;
     $success = TRUE;
   }
-  elseif ($uid = db_result(db_query("SELECT uid FROM {twitter_account} WHERE twitter_uid= %d", $response['user_id']))) {
-    // We have an existing Twitter account - set it up for login.
-    $account = user_load($uid);
-    $edit['authname_twitter'] = $response['user_id'];
-    user_save($account, $edit);
-    $user = $account;
-    $form_state['twitter_oauth']['account'] = $account;
-    $success = TRUE;
-  }
   else {
+    $uid = db_result(db_query("SELECT uid FROM {twitter_account} WHERE twitter_uid= %d", $response['user_id']));
+
+    // We have an existing Twitter account - set it up for login.
+    if (!empty($uid)) {
+      $account = user_load($uid);
+      $edit['authname_twitter'] = $response['user_id'];
+      user_save($account, $edit);
+      $user = $account;
+      $form_state['twitter_oauth']['account'] = $account;
+      $success = TRUE;
+    }
+
     // No existing user account, let's see if we can register.
-    if (variable_get('twitter_signin_register', 0)) {
+    elseif (variable_get('twitter_signin_register', 0)) {
       // Check for a nickname collision.
       $account = user_load(array('name' => $response['screen_name']));
       if (empty($account->uid)) {
@@ -154,26 +157,39 @@ function twitter_signin_oauth_callback_submit(&$form, &$form_state) {
           'authname_twitter' => $response['user_id'],
           'access' => time(),
         );
-        $account = user_save('', $edit);
+
+        // Try saving the new user account.
+        try {
+          $account = user_save('', $edit);
+        }
+        catch (Exception $e) {
+          watchdog('oauth_login', "Exception saving new account: ". $e->getMessage(), '', WATCHDOG_WARNING);
+          return FALSE;
+        }
+
+        // Log the user into their new account.
         $user = $account;
+
+        // Connect the Drupal user account and the Twitter account together.
         $form_state['twitter_oauth']['account'] = $account;
-        drupal_set_message(t('You have been automatically registered with the password !password. ' .
-          'Copy it to !link.', array(
-            '!password' => $password,
-            '!link' => l('set your account settings', 'user/' . $account->uid . '/edit'),
-          )
-        ));
+
+        $args = array(
+          '!password' => $password,
+          '!link' => l('set your account settings', 'user/' . $account->uid . '/edit'),
+        );
+        drupal_set_message(t('You have been automatically registered with the password !password. Copy it to !link.', $args));
         $success = TRUE;
       }
       else {
-        drupal_set_message(t('The nickname %name is already in use on this site, please register below with a new nick name, or @login to continue.',
-          array(
-            '%name' => $response['screen_name'],
-            '@login' => url('user/login')
-          )
-        ), 'warning');
+        $args = array(
+          '%name' => $response['screen_name'],
+          '@login' => url('user/login')
+        );
+        drupal_set_message(t('The nickname %name is already in use on this site, please register below with a new nick name, or @login to continue.', $args), 'warning');
       }
     }
+
+    // Not allowed to register via Twitter.
     else {
       drupal_set_message(t('Please log in or register to relate your Twitter account with a user.'));
     }
