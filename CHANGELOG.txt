@@ -62,6 +62,8 @@ By DamienMcKenna: Misspelling of "Twitter" in twitter.pages.inc.
 #2395609 by DamienMcKenna: Custom Panels pane for submitting tweets.
 #652680 by steinmb, DamienMcKenna: Don't assume user registration is successful.
 #2378081 by nicrodgers, DamienMcKenna: users_show() only accepts a screen name.
+#2042053 by InternetDevels: Allow translation of the "characters remaining"
+  phrase in the Twitter Post module.
 
 
 Twitter 7.x-5.8, 2013-06-03
