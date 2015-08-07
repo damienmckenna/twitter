@@ -33,6 +33,8 @@ By DamienMcKenna: Misspelling of "Twitter" in twitter.pages.inc.
 #1970498 by nielsonm, arcovia, DamienMcKenna: Only allow users to tweet using
   global or their personal accounts.
 #652680 by steinmb, DamienMcKenna: Don't assume user registration is successful.
+#2042053 by InternetDevels: Allow translation of the "characters remaining"
+  phrase in the Twitter Post module.
 
 
 Twitter 6.x-5.1, 2013-04-19
