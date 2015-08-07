@@ -42,6 +42,7 @@ By DamienMcKenna: Initial CHANGELOG.txt file.
 #652680 by steinmb, DamienMcKenna: Don't assume user registration is successful.
 #2546686 by DamienMcKenna: Use FormAPI states logic to hide/show Post fields.
 #2378081 by nicrodgers, DamienMcKenna: users_show() only accepts a screen name.
+#1971744 by DamienMcKenna: Use popup dialog for token browser.
 
 
 Twitter 7.x-6.0-alpha2, 2013-03-13

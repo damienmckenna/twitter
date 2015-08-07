@@ -73,6 +73,7 @@ function twitter_post_field_widget_form(&$form, &$form_state, $field, $instance,
         '#token_types' => array($instance['entity_type']),
         '#global_types' => TRUE,
         '#click_insert' => TRUE,
+        '#dialog' => TRUE,
       ),
     ),
 
