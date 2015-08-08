@@ -88,7 +88,7 @@ function twitter_account_load($id, $is_uid = TRUE) {
     $query = "SELECT * FROM {twitter_account} WHERE twitter_uid = %d";
   }
   else {
-    $query = "SELECT * FROM {twitter_account} WHERE screen_name = %s";
+    $query = "SELECT * FROM {twitter_account} WHERE screen_name = '%s'";
   }
 
   $values = db_fetch_array(db_query($query, $id));
