@@ -19,6 +19,12 @@ function twitter_views_data() {
     'weight' => 10,
   );
 
+  $data['twitter']['table']['join']['users'] = array(
+    'left_table' => 'twitter_account',
+    'left_field' => 'screen_name',
+    'field' => 'screen_name',
+  );
+
   // Tweet ID
   $data['twitter']['twitter_id'] = array(
     'title' => t('Twitter status message ID'),
@@ -178,6 +184,7 @@ function twitter_views_data() {
 
   // Table twitter_account.
   $data['twitter_account']['table']['group']  = t('Twitter');
+  $data['twitter_account']['table']['group']  = t('Twitter Account');
   $data['twitter_account']['table']['join'] = array(
     'twitter' => array(
       'left_field' => 'screen_name',

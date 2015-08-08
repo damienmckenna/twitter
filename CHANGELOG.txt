@@ -71,6 +71,7 @@ By DamienMcKenna: Misspelling of "Twitter" in twitter.pages.inc.
 #2548093 by DamienMcKenna: Fixed incorrect variable name in try-catch block.
 #2169609 by recrit: Moved some theming logic outside of Views handler so the
   theming works better.
+#2054761 by pobster: Added a Views user/twitter table relationship.
 
 
 Twitter 7.x-5.8, 2013-06-03
