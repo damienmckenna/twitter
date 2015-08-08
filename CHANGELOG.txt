@@ -45,6 +45,7 @@ By DamienMcKenna: Initial CHANGELOG.txt file.
 #1971744 by DamienMcKenna: Use popup dialog for token browser.
 #2042053 by InternetDevels: Allow translation of the "characters remaining"
   phrase in the Twitter Post module.
+#2403717 by dysproseum, DamienMcKenna: Catch any Twitter API request errors.
 
 
 Twitter 7.x-6.0-alpha2, 2013-03-13
