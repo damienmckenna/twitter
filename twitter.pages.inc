@@ -491,8 +491,23 @@ function twitter_non_auth_account_form($form, $form_state) {
     '#type' => 'textfield',
     '#required' => TRUE,
     '#title' => t('Twitter account name'),
-    '#prefix' => t('If you simply want to pull tweets from additional Twitter accounts, ' .
-                   'enter the Twitter account name below and click on the following button.</br>'),
+    '#prefix' => t('If you simply want to pull tweets from additional Twitter accounts, enter the Twitter account name below and click on the following button.'),
+  );
+
+  // Track the user's ID. If this is the global Twitter accounts form, use the
+  // current user's uid, it should be the accounts form for a specific user, so
+  // try using that user's account.
+  global $user;
+  $uid = $user->uid;
+  if (arg(0) == 'user' && arg(1) != '' && arg(2) == 'edit' && arg(3) == 'twitter') {
+    $arg1 = arg(1);
+    if (is_numeric($arg1)) {
+      $uid = intval($arg1);
+    }
+  }
+  $form['uid'] = array(
+    '#type' => 'value',
+    '#value' => $uid,
   );
 
   $form['submit_non_auth'] = array(
@@ -526,8 +541,7 @@ function twitter_non_auth_account_form_submit($form, &$form_state) {
       'Check the recent messages log.', array('@name' => $name)));
   }
   else {
-    global $user;
-    $twitter_account->uid = $user->uid;
+    $twitter_account->uid = $form_state['values']['uid'];
     twitter_account_save($twitter_account);
     drupal_set_message(t('Non authenticated Twitter account added successfully'));
   }
