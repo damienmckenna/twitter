@@ -305,7 +305,7 @@ function twitter_schema() {
         'description' => "The uid of the user who added this Twitter account",
         'type' => 'int',
         'unsigned' => TRUE,
-        'not null' => TRUE,
+        'not null' => FALSE,
         'default' => 0,
       ),
     ),
@@ -889,6 +889,24 @@ function twitter_update_6506() {
 
   // Adjust the table, adding back the primary key again.
   db_change_field($ret, 'twitter', 'twitter_id', 'twitter_id', $spec, $keys);
+
+  return $ret;
+}
+
+/**
+ * Update the twitter_account.uid column to accept NULL values.
+ */
+function twitter_update_6507() {
+  $ret = array();
+
+  $spec = array(
+    'description' => "The uid of the user who added this Twitter account.",
+    'type' => 'int',
+    'unsigned' => TRUE,
+    'not null' => FALSE,
+    'default' => 0,
+  );
+  db_change_field($ret, 'twitter_account', 'uid', 'uid', $spec);
 
   return $ret;
 }

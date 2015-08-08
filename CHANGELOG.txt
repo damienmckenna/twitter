@@ -47,6 +47,7 @@ By DamienMcKenna: Misspelling of "Twitter" in twitter.pages.inc.
   a screen name.
 #633450 by graker, steinmb, DamienMcKenna: Don't loose the Twitter Post options
   when previewing a node.
+#2040901 by jamiehollern, DamienMcKenna: Allow mentions for unknown users.
 
 
 Twitter 6.x-5.1, 2013-04-19
