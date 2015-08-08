@@ -53,6 +53,7 @@ By DamienMcKenna: Initial CHANGELOG.txt file.
 #2169609 by recrit, DamienMcKenna: Moved some theming logic outside of Views
   handler so the theming works better.
 #2054761 by pobster: Added a Views user/twitter table relationship.
+#2040901 by jamiehollern: Allow mentions for unknown users.
 
 
 Twitter 7.x-6.0-alpha2, 2013-03-13
