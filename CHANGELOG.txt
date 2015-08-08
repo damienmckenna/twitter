@@ -56,6 +56,8 @@ By DamienMcKenna: Initial CHANGELOG.txt file.
 #2040901 by jamiehollern: Allow mentions for unknown users.
 #2212407 by DamienMcKenna, jonhines: Tie non-auth accounts to the correct user.
 #1902780 by DamienMcKenna: Removed the dependency on Views, it's optional.
+#2032057 by DamienMcKenna, Verban: Check a few values to see if the screen name
+  can be identified for the Follow field.
 
 
 Twitter 7.x-6.0-alpha2, 2013-03-13

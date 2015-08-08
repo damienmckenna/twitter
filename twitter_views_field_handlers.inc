@@ -124,11 +124,40 @@ class twitter_views_handler_field_web_intents extends views_handler_field {
  * @see https://dev.twitter.com/docs/intents#follow-intent
  */
 class twitter_views_handler_field_follow extends views_handler_field {
+
   function query() {}
 
   function render($values) {
-    drupal_add_js('//platform.twitter.com/widgets.js', 'external');
-    return '<span><a href="https://twitter.com/intent/user?screen_name=' . $values->twitter_screen_name . '">' . t('Follow') . '</a></span>';
+    // Try to find the screen name.
+    $screen_name = '';
+
+    // If the screen name is available from the view then our work is done.
+    if (!empty($values->twitter_screen_name)) {
+      $screen_name = $values->twitter_screen_name;
+    }
+
+    // If the twitter_id is passed in, look for this tweet and get the screen
+    // name associated with it.
+    elseif (!empty($values->twitter_id)) {
+      $screen_name = db_query("SELECT screen_name FROM {twitter} WHERE twitter_id = :id", array(':id' => $values->twitter_id))->fetchField();
+    }
+
+    // If the created_time is passed in, look for this tweet and get the screen
+    // name associated with it. This may result in multiple values,
+    // unfortunately there aren't too many ways around this so just pick the
+    // first one.
+    elseif (!empty($values->twitter_created_time)) {
+      $screen_name = db_query("SELECT screen_name FROM {twitter} WHERE created_time = :time", array(':time' => $values->twitter_created_time))->fetchField();
+    }
+
+    // Only output something if it was possible to identify the screen name.
+    if (!empty($screen_name)) {
+      drupal_add_js('//platform.twitter.com/widgets.js', 'external');
+      return '<span><a href="https://twitter.com/intent/user?screen_name=' . $screen_name . '">' . t('Follow') . '</a></span>';
+    }
+    else {
+      // Unable to identify the screen name for this tweet.
+    }
   }
 }
 
