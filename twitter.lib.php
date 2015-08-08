@@ -1086,7 +1086,7 @@ class Twitter {
    */
   public function users_show($screen_name, $include_entities = NULL) {
     $params = array();
-    $params['screen_name'] = $id;
+    $params['screen_name'] = $screen_name;
     if ($include_entities !== NULL) {
       $params['include_entities'] = $include_entities;
     }

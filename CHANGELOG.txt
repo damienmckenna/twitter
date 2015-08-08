@@ -40,6 +40,7 @@ By DamienMcKenna: Misspelling of "Twitter" in twitter.pages.inc.
 #1943398 by nwehner, tanc, DamienMcKenna: Truncate !title token to prevent the
   tweet submission failing.
 #2548093 by DamienMcKenna: Fixed incorrect variable name in try-catch block.
+#2548097 by DamienMckenna: Fixed incorrect variable name in users_show().
 
 
 Twitter 6.x-5.1, 2013-04-19
