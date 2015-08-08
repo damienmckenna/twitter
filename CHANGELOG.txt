@@ -36,6 +36,7 @@ By DamienMcKenna: Misspelling of "Twitter" in twitter.pages.inc.
 #2042053 by InternetDevels: Allow translation of the "characters remaining"
   phrase in the Twitter Post module.
 #2403717 by dysproseum, DamienMcKenna: Catch any Twitter API request errors.
+#1967798 by DamienMcKenna: Updated README.txt to explain about the OAuth reqs.
 
 
 Twitter 6.x-5.1, 2013-04-19
