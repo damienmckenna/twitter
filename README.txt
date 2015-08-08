@@ -9,12 +9,19 @@ with a Twitter account.
 
 Installation
 ============
-OAuth module is required for all requests to the Twitter REST API 1.1. When you download the OAuth module, get the latest stable release available at http://drupal.org/project/oauth
+The OAuth module is required:
+  http://drupal.org/project/oauth
 
-Once OAuth and Twitter have been enabled, go to admin/config/services/twitter and follow instructions in order
-to provide your Twitter Application keys.
+When installing the Twitter module without the above being available, Drupal
+will complain about a missing "oauth_common" module. This module is actually
+provided by the OAuth project - the module name and project name are not the
+same, hence this error.
 
-You can find further installation instructions at http://drupal.org/node/1346824
+Once OAuth and Twitter have been enabled, go to admin/config/services/twitter
+and follow the instructions in order to provide the Twitter Application keys.
+
+Further installation instructions can be found at:
+  http://drupal.org/node/1346824
 
 How to use the username and hashtag input filters
 =================================================
