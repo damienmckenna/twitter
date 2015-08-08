@@ -64,7 +64,7 @@ function twitter_post_form_alter(&$form, $form_state, $form_id) {
     );
     $form['twitter'] += $twitter_form;
     $form['twitter']['status']['#default_value'] = variable_get('twitter_post_default_format', 'New post: !title !url-alias');
-    $form['twitter']['status']['#description'] = t('The given text will be posted to twitter.com. You can use !url, !url-alias, !tinyurl, !title and !user as replacement text.');
+    $form['twitter']['status']['#description'] = t('The given text will be posted to twitter.com. You can use !url, !url-alias, !tinyurl, !title and !user as replacement text. Note that if a URL is being included, the maximum length of the rest of the tweet is 117 characters.');
     $form['twitter']['status']['#maxlength'] = 150;
     twitter_include_token_fields($form);
   }
@@ -113,7 +113,9 @@ function twitter_post_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
 
         // Prepare the string replacements for the status message.
         $replacements = array(
-          '!title' => $node->title,
+          // 117 characters is the maximum that can be added to a tweet and
+          // still have a URL, so don't allow the title to be longer than that.
+          '!title' => truncate_utf8($node->title, 117, FALSE, TRUE),
           '!url' => url('node/' . $node->nid, array('absolute' => TRUE, 'alias' => TRUE)),
           '!url-alias' => url('node/' . $node->nid, array('absolute' => TRUE)),
           '!user' => $node->name,

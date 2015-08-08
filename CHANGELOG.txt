@@ -37,6 +37,8 @@ By DamienMcKenna: Misspelling of "Twitter" in twitter.pages.inc.
   phrase in the Twitter Post module.
 #2403717 by dysproseum, DamienMcKenna: Catch any Twitter API request errors.
 #1967798 by DamienMcKenna: Updated README.txt to explain about the OAuth reqs.
+#1943398 by nwehner, tanc, DamienMcKenna: Truncate !title token to prevent the
+  tweet submission failing.
 
 
 Twitter 6.x-5.1, 2013-04-19
