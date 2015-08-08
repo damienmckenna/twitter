@@ -386,39 +386,55 @@ function twitter_oauth_callback_validate($form, &$form_state) {
   $key = variable_get('twitter_consumer_key', '');
   $secret = variable_get('twitter_consumer_secret', '');
 
-  if (isset($_SESSION['twitter_oauth'])) {
-    $form_state['twitter_oauth'] = $_SESSION['twitter_oauth'];
-    unset($_SESSION['twitter_oauth']);
+  $error = FALSE;
+
+  if (empty($key) || empty($secret)) {
+    $error = TRUE;
   }
   else {
-    form_set_error('oauth_token', 'Invalid Twitter OAuth request');
-  }
-
-  if (isset($form_state['twitter_oauth']['token'])) {
-    $token = $form_state['twitter_oauth']['token'];
-    if (!is_array($token) || !$key || !$secret) {
-      form_set_error('oauth_token', t('Invalid Twitter OAuth request'));
-    }
-    if ($token['oauth_token'] != $form_state['values']['oauth_token']) {
-      form_set_error('oauth_token', t('Invalid OAuth token.'));
-    }
-  }
-  else {
-    form_set_error('oauth_token', t('Invalid Twitter OAuth request'));
-  }
-
-  module_load_include('inc', 'twitter');
-
-  if ($twitter = new Twitter($key, $secret, $token['oauth_token'], $token['oauth_token_secret'])) {
-    // Append oauth_verifier from the querystring.
-    if ($response = $twitter->get_access_token($_GET['oauth_verifier'])) {
-      $form_state['twitter_oauth']['response'] = $response;
+    if (isset($_SESSION['twitter_oauth'])) {
+      $form_state['twitter_oauth'] = $_SESSION['twitter_oauth'];
+      unset($_SESSION['twitter_oauth']);
     }
     else {
-      form_set_error('oauth_token', t('Invalid Twitter OAuth request'));
+      $error = TRUE;
+    }
+
+    if (isset($form_state['twitter_oauth']['token'])) {
+      $token = $form_state['twitter_oauth']['token'];
+      if (!is_array($token) || empty($key) || empty($secret)) {
+        $error = TRUE;
+      }
+      elseif (empty($token['oauth_token']) || empty($form_state['values']['oauth_token'])) {
+        $error = TRUE;
+      }
+      elseif ($token['oauth_token'] != $form_state['values']['oauth_token']) {
+        $error = TRUE;
+      }
+    }
+    else {
+      $error = TRUE;
+    }
+
+    if (!$error) {
+      module_load_include('inc', 'twitter');
+
+      if ($twitter = new Twitter($key, $secret, $token['oauth_token'], $token['oauth_token_secret'])) {
+        // Append oauth_verifier from the querystring.
+        if ($response = $twitter->get_access_token($_GET['oauth_verifier'])) {
+          $form_state['twitter_oauth']['response'] = $response;
+        }
+        else {
+          $error = TRUE;
+        }
+      }
+      else {
+        $error = TRUE;
+      }
     }
   }
-  else {
+
+  if ($error) {
     form_set_error('oauth_token', t('Invalid Twitter OAuth request'));
   }
 }
