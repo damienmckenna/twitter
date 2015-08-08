@@ -118,7 +118,7 @@ class Twitter {
           return $this->request($request->get_normalized_http_url(), $request->get_parameters(), 'POST');
       }
     }
-    catch (TwitterException $ex) {
+    catch (TwitterException $e) {
       watchdog('twitter', '!message', array('!message' => $e->__toString()), WATCHDOG_ERROR);
       return FALSE;
     }

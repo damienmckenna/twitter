@@ -68,6 +68,7 @@ By DamienMcKenna: Misspelling of "Twitter" in twitter.pages.inc.
 #1967798 by DamienMcKenna: Updated README.txt to explain about the OAuth reqs.
 #1943398 by nwehner, tanc, DamienMcKenna: Truncate !title token to prevent the
   tweet submission failing.
+#2548093 by DamienMcKenna: Fixed incorrect variable name in try-catch block.
 
 
 Twitter 7.x-5.8, 2013-06-03
