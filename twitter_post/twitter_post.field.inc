@@ -48,7 +48,7 @@ function twitter_post_field_widget_form(&$form, &$form_state, $field, $instance,
       '#type' => 'textfield',
       '#title' => t('Twitter.com status'),
       '#default_value' => $message,
-      '#description' => t('The given text will be posted to Twitter.com. See Replacement Patterns below for a list of available tokens.'),
+      '#description' => t('The given text will be posted to Twitter.com. See Replacement Patterns below for a list of available tokens. Note that if a URL is being included, the maximum length of the rest of the tweet is 117 characters.'),
       '#maxlength' => 150,
       '#attached' => array(
         'js' => array(drupal_get_path('module', 'twitter_post') . '/twitter_post.js'),

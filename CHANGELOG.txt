@@ -48,6 +48,8 @@ By DamienMcKenna: Initial CHANGELOG.txt file.
 #2403717 by dysproseum, DamienMcKenna: Catch any Twitter API request errors.
 #1967798 by DamienMcKenna: Updated README.txt to explain about the OAuth reqs.
 #2548093 by DamienMcKenna: Fixed incorrect variable name in try-catch block.
+#2548093 by DamienMcKenna: Note in the post field description that the maximum
+  length for at tweet is 117 chars when a URL is included.
 
 
 Twitter 7.x-6.0-alpha2, 2013-03-13
