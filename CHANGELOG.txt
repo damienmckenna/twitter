@@ -49,6 +49,7 @@ By DamienMcKenna: Misspelling of "Twitter" in twitter.pages.inc.
   when previewing a node.
 #2040901 by jamiehollern, DamienMcKenna: Allow mentions for unknown users.
 #2212407 by DamienMcKenna, jonhines: Tie non-auth accounts to the correct user.
+#2084729 by DamienMcKenna: twitter_connect() shouldn't list non-authed users.
 
 
 Twitter 6.x-5.1, 2013-04-19

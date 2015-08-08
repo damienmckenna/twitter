@@ -20,9 +20,9 @@ function twitter_connect($account = NULL) {
   if (!$account) {
     // Load the first authenticated account.
     $twitter_uid = db_result(db_query("SELECT twitter_uid
-                             FROM {twitter_account}
-                             WHERE oauth_token <> ''
-                               AND oauth_token_secret <> '' "));
+    FROM {twitter_account}
+    WHERE oauth_token <> '' && oauth_token IS NOT NULL
+      AND oauth_token_secret <> '' && oauth_token_secret IS NOT NULL"));
     $account = twitter_account_load($twitter_uid);
   }
   if ($account) {
