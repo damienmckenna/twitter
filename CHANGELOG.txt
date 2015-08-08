@@ -45,6 +45,8 @@ By DamienMcKenna: Misspelling of "Twitter" in twitter.pages.inc.
   twitter_oauth_callback_validate().
 #2548111 by DamienMcKenna: twitter_account_load() query error when passing in
   a screen name.
+#633450 by graker, steinmb, DamienMcKenna: Don't loose the Twitter Post options
+  when previewing a node.
 
 
 Twitter 6.x-5.1, 2013-04-19
