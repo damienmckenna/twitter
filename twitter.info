@@ -7,5 +7,4 @@ files[] = twitter.lib.php
 files[] = tests/core.test
 files[] = tests/input_filters.test
 dependencies[] = oauth_common
-dependencies[] = views
 configure = admin/config/services/twitter
