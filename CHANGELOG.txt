@@ -64,6 +64,7 @@ By DamienMcKenna: Misspelling of "Twitter" in twitter.pages.inc.
 #2378081 by nicrodgers, DamienMcKenna: users_show() only accepts a screen name.
 #2042053 by InternetDevels: Allow translation of the "characters remaining"
   phrase in the Twitter Post module.
+#2403717 by dysproseum, DamienMcKenna: Catch any Twitter API request errors.
 
 
 Twitter 7.x-5.8, 2013-06-03

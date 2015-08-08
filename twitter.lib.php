@@ -109,11 +109,18 @@ class Twitter {
   public function auth_request($url, $params = array(), $method = 'GET') {
     $request = OAuthRequest::from_consumer_and_token($this->consumer, $this->token, $method, $url, $params);
     $request->sign_request($this->signature_method, $this->consumer, $this->token);
-    switch ($method) {
-      case 'GET':
-        return $this->request($request->to_url());
-      case 'POST':
-        return $this->request($request->get_normalized_http_url(), $request->get_parameters(), 'POST');
+
+    try {
+      switch ($method) {
+        case 'GET':
+          return $this->request($request->to_url());
+        case 'POST':
+          return $this->request($request->get_normalized_http_url(), $request->get_parameters(), 'POST');
+      }
+    }
+    catch (TwitterException $ex) {
+      watchdog('twitter', '!message', array('!message' => $e->__toString()), WATCHDOG_ERROR);
+      return FALSE;
     }
   }
 
