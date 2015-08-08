@@ -50,6 +50,8 @@ By DamienMcKenna: Initial CHANGELOG.txt file.
 #2548093 by DamienMcKenna: Fixed incorrect variable name in try-catch block.
 #2548093 by DamienMcKenna: Note in the post field description that the maximum
   length for at tweet is 117 chars when a URL is included.
+#2169609 by recrit, DamienMcKenna: Moved some theming logic outside of Views
+  handler so the theming works better.
 
 
 Twitter 7.x-6.0-alpha2, 2013-03-13
