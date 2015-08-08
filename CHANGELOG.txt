@@ -69,6 +69,8 @@ By DamienMcKenna: Misspelling of "Twitter" in twitter.pages.inc.
 #1943398 by nwehner, tanc, DamienMcKenna: Truncate !title token to prevent the
   tweet submission failing.
 #2548093 by DamienMcKenna: Fixed incorrect variable name in try-catch block.
+#2169609 by recrit: Moved some theming logic outside of Views handler so the
+  theming works better.
 
 
 Twitter 7.x-5.8, 2013-06-03

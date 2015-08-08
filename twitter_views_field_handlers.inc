@@ -149,17 +149,6 @@ class twitter_views_handler_field_formatted_tweet extends views_handler_field {
     $status = twitter_status_load($values->twitter_id);
     $author = twitter_account_load($status->screen_name, FALSE);
 
-    // Format the timestamp.
-    $time_diff = REQUEST_TIME - $values->twitter_created_time;
-
-    // Format the message.
-    $status->time_ago = t('%time ago', array('%time' => format_interval($time_diff, 2)));
-    $filter = new stdClass;
-      $filter->settings = array(
-        'filter_url_length' => 496,
-      );
-    $status->text = _filter_url($status->text, $filter);
-
     // Render the tweet.
     return theme('twitter_status', array(
       'status' => $status,

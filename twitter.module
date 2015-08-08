@@ -113,6 +113,26 @@ function twitter_theme() {
 }
 
 /**
+ * Initialize variables for theme twitter_status.
+ */
+function template_preprocess_twitter_status(&$variables) {
+  if (isset($variables['status'])) {
+    $status = &$variables['status'];
+
+    // Format the timestamp.
+    $time_diff = REQUEST_TIME - $status->created_time;
+    $status->time_ago = t('%time ago', array('%time' => format_interval($time_diff, 2)));
+
+    // Format the message.
+    $filter = new stdClass;
+    $filter->settings = array(
+      'filter_url_length' => 496,
+    );
+    $status->text = _filter_url($status->text, $filter);
+  }
+}
+
+/**
  * Default callback for theme('twitter_user_accounts');
  *
  * Renders a list of Twitter accounts for the user profile page.
