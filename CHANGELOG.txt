@@ -51,6 +51,8 @@ By DamienMcKenna: Misspelling of "Twitter" in twitter.pages.inc.
 #2212407 by DamienMcKenna, jonhines: Tie non-auth accounts to the correct user.
 #2084729 by DamienMcKenna: twitter_connect() shouldn't list non-authed users.
 #1902780 by DamienMcKenna: Removed the dependency on Views, it's optional.
+#2353371 by DamienMcKenna, filippo.ledda: Fix tweet formatting so that mentions
+  prefaced by a period will work correctly.
 
 
 Twitter 6.x-5.1, 2013-04-19

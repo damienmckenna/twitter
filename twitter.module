@@ -240,6 +240,12 @@ function twitter_filter_tips($delta, $format, $long = FALSE) {
 
 /**
  * Callback for twitter @username converter.
+ *
+ * @param string $text
+ *   The text to be filtered.
+ *
+ * @return string
+ *   The processed string.
  */
 function _twitter_filter_username($text) {
   $prefix = '@';
@@ -249,6 +255,12 @@ function _twitter_filter_username($text) {
 
 /**
  * Callback for Twitter #hashtag converter.
+ *
+ * @param string $text
+ *   The text to be filtered.
+ *
+ * @return string
+ *   The processed string.
  */
 function _twitter_filter_hashtag($text) {
   $prefix = '#';
@@ -257,30 +269,90 @@ function _twitter_filter_hashtag($text) {
 }
 
 /**
+ * Callback for twitter link converter.
+ *
+ * Makes links to be opened in new tabs and not to be indexed by SEO scrappers.
+ *
+ * @param string $text
+ *   The text to be filtered.
+ *
+ * @return string
+ *   The processed string.
+ */
+function _twitter_filter_link($text) {
+  return str_replace("<a ", '<a target="_blank" rel="nofollow" ', $text);
+}
+
+/**
  * This helper function converts Twitter-style @usernames and #hashtags into
  * actual links.
+ *
+ * @param string $text
+ *   The text to be filtered.
+ * @param string $prefix
+ *   The string to search for.
+ * @param string $destination
+ *   The URL that the links will point to.
+ *
+ * @return string
+ *   The processed string.
  */
 function _twitter_filter_text($text, $prefix, $destination) {
   $matches = array(
     '/\>' . $prefix . '(\w+)/ui',
     '/^' . $prefix . '(\w+)/ui',
+    '/^\.' . $prefix . '(\w+)/ui',
     '/(\s+)' . $prefix . '(\w+)/ui',
   );
   $replacements = array(
     '><a href="' . $destination . '${1}">' . $prefix . '${1}</a>',
     '<a href="' . $destination . '${1}">' . $prefix . '${1}</a>',
+    '.<a href="' . $destination . '${1}">' . $prefix . '${1}</a>',
     '${1}<a href="' . $destination . '${2}">' . $prefix . '${2}</a>',
   );
   return preg_replace($matches, $replacements, $text);
 }
 
 /**
- * Callback for twitter link converter.
+ * Convert embedded URLs, hashtags and usernames in a tweet to links.
  *
- * Makes links to be opened in new tabs and not to be indexed by SEO scrappers.
+ * @param string $message
+ *   The tweet's text.
+ * @param bool $usernames
+ *   Whether or not to convert usernames to links. Defaults to TRUE.
+ * @param bool $hashtags
+ *   Whether or not to convert hashtags to links. Defaults to TRUE.
+ * @param bool $attributes
+ *   Whether or not to add extra attributes to links. Defaults to TRUE.
+ * @param bool $urls
+ *   Whether or not to convert other URLs to links. Defaults to TRUE.
+ *
+ * @return string
+ *   The filtered tweet text.
  */
-function _twitter_filter_link($text) {
-  return str_replace("<a ", '<a target="_blank" rel="nofollow" ', $text);
+function twitter_filter_message($message, $usernames = TRUE, $hashtags = TRUE, $attributes = TRUE, $urls = TRUE) {
+  // Link usernames with their profiles.
+  if ($usernames) {
+    $message = _twitter_filter_username($message);
+  }
+
+  // Link hashtags.
+  if ($hashtags) {
+    $message = _twitter_filter_hashtag($message);
+  }
+
+  // Add extra attributes to links.
+  if ($attributes) {
+    $message = _twitter_filter_link($message);
+  }
+
+  // Standard URLs.
+  if ($urls) {
+    $message = _filter_url($message, FILTER_DEFAULT);
+  }
+
+  // Avoid XSS within the message.
+  return filter_xss($message);
 }
 
 /**
