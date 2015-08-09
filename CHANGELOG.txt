@@ -78,6 +78,8 @@ By DamienMcKenna: Misspelling of "Twitter" in twitter.pages.inc.
 #1902780 by DamienMcKenna: Removed the dependency on Views, it's optional.
 #2032057 by DamienMcKenna, Verban: Check a few values to see if the screen name
   can be identified for the Follow field.
+#2484703 by DamienMcKenna, uladzimir.karol: Replace und/LANGUAGE_NONE usage with
+  field_get_items() in all actions.
 
 
 Twitter 7.x-5.8, 2013-06-03
