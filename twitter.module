@@ -156,11 +156,7 @@ function template_preprocess_twitter_status(&$variables) {
     $status->time_ago = t('%time ago', array('%time' => format_interval($time_diff, 2)));
 
     // Format the message.
-    $filter = new stdClass;
-    $filter->settings = array(
-      'filter_url_length' => 496,
-    );
-    $status->text = _filter_url($status->text, $filter);
+    $status->text = twitter_filter_message($status->text);
   }
 }
 
@@ -312,8 +308,16 @@ function _twitter_filter_tip_link($filter, $format, $long = FALSE) {
 
 /**
  * Callback for twitter @username converter.
+ *
+ * @param string $text
+ *   The text to be filtered.
+ * @param mixed $filter
+ *   The filter configuration.
+ *
+ * @return string
+ *   The processed string.
  */
-function _twitter_filter_username($text, $filter) {
+function _twitter_filter_username($text, $filter = NULL) {
   $prefix = '@';
   $destination = variable_get('twitter_host', TWITTER_HOST) . '/';
   return _twitter_filter_text($text, $prefix, $destination);
@@ -321,36 +325,110 @@ function _twitter_filter_username($text, $filter) {
 
 /**
  * Callback for twitter #hashtag converter.
+ *
+ * @param string $text
+ *   The text to be filtered.
+ * @param mixed $filter
+ *   The filter configuration.
+ *
+ * @return string
+ *   The processed string.
  */
-function _twitter_filter_hashtag($text, $filter) {
+function _twitter_filter_hashtag($text, $filter = NULL) {
   $prefix = '#';
   $destination = variable_get('twitter_search', TWITTER_SEARCH) . '/search?q=%23';
   return _twitter_filter_text($text, $prefix, $destination);
 }
 
 /**
+ * Callback for Twitter link converter.
+ *
+ * @param string $text
+ *   The text to be filtered.
+ * @param mixed $filter
+ *   The filter configuration.
+ *
+ * @return string
+ *   The processed string.
+ */
+function _twitter_filter_link($text, $filter = NULL) {
+  return str_replace('<a ', '<a target="_blank" rel="nofollow" ', $text);
+}
+
+/**
  * This helper function converts Twitter-style @usernames and #hashtags into
  * actual links.
+ *
+ * @param string $text
+ *   The text to be filtered.
+ * @param string $prefix
+ *   The string to search for.
+ * @param string $destination
+ *   The URL that the links will point to.
+ *
+ * @return string
+ *   The processed string.
  */
 function _twitter_filter_text($text, $prefix, $destination) {
   $matches = array(
     '/\>' . $prefix . '(\w+)/ui',
     '/^' . $prefix . '(\w+)/ui',
+    '/^\.' . $prefix . '(\w+)/ui',
     '/(\s+)' . $prefix . '(\w+)/ui',
   );
   $replacements = array(
     '><a href="' . $destination . '${1}">' . $prefix . '${1}</a>',
     '<a href="' . $destination . '${1}">' . $prefix . '${1}</a>',
+    '.<a href="' . $destination . '${1}">' . $prefix . '${1}</a>',
     '${1}<a href="' . $destination . '${2}">' . $prefix . '${2}</a>',
   );
   return preg_replace($matches, $replacements, $text);
 }
 
 /**
- * Callback for twitter link converter.
+ * Convert embedded URLs, hashtags and usernames in a tweet to links.
+ *
+ * @param string $message
+ *   The tweet's text.
+ * @param bool $usernames
+ *   Whether or not to convert usernames to links. Defaults to TRUE.
+ * @param bool $hashtags
+ *   Whether or not to convert hashtags to links. Defaults to TRUE.
+ * @param bool $attributes
+ *   Whether or not to add extra attributes to links. Defaults to TRUE.
+ * @param bool $urls
+ *   Whether or not to convert other URLs to links. Defaults to TRUE.
+ *
+ * @return string
+ *   The filtered tweet text.
  */
-function _twitter_filter_link($text, $filter) {
-  return str_replace("<a ", '<a target="_blank" rel="nofollow" ', $text);
+function twitter_filter_message($message, $usernames = TRUE, $hashtags = TRUE, $attributes = TRUE, $urls = TRUE) {
+  // Link usernames with their profiles.
+  if ($usernames) {
+    $message = _twitter_filter_username($message);
+  }
+
+  // Link hashtags.
+  if ($hashtags) {
+    $message = _twitter_filter_hashtag($message);
+  }
+
+  // Add extra attributes to links.
+  if ($attributes) {
+    $message = _twitter_filter_link($message);
+  }
+
+  // Standard URLs.
+  if ($urls) {
+    $filter = new stdClass;
+    $filter->settings = array(
+      'filter_url_length' => 496,
+    );
+    $message = _filter_url($message, $filter);
+  }
+
+  // Avoid XSS within the message.
+  return filter_xss($message);
 }
 
 /**
