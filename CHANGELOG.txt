@@ -55,6 +55,8 @@ By DamienMcKenna: Misspelling of "Twitter" in twitter.pages.inc.
   prefaced by a period will work correctly.
 #2531874 by DamienMcKenna; Changed {twitter}.in_reply_to_status_id,
   {twitter}.in_reply_to_user_id and {twitter_account}.twitter_uid to BIGINT.
+#1365452 by sillygwailo, balleyne, GaxZE, happysnowmantech, jenlampton,
+  DamienMcKenna: Text filter for embedding tweets.
 
 
 Twitter 6.x-5.1, 2013-04-19

@@ -183,18 +183,23 @@ function twitter_cron() {
 
 /**
  * Implementation of hook_filter().
- * - Twitter @username converter:
+ *
+ * 0 - Twitter @username converter:
  *     Converts Twitter-style @usernames into links to Twitter account pages.
- * - Twitter #hashtag converter:
+ * 1 - Twitter #hashtag converter:
  *     Converts Twitter-style #hashtags into links to hashtags.org.
- * - Twitter link converter:
+ * 2 - Twitter link converter:
  *     Makes links to be opened in new pages and adds nofollow attribute.
- * Implements hook_filter_info().
  */
 function twitter_filter($op, $delta = 0, $format = -1, $text = '') {
   switch ($op) {
     case 'list':
-      return array(0 => t('Twitter @username converter'), 1 => t('Twitter #hashtag converter'));
+      return array(
+        0 => t('Twitter @username converter'),
+        1 => t('Twitter #hashtag converter'),
+        2 => t('Twitter link converter'),
+        3 => t('Embed Tweets'),
+      );
 
     case 'description':
       switch ($delta) {
@@ -204,6 +209,8 @@ function twitter_filter($op, $delta = 0, $format = -1, $text = '') {
           return t('Converts Twitter-style #hashtags into links to hashtags.org.');
         case 2:
           return t('Adds rel="nofollow" and target="_blank" to all links within a Tweet.');
+        case 3:
+          return t('Converts URLs for Twitter status updates into embedded Tweets. Should be sorted after the "HTML Filter" filter, if used.');
         default:
           return;
       }
@@ -215,6 +222,8 @@ function twitter_filter($op, $delta = 0, $format = -1, $text = '') {
           return _twitter_filter_hashtag($text);
         case 2:
           return _twitter_filter_link($text);
+        case 3:
+          return _twitter_filter_embed_tweet($text);
         default:
           return $text;
       }
@@ -222,6 +231,7 @@ function twitter_filter($op, $delta = 0, $format = -1, $text = '') {
       return $text;
   }
 }
+
 
 /**
  * Implements hook_filter_tips().
@@ -235,6 +245,8 @@ function twitter_filter_tips($delta, $format, $long = FALSE) {
       return t('Twitter-style #hashtags are linked to !url.', array('!url' => '<a href="http://twitter.com/">twitter.com</a>'));
     case 2:
       return t('Twitter links within a message are opened in new tabs and have nofollo attribute.');
+    case 3:
+      return t('Links to Twitter status updates are converted to Embedded Tweets.');
   }
 }
 
@@ -353,6 +365,66 @@ function twitter_filter_message($message, $usernames = TRUE, $hashtags = TRUE, $
 
   // Avoid XSS within the message.
   return filter_xss($message);
+}
+
+/**
+ * Callback for Embedded Tweets.
+ */
+function _twitter_filter_embed_tweet($text) {
+  module_load_include('inc', 'twitter');
+
+  // Tags to skip and not recurse into.
+  $ignore_tags = 'a|script|style|code|pre';
+
+  // Split at all tags; ensures that no tags or attributes are processed.
+  $chunks = preg_split('/(<.+?>)/is', $text, -1, PREG_SPLIT_DELIM_CAPTURE);
+
+  // PHP ensures that the array consists of alternating delimiters and
+  // literals, and begins and ends with a literal (inserting NULL as required).
+  // Therefore, the first chunk is always text:
+  $chunk_type = 'text';
+
+  // If a tag of $ignore_tags is found, it is stored in $open_tag and only
+  // removed when the closing tag is found. Until the closing tag is found, no
+  // replacements are made.
+  $open_tag = '';
+
+  foreach ($chunks as $i => $chunk) {
+    if ($chunk_type == 'text') {
+      // Only process this text if there are no unclosed $ignore_tags.
+      if ($open_tag == '') {
+        // Check for links to Tweets to replace with embed code.
+        $tweets = array();
+        preg_match_all('/https?:\/\/(www\.)?twitter.com\/.+?\/status(es)?\/(.*)/i', $chunks[$i], $tweets, PREG_SET_ORDER);
+        foreach ($tweets as $tweet) {
+          $url = $tweet[0];
+          $id = $tweet[3];
+          $embed = twitter_statuses_oembed($id);
+          $chunks[$i] = str_replace($url, $embed['html'], $chunks[$i]);
+        }
+      }
+      // Text chunk is done, so next chunk must be a tag.
+      $chunk_type = 'tag';
+    }
+    else {
+      // Only process this tag if there are no unclosed $ignore_tags.
+      if ($open_tag == '') {
+        // Check whether this tag is contained in $ignore_tags.
+        if (preg_match("`<($ignore_tags)(?:\s|>)`i", $chunks[$i], $matches)) {
+          $open_tag = $matches[1];
+        }
+      }
+      // Otherwise, check whether this is the closing tag for $open_tag.
+      else {
+        if (preg_match("`<\/$open_tag>`i", $chunks[$i], $matches)) {
+          $open_tag = '';
+        }
+      }
+      // Tag chunk is done, so next chunk must be text.
+      $chunk_type = 'text';
+    }
+  }
+  return implode($chunks);
 }
 
 /**
