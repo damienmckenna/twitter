@@ -82,19 +82,19 @@ function twitter_schema() {
       ),
       'in_reply_to_status_id' => array(
         'description' => "Unique identifier of a status this {twitter} post was replying to.",
-        'type' => 'numeric',
+        'type' => 'int',
         'unsigned' => TRUE,
-        'precision' => 20,
-        'scale' => 0,
+        'size' => 'big',
         'not null' => FALSE,
+        'default' => 0,
       ),
       'in_reply_to_user_id' => array(
         'description' => "Unique identifier for the {twitter_account} this post was replying to.",
-        'type' => 'numeric',
+        'type' => 'int',
         'unsigned' => TRUE,
-        'precision' => 20,
-        'scale' => 0,
+        'size' => 'big',
         'not null' => FALSE,
+        'default' => 0,
       ),
       'in_reply_to_screen_name' => array(
         'description' => "Screen name of the {twitter} user this post was replying to.",
@@ -126,10 +126,9 @@ function twitter_schema() {
     'fields' => array(
       'twitter_uid' => array(
         'description' => "The unique identifier of the {twitter_account}.",
-        'type' => 'numeric',
+        'type' => 'int',
         'unsigned' => TRUE,
-        'precision' => 20,
-        'scale' => 0,
+        'size' => 'big',
         'not null' => TRUE,
         'default' => 0,
       ),
@@ -490,4 +489,53 @@ function twitter_update_7504() {
     'default' => 0,
   );
   db_change_field('twitter_account', 'uid', 'uid', $spec);
+}
+
+/**
+ * Change {twitter}.in_reply_to_status_id to BIGINT.
+ */
+function twitter_update_7505() {
+  $spec = array(
+    'description' => "Unique identifier of a status this {twitter} post was replying to.",
+    'type' => 'int',
+    'unsigned' => TRUE,
+    'size' => 'big',
+    'not null' => FALSE,
+    'default' => 0,
+  );
+  db_change_field('twitter', 'in_reply_to_status_id', 'in_reply_to_status_id', $spec);
+}
+
+/**
+ * Change {twitter}.in_reply_to_user_id to BIGINT.
+ */
+function twitter_update_7506() {
+  $spec = array(
+    'description' => "Unique identifier for the {twitter_account} this post was replying to.",
+    'type' => 'int',
+    'unsigned' => TRUE,
+    'size' => 'big',
+    'not null' => FALSE,
+    'default' => 0,
+  );
+  db_change_field('twitter', 'in_reply_to_user_id', 'in_reply_to_user_id', $spec);
+}
+
+/**
+ * Change {twitter_account}.twitter_uid to BIGINT.
+ */
+function twitter_update_7507() {
+  db_drop_primary_key('twitter_account');
+  $spec = array(
+    'description' => "The unique identifier of the {twitter_account}.",
+    'type' => 'int',
+    'unsigned' => TRUE,
+    'size' => 'big',
+    'not null' => TRUE,
+    'default' => 0,
+  );
+  $index_spec = array(
+    'primary key' => array('twitter_uid'),
+  );
+  db_change_field('twitter_account', 'twitter_uid', 'twitter_uid', $spec, $index_spec);
 }

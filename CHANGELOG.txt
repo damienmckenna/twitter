@@ -82,6 +82,8 @@ By DamienMcKenna: Misspelling of "Twitter" in twitter.pages.inc.
   field_get_items() in all actions.
 #2353371 by DamienMcKenna, filippo.ledda: Fix tweet formatting so that mentions
   prefaced by a period will work correctly.
+#2531874 by DamienMcKenna; Changed {twitter}.in_reply_to_status_id,
+  {twitter}.in_reply_to_user_id and {twitter_account}.twitter_uid to BIGINT.
 
 
 Twitter 7.x-5.8, 2013-06-03
