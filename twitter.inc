@@ -137,6 +137,43 @@ function twitter_set_status($twitter_account, $status) {
 }
 
 /**
+ * Retrieve an embedded Tweet.
+ *
+ * @param $id
+ *   Status ID of the tweet.
+ *
+ * @return array
+ *   Response from Twitter API.
+ */
+function twitter_statuses_oembed($id) {
+  if ($cache = cache_get('twitter_oembed_' . $id)) {
+    if ($cache->expire > time()) {
+      // Return cache.
+      $twitter = $cache->data;
+    }
+    else {
+      cache_clear_all('twitter_oembed_' . $id, 'cache');
+    }
+  }
+  else {
+    // Request tweet.
+    $twitter = twitter_connect();
+
+    // Set cache for 2 hours.
+    cache_set('twitter_oembed_' . $id, $twitter, 'cache', time() + 2880*60);
+  }
+
+  if (!empty($twitter)) {
+    $params = array(
+      'hide_media' => !variable_get('twitter_media', FALSE),
+      'hide_thread' => !variable_get('twitter_conversation', FALSE),
+      'align' => variable_get('twitter_align', 'none'),
+    );
+    return $twitter->statuses_oembed($id, $params);
+  }
+}
+
+/**
  * Fetches a user's timeline.
  */
 function twitter_fetch_user_timeline($id) {

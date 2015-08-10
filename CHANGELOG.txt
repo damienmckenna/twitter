@@ -64,6 +64,8 @@ By DamienMcKenna: Initial CHANGELOG.txt file.
   prefaced by a period will work correctly.
 #2531874 by DamienMcKenna; Changed {twitter}.in_reply_to_status_id,
   {twitter}.in_reply_to_user_id and {twitter_account}.twitter_uid to BIGINT.
+#1365452 by sillygwailo, balleyne, GaxZE, happysnowmantech, jenlampton,
+  DamienMcKenna: Text filter for embedding tweets.
 
 
 Twitter 7.x-6.0-alpha2, 2013-03-13
