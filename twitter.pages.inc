@@ -75,6 +75,37 @@ function twitter_admin_form($form, &$form_state) {
     '#default_value' => variable_get('twitter_tinyurl', TWITTER_TINYURL),
   );
 
+  // Embed tweet settings.
+  $form['embed'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Embed Tweet Settings'),
+    '#description' => t('The following settings for rendering embedded tweets in your posts.'),
+  );
+  $form['embed']['twitter_media'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Display Media'),
+    '#default_value' => variable_get('twitter_media', FALSE),
+    '#description' => t('Display images, video and link previews referenced in the tweet.'),
+  );
+  $form['embed']['twitter_conversation'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Conversation view'),
+    '#default_value' => variable_get('twitter_conversation', FALSE),
+    '#description' => t('Include previous tweets in the reply thread.'),
+  );
+  $form['embed']['twitter_align'] = array(
+    '#type' => 'radios',
+    '#title' => t('Alignment'),
+    '#options' => array(
+      'none' => t('None'),
+      'center' => t('Center'),
+      'left' => t('Left'),
+      'right' => t('Right'),
+    ),
+    '#default_value' => variable_get('twitter_align', 'none'),
+    '#description' => t('Specifies whether the embedded Tweet should be floated left, right, or center in the page relative to the parent element'),
+  );
+
   return system_settings_form($form);
 }
 
