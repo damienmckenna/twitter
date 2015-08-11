@@ -70,7 +70,13 @@ function twitter_schema() {
       ),
       'text' => array(
         'description' => "The text of the {twitter} post.",
+        // Using a blob instead of a text type make it possible for MySQL to
+        // handle extended UTF8 characters, like emoji.
+        // @see https://www.drupal.org/node/1910376
         'type' => 'blob',
+        // Balance size vs performance. The August 2015 update allows for DMs
+        // that are 10,000 characters in length, so in theory MySQL's default
+        // blob length of 16KB should be enough.
         'size' => 'normal',
         'not null' => FALSE,
       ),
@@ -552,7 +558,13 @@ function twitter_update_7508() {
   if (db_field_exists('twitter', 'text')) {
     $spec = array(
       'description' => "The text of the {twitter} post.",
+      // Using a blob instead of a text type make it possible for MySQL to
+      // handle extended UTF8 characters, like emoji.
+      // @see https://www.drupal.org/node/1910376
       'type' => 'blob',
+      // Balance size vs performance. The August 2015 update allows for DMs
+      // that are 10,000 characters in length, so in theory MySQL's default
+      // blob length of 16KB should be enough.
       'size' => 'normal',
       'not null' => FALSE,
     );
