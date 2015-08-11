@@ -86,6 +86,10 @@ By DamienMcKenna: Misspelling of "Twitter" in twitter.pages.inc.
   {twitter}.in_reply_to_user_id and {twitter_account}.twitter_uid to BIGINT.
 #1365452 by sillygwailo, balleyne, GaxZE, happysnowmantech, jenlampton,
   DamienMcKenna: Text filter for embedding tweets.
+#1910376 by lex0r, joelpittet, nicrodgers, IT-Cru, DamienMcKenna, basvredeling:
+  Update {twitter}.text field to use a 'blob' to avoid problems with MySQL's
+  character limitations in the 'utf8' table scheme. See:
+  https://www.drupal.org/node/1910376
 
 
 Twitter 7.x-5.8, 2013-06-03
