@@ -70,8 +70,8 @@ function twitter_schema() {
       ),
       'text' => array(
         'description' => "The text of the {twitter} post.",
-        'type' => 'varchar',
-        'length' => 255,
+        'type' => 'blob',
+        'size' => 'normal',
         'not null' => FALSE,
       ),
       'source' => array(
@@ -522,4 +522,24 @@ function twitter_update_7507() {
     'primary key' => array('twitter_uid'),
   );
   db_change_field('twitter_account', 'twitter_uid', 'twitter_uid', $spec, $index_spec);
+}
+
+/**
+ * Change Twitter text field to blob to accommodate utf8mb4 characters.
+ *
+ * @todo This schema update is a workaround and should be reverted as soon as
+ *   Drupal's MySQL implementation properly supports the utf8mb4 character set.
+ *
+ * @see https://www.drupal.org/node/1910376
+ */
+function twitter_update_7508() {
+  if (db_field_exists('twitter', 'text')) {
+    $spec = array(
+      'description' => "The text of the {twitter} post.",
+      'type' => 'blob',
+      'size' => 'normal',
+      'not null' => FALSE,
+    );
+    db_change_field('twitter', 'text', 'text', $spec);
+  }
 }
