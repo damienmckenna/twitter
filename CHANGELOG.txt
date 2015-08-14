@@ -72,6 +72,8 @@ By DamienMcKenna: Initial CHANGELOG.txt file.
   https://www.drupal.org/node/1910376
 #2534206 by DamienMcKenna: More verbose comments in hook_schema to explain why
   the {twitter}.text field is stored as a blob.
+#1878660 by DamienMcKenna: Don't show the login/registration form options if the
+  API keys haven't been saved yet.
 
 
 Twitter 7.x-6.0-alpha2, 2013-03-13
