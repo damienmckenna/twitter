@@ -39,6 +39,13 @@ function twitter_signin_block($op = 'list', $delta = 0, $edit = array()) {
       $block[0]['info'] = t('Sign in with Twitter');
       return $block;
     case 'view':
+      // Don't do anything if the credentials haven't been set up yet.
+      $key = variable_get('twitter_consumer_key', '');
+      $secret = variable_get('twitter_consumer_secret', '');
+      if (empty($key) || empty($secret)) {
+        return;
+      }
+
       global $user;
       $block['subject'] = t('Sign in with Twitter');
       $block['content'] = twitter_signin_button();
@@ -98,6 +105,13 @@ function twitter_signin_form_alter(&$form, $form_state, $form_id) {
   }
 
   if ($form_id == 'user_login' || $form_id == 'user_login_block') {
+    // Don't do anything if the credentials haven't been set up yet.
+    $key = variable_get('twitter_consumer_key', '');
+    $secret = variable_get('twitter_consumer_secret', '');
+    if (empty($key) || empty($secret)) {
+      return;
+    }
+
     $items = array();
     $items[] = twitter_signin_button();
 
@@ -106,6 +120,13 @@ function twitter_signin_form_alter(&$form, $form_state, $form_id) {
     );
   }
   elseif ($form_id == 'user_register' && isset($_SESSION['twitter']['values'])) {
+    // Don't do anything if the credentials haven't been set up yet.
+    $key = variable_get('twitter_consumer_key', '');
+    $secret = variable_get('twitter_consumer_secret', '');
+    if (empty($key) || empty($secret)) {
+      return;
+    }
+
     $form['name']['#default_value'] = $_SESSION['twitter']['values']['screen_name'];
     $form['auth_twitter'] = array(
       '#type' => 'hidden',
