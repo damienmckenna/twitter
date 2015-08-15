@@ -156,7 +156,7 @@ function twitter_user_settings($account = NULL) {
     if (user_access('add authenticated twitter accounts')) {
       $add_account['#children'] .= drupal_get_form('twitter_auth_account_form');
     }
-    if (twitter_connect()) {
+    if (user_access('add twitter accounts')) {
       $add_account['#children'] .= drupal_get_form('twitter_non_auth_account_form');
     }
     $output .= drupal_render($add_account);
