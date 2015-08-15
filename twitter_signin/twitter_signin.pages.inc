@@ -34,5 +34,13 @@ function twitter_signin_admin_settings($form, &$form_state) {
     '#description' => t('Warning, if you enable this, new user accounts will be created without email addresses.'),
   );
 
+  $form['twitter_signin_maintenance_mode'] = array(
+    '#title' => t('Allow signins when site in maintenance mode'),
+    '#type' => 'radios',
+    '#options' => array(t('No'), t('Yes')),
+    '#default_value' => variable_get('twitter_signin_maintenance_mode', 0),
+    '#description' => t('This only affect administrators who would be able to log into their Drupal account using their Twitter account, non-admin users will be unable to do anything.'),
+  );
+
   return system_settings_form($form);
 }
