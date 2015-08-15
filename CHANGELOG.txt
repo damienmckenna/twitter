@@ -94,6 +94,8 @@ By DamienMcKenna: Misspelling of "Twitter" in twitter.pages.inc.
   the {twitter}.text field is stored as a blob.
 #1878660 by DamienMcKenna: Don't show the login/registration form options if the
   API keys haven't been saved yet.
+#2430229 by DamienMcKenna, sumitmadan: By default don't re-post tweets on nodes
+  that are already published, but give an option to change this.
 
 
 Twitter 7.x-5.8, 2013-06-03
