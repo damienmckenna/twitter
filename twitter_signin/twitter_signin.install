@@ -1,0 +1,14 @@
+<?php
+/**
+ * @file
+ * Install, update and uninstall functions for the Twitter Signin module.
+ */
+
+/**
+ * Implements hook_uninstall().
+ */
+function twitter_signin_uninstall() {
+  variable_del('twitter_signin_button');
+  variable_del('twitter_signin_maintenance_mode');
+  variable_del('twitter_signin_register');
+}

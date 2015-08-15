@@ -67,6 +67,8 @@ By DamienMcKenna: Misspelling of "Twitter" in twitter.pages.inc.
   API keys haven't been saved yet.
 #2430229 by DamienMcKenna, sumitmadan: By default don't re-post tweets on nodes
   that are already published, but give an option to change this.
+#1886540 by DamienMcKenna: By default don't allow logins when the site is in
+  maintenance mode, but give sites the option to allow it.
 
 
 Twitter 6.x-5.1, 2013-04-19
