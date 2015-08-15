@@ -12,4 +12,5 @@ function twitter_post_uninstall() {
   variable_del('twitter_post_types');
   variable_del('twitter_post_default_format');
   variable_del('twitter_post_default_value');
+  variable_del('twitter_post_on_update');
 }

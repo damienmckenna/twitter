@@ -37,9 +37,9 @@ function twitter_post_form_alter(&$form, $form_state, $form_id) {
   // If we haven't enabled Twitter posting on this node type, nothing to do here.
   $allowed_types = variable_get('twitter_post_types', array());
   if (isset($form['#node']) && $form['#node']->type . '_node_form' == $form_id) {
-    $type = $form['#node']->type;
+    $node = $form['#node'];
     $allowed_types = variable_get('twitter_post_types', array());
-    if (empty($allowed_types[$type])) {
+    if (empty($allowed_types[$node->type])) {
       return;
     }
 
@@ -60,6 +60,9 @@ function twitter_post_form_alter(&$form, $form_state, $form_id) {
     // Load the default values; use the values submitted by the form if this is
     // a node preview.
     $enabled = variable_get('twitter_post_default_value', 0);
+    if (!empty($node->status)) {
+      $enabled = variable_get('twitter_post_on_update', 0);
+    }
     if (isset($form_state['values']['twitter']['post'])) {
       $enabled = $form_state['values']['twitter']['post'];
     }
