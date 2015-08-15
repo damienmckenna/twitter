@@ -113,6 +113,12 @@ function twitter_signin_redirect() {
  * Implements hook_form_alter().
  */
 function twitter_signin_form_alter(&$form, $form_state, $form_id) {
+  // By default don't do anything when the site is in maintenance mode, but
+  // allow this to be changed so that admins can still login.
+  if (defined('MAINTENANCE_MODE') && !variable_get('twitter_signin_maintenance_mode', FALSE)) {
+    return;
+  }
+
   if ($form_id == 'twitter_oauth_callback_form' && isset($_SESSION['twitter_oauth']['signin'])) {
     $form['#submit'] = array_merge(array('twitter_signin_oauth_callback_submit'), $form['#submit']);
   }
