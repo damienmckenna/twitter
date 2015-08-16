@@ -81,6 +81,8 @@ By DamienMcKenna: Initial CHANGELOG.txt file.
   Twitter accounts.
 #1982786 by DamienMcKenna: Fixed signin callback using a D6 function.
 #1993470 by jamix, DamienMcKenna: Improved _twitter_filter_text().
+#1514284 by DamienMcKenna, darrylh: Ensure form state is passed to
+  user_login_finalize() to ensure hook_user_login is triggered correctly.
 
 
 Twitter 7.x-6.0-alpha2, 2013-03-13
