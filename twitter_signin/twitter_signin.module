@@ -247,7 +247,8 @@ function twitter_signin_oauth_callback_submit(&$form, &$form_state) {
     drupal_goto('user/login');
   }
   else {
-    user_login_finalize();
+    $form_state['uid'] = $user->uid;
+    user_login_finalize($form_state);
   }
 }
 
