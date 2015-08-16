@@ -201,6 +201,9 @@ function twitter_signin_oauth_callback_submit(&$form, &$form_state) {
           return FALSE;
         }
 
+        // Reload the user's account object.
+        $account = user_load($account->uid);
+
         // Connect the Drupal user account and the Twitter account together.
         $form_state['twitter_oauth']['account'] = $account;
 
