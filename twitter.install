@@ -1005,3 +1005,14 @@ function twitter_update_6511() {
 
   return $ret;
 }
+
+/**
+ * Rebuild the menus so that the permissions can be fixed.
+ */
+function twitter_update_6512() {
+  $ret = array();
+
+  menu_rebuild();
+
+  return $ret;
+}

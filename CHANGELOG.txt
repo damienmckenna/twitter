@@ -70,6 +70,8 @@ By DamienMcKenna: Misspelling of "Twitter" in twitter.pages.inc.
 #1886540 by DamienMcKenna: By default don't allow logins when the site is in
   maintenance mode, but give sites the option to allow it.
 #2338125 by durum: Fixed permission check for adding non-authenticated accounts.
+#1895472 by DamienMcKenna, Adirael: Don't allow people to edit each other's
+  Twitter accounts.
 
 
 Twitter 6.x-5.1, 2013-04-19
