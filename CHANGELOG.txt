@@ -85,6 +85,8 @@ By DamienMcKenna: Initial CHANGELOG.txt file.
   user_login_finalize() to ensure hook_user_login is triggered correctly.
 #2143605 by kladrian, DamienMcKenna: Reload the user object after logging in to
   ensure a full user object is passed along to the various hooks.
+#1929126 by colin_vanarts, leewillis77, AdamPS, DamienMcKenna: Store the entire
+  message for retweets.
 
 
 Twitter 7.x-6.0-alpha2, 2013-03-13

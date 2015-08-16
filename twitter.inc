@@ -104,11 +104,19 @@ function twitter_load_authenticated_accounts() {
  * Saves a TwitterStatus object to {twitter}
  */
 function twitter_status_save($status) {
+  // RT's get special handling.
+  if (!empty($status->retweeted_status)) {
+    $text = 'RT @' . $status->retweeted_status->user->screen_name . ': ' . $status->retweeted_status->text;
+  }
+  else {
+    $text = $status->text;
+  }
+
   $twitter_status = new TwitterStatus();
   $twitter_status->twitter_id = $status->id;
   $twitter_status->screen_name = $status->user->screen_name;
   $twitter_status->created_time = strtotime($status->created_at);
-  $twitter_status->text = $status->text;
+  $twitter_status->text = $text;
   $twitter_status->source = $status->source;
   $twitter_status->in_reply_to_status_id = ($status->in_reply_to_status_id > 0) ? (string) $status->in_reply_to_status_id : NULL;
   $twitter_status->in_reply_to_user_id = $status->in_reply_to_user_id;
