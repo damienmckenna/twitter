@@ -73,6 +73,7 @@ By DamienMcKenna: Misspelling of "Twitter" in twitter.pages.inc.
 #1895472 by DamienMcKenna, Adirael: Don't allow people to edit each other's
   Twitter accounts.
 #1993470 by jamix, DamienMcKenna: Improved _twitter_filter_text().
+#1514284 by DamienMcKenna: Some slight cleanup to the signup oauth callback.
 
 
 Twitter 6.x-5.1, 2013-04-19
