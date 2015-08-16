@@ -101,6 +101,7 @@ By DamienMcKenna: Misspelling of "Twitter" in twitter.pages.inc.
 #2338125 by durum: Fixed permission check for adding non-authenticated accounts.
 #1895472 by DamienMcKenna, Adirael: Don't allow people to edit each other's
   Twitter accounts.
+#1982786 by DamienMcKenna: Fixed signin callback using a D6 function.
 
 
 Twitter 7.x-5.8, 2013-06-03
