@@ -366,19 +366,9 @@ function _twitter_filter_link($text, $filter = NULL) {
  *   The processed string.
  */
 function _twitter_filter_text($text, $prefix, $destination) {
-  $matches = array(
-    '/\>' . $prefix . '(\w+)/ui',
-    '/^' . $prefix . '(\w+)/ui',
-    '/^\.' . $prefix . '(\w+)/ui',
-    '/(\s+)' . $prefix . '(\w+)/ui',
-  );
-  $replacements = array(
-    '><a href="' . $destination . '${1}">' . $prefix . '${1}</a>',
-    '<a href="' . $destination . '${1}">' . $prefix . '${1}</a>',
-    '.<a href="' . $destination . '${1}">' . $prefix . '${1}</a>',
-    '${1}<a href="' . $destination . '${2}">' . $prefix . '${2}</a>',
-  );
-  return preg_replace($matches, $replacements, $text);
+  $match = '/(?<!\w)' . preg_quote($prefix, '/') . '(\w+)/ui';
+  $replacement = '<a href="' . $destination . '$1">' . $prefix . '$1</a>';
+  return preg_replace($match, $replacement, $text);
 }
 
 /**
