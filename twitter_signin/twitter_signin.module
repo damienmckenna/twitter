@@ -168,8 +168,9 @@ function twitter_signin_oauth_callback_submit(&$form, &$form_state) {
   $response = $form_state['twitter_oauth']['response'];
 
   $account = user_external_load($response['user_id']);
-  if (isset($account->uid)) {
-    user_external_login($account, $response);
+  if (!empty($account)) {
+    $account = array('uid' => $account->uid);
+    user_login_submit(array(), $account);
     $success = TRUE;
   }
   else {
