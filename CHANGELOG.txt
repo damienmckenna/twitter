@@ -80,6 +80,7 @@ By DamienMcKenna: Initial CHANGELOG.txt file.
 #1895472 by DamienMcKenna, Adirael: Don't allow people to edit each other's
   Twitter accounts.
 #1982786 by DamienMcKenna: Fixed signin callback using a D6 function.
+#1993470 by jamix, DamienMcKenna: Improved _twitter_filter_text().
 
 
 Twitter 7.x-6.0-alpha2, 2013-03-13
