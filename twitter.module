@@ -50,6 +50,7 @@ function twitter_menu() {
     'page callback' => 'twitter_user_settings',
     'page arguments' => array(1),
     'access callback' => 'twitter_account_access',
+    'access arguments' => array(1),
     'weight' => 10,
     'file' => 'twitter.pages.inc',
     'type' => MENU_LOCAL_TASK,
@@ -78,11 +79,29 @@ function twitter_permission() {
 /**
  * Access callback for the Twitter accounts page.
  *
+ * @param object $account
+ *   The user account that 'owns' this Twitter accounts page.
+ *
  * @return
  *   Boolean TRUE if the current user has access.
  */
-function twitter_account_access() {
-  return user_access('add twitter accounts') || user_access('add authenticated twitter accounts');
+function twitter_account_access($account) {
+  global $user;
+
+  // First off, verify that the current user has one of the required
+  // permissions and is viewing their own user account.
+  if ($user->uid == $account->uid && (user_access('add twitter accounts') || user_access('add authenticated twitter accounts'))) {
+    return TRUE;
+  }
+
+  // Otherwise, verify that they have the 'administer users' permission.
+  if (user_access('administer users')) {
+    return TRUE;
+  }
+
+  // If neither of the above permission checks are approved, they do not have
+  // permission to access this page.
+  return FALSE;
 }
 
 /**

@@ -571,3 +571,10 @@ function twitter_update_7508() {
     db_change_field('twitter', 'text', 'text', $spec);
   }
 }
+
+/**
+ * Rebuild the menus so that the permissions can be fixed.
+ */
+function twitter_update_7509() {
+  variable_set('menu_rebuild_needed', TRUE);
+}
