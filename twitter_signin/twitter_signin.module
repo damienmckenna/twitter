@@ -182,17 +182,21 @@ function twitter_signin_oauth_callback_submit(&$form, &$form_state) {
       $account = user_load($uid);
       $edit["authname_twitter"] = $response['user_id'];
       user_save($account, $edit);
-      $user = $account;
-      $form_state['twitter_oauth']['account'] = $account;
       $success = TRUE;
     }
 
     // No existing user account, let's see if we can register.
     elseif (variable_get('twitter_signin_register', 0)) {
       // Check for a nickname collision.
-      $account = array_shift(user_load_multiple(array(), array('name' => $response['screen_name'])));
+      $users = user_load_multiple(array(), array('name' => $response['screen_name']));
+      $account = array_shift($users);
       if (empty($account->uid)) {
+        // Generate a random password.
+        require_once DRUPAL_ROOT . '/' . variable_get('password_inc', 'includes/password.inc');
         $password = user_password();
+
+        // Create a new user account object.
+        $account = new stdClass();
         $account->name = $response['screen_name'];
         $account->pass = $password;
         $account->init = $response['screen_name'];
@@ -210,11 +214,8 @@ function twitter_signin_oauth_callback_submit(&$form, &$form_state) {
           return FALSE;
         }
 
-        // Log the user into their new account.
-        $user = $account;
-
-        // Connect the Drupal user account and the Twitter account together.
-        $form_state['twitter_oauth']['account'] = $account;
+        // Reload the user's account object.
+        $account = user_login($account->uid);
 
         $args = array(
           '!password' => $password,
@@ -238,11 +239,21 @@ function twitter_signin_oauth_callback_submit(&$form, &$form_state) {
     }
   }
 
+  // If there was a problem, return to the login screen.
   if (!$success) {
     $_SESSION['twitter']['values'] = $response;
     drupal_goto('user/login');
   }
+
+  // The visitor successfully logged in.
   else {
+    // Log the user into their account.
+    $user = $account;
+
+    // Connect the Drupal user account and the Twitter account together.
+    $form_state['twitter_oauth']['account'] = $account;
+
+    // Finish the login process.
     $form_state['uid'] = $user->uid;
     user_login_finalize($form_state);
   }

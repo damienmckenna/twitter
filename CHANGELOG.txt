@@ -83,6 +83,8 @@ By DamienMcKenna: Initial CHANGELOG.txt file.
 #1993470 by jamix, DamienMcKenna: Improved _twitter_filter_text().
 #1514284 by DamienMcKenna, darrylh: Ensure form state is passed to
   user_login_finalize() to ensure hook_user_login is triggered correctly.
+#2143605 by kladrian, DamienMcKenna: Reload the user object after logging in to
+  ensure a full user object is passed along to the various hooks.
 
 
 Twitter 7.x-6.0-alpha2, 2013-03-13
