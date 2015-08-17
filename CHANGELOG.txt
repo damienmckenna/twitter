@@ -76,6 +76,7 @@ By DamienMcKenna: Misspelling of "Twitter" in twitter.pages.inc.
 #1514284 by DamienMcKenna: Some slight cleanup to the signup oauth callback.
 #2143605 by kladrian, DamienMcKenna: Reload the user object after logging in to
   ensure a full user object is passed along to the various hooks.
+#2249055 by DamienMcKenna: Fixed the paths mentioned in the README.txt.
 
 
 Twitter 6.x-5.1, 2013-04-19
