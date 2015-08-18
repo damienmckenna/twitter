@@ -87,6 +87,7 @@ By DamienMcKenna: Initial CHANGELOG.txt file.
   ensure a full user object is passed along to the various hooks.
 #1929126 by colin_vanarts, leewillis77, AdamPS, DamienMcKenna: Store the entire
   message for retweets.
+#2553107 by DamienMcKenna: Ported Drush improvements from 7.x-5.x.
 
 
 Twitter 7.x-6.0-alpha2, 2013-03-13
