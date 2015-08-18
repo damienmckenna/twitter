@@ -107,6 +107,7 @@ By DamienMcKenna: Misspelling of "Twitter" in twitter.pages.inc.
   user_login_finalize() to ensure hook_user_login is triggered correctly.
 #2143605 by kladrian, DamienMcKenna: Reload the user object after logging in to
   ensure a full user object is passed along to the various hooks.
+#2214867 by DamienMcKenna: Added index on {twitter}.created_time.
 
 
 Twitter 7.x-5.8, 2013-06-03
