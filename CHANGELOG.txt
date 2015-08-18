@@ -91,6 +91,7 @@ By DamienMcKenna: Initial CHANGELOG.txt file.
 #2214867 by DamienMcKenna: Added index on {twitter}.created_time.
 #1911494 by DamienMcKenna, Sheldon Rampton: Don't assume twitter_connect() works
   every time, identify failures.
+#2553077 by DamienMcKenna: Option to disable loading the bundled views.
 
 
 Twitter 7.x-6.0-alpha2, 2013-03-13

@@ -343,7 +343,7 @@ function twitter_install() {
  * Implements hook_uninstall().
  */
 function twitter_uninstall() {
-  // Remove variables
+  // Remove variables.
   variable_del('twitter_import');
   variable_del('twitter_expire');
   variable_del('twitter_consumer_key');
@@ -355,6 +355,7 @@ function twitter_uninstall() {
   variable_del('twitter_api');
   variable_del('twitter_search');
   variable_del('twitter_tinyurl');
+  variable_del('twitter_use_default_views');
 }
 
 /**
