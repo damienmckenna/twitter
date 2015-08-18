@@ -8,12 +8,16 @@
  * Twitter settings form.
  */
 function twitter_admin_form($form, &$form_state) {
-  $form['twitter_import'] = array(
+  $form['misc'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Miscellaneous settings'),
+  );
+  $form['misc']['twitter_import'] = array(
     '#type' => 'checkbox',
     '#title' => t('Import and display the Twitter statuses of site users who have entered their Twitter account information.'),
     '#default_value' => variable_get('twitter_import', 1),
   );
-  $form['twitter_expire'] = array(
+  $form['misc']['twitter_expire'] = array(
     '#type' => 'select',
     '#title' => t('Delete old statuses'),
     '#default_value' => variable_get('twitter_expire', 0),
@@ -23,6 +27,12 @@ function twitter_admin_form($form, &$form_state) {
         ':input[name=twitter_import]' => array('checked' => TRUE),
       ),
     ),
+  );
+  $form['misc']['twitter_use_default_views'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Use default views'),
+    '#description' => t('The module includes custom displays managed by the Views module. Disabling this option will remove the bundled views provided by the Twitter module, allowing them to be more easily customized and exported.'),
+    '#default_value' => variable_get('twitter_use_default_views', TRUE),
   );
 
   $form['oauth'] = array(
