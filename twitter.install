@@ -339,7 +339,7 @@ function twitter_install() {
 function twitter_uninstall() {
   // Remove tables.
   drupal_uninstall_schema('twitter');
-  // Remove variables
+  // Remove variables.
   variable_del('twitter_post_default_state');
   variable_del('twitter_consumer_key');
   variable_del('twitter_consumer_secret');
@@ -357,6 +357,7 @@ function twitter_uninstall() {
   }
   variable_del('twitter_signin_button');
   variable_del('twitter_signin_register');
+  variable_del('twitter_use_default_views');
 }
 
 /**

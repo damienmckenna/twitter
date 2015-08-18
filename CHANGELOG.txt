@@ -81,6 +81,7 @@ By DamienMcKenna: Misspelling of "Twitter" in twitter.pages.inc.
 #2214867 by DamienMcKenna: Added index on {twitter}.created_time.
 #1911494 by DamienMcKenna, Sheldon Rampton: Don't assume twitter_connect() works
   every time, identify failures.
+#2553077 by DamienMcKenna: Option to disable loading the bundled views.
 
 
 Twitter 6.x-5.1, 2013-04-19
