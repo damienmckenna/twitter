@@ -562,6 +562,10 @@ function twitter_non_auth_account_form_validate($form, &$form_state) {
 function twitter_non_auth_account_form_submit($form, &$form_state) {
   $name = $form_state['values']['screen_name'];
   $twitter = twitter_connect();
+  if (!$twitter) {
+   return FALSE;
+  }
+
   $twitter_account = $twitter->users_show($name, FALSE);
   if (!isset($twitter_account->id)) {
     form_set_error('screen_name', t('Could not add the Twitter account <em>@name</em>. ' .

@@ -40,11 +40,9 @@ function drush_twitter_search($keyword) {
   // Set up a Twitter object to query with.
   module_load_include('inc', 'twitter');
   $twitter = twitter_connect();
-
   if (empty($twitter)) {
-    drush_set_error('At least one Twitter account must be authenticated at admin/config/services/twitter ' .
-                    'in order to perform requests to the Twitter API.');
-    return;
+    drush_set_error(dt('At least one Twitter account must be authenticated at admin/config/services/twitter in order to perform requests to the Twitter API.'));
+    return FALSE;
   }
 
   // Build the query and get the response.
