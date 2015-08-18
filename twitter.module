@@ -231,8 +231,8 @@ function twitter_cron() {
   // Check if we can connect to Twitter before proceeding.
   module_load_include('inc', 'twitter');
   $twitter = twitter_connect();
-  if (!$twitter) {
-    return;
+  if (empty($twitter)) {
+    return FALSE;
   }
 
   // Pull up a list of Twitter accounts that are flagged for updating,

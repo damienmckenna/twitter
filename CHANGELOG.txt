@@ -89,6 +89,8 @@ By DamienMcKenna: Initial CHANGELOG.txt file.
   message for retweets.
 #2553107 by DamienMcKenna: Ported Drush improvements from 7.x-5.x.
 #2214867 by DamienMcKenna: Added index on {twitter}.created_time.
+#1911494 by DamienMcKenna, Sheldon Rampton: Don't assume twitter_connect() works
+  every time, identify failures.
 
 
 Twitter 7.x-6.0-alpha2, 2013-03-13

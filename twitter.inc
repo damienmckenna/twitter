@@ -13,25 +13,34 @@ require_once('twitter.lib.php');
  * @param object $account
  *   An authenticated twitter_account object to be used to authenticate against
  *   Twitter.
+ *
  * @return
- *   a Twitter object ready to be used to query the Twitter API or FALSE.
+ *   A Twitter object ready to be used to query the Twitter API or FALSE.
  */
 function twitter_connect($account = NULL) {
-  if (!$account) {
+  if (empty($account)) {
     // Load the first authenticated account.
     $accounts = twitter_load_authenticated_accounts();
-    if (count($accounts)) {
+    if (empty($accounts)) {
+      watchdog('twitter', 'There are no authenticated Twitter accounts to use for API connections.');
+    }
+    else {
       $account = reset($accounts);
     }
   }
 
-  if ($account) {
+  if (!empty($account)) {
     $auth = $account->get_auth();
     if (isset($auth['oauth_token']) && isset($auth['oauth_token_secret'])) {
-      return new Twitter(variable_get('twitter_consumer_key', ''), variable_get('twitter_consumer_secret', ''),
-                              $auth['oauth_token'], $auth['oauth_token_secret']);
+      return new Twitter(
+        variable_get('twitter_consumer_key', ''),
+        variable_get('twitter_consumer_secret', ''),
+        $auth['oauth_token'],
+        $auth['oauth_token_secret']
+      );
     }
   }
+
   return FALSE;
 }
 
@@ -141,6 +150,10 @@ function twitter_status_save($status) {
  */
 function twitter_set_status($twitter_account, $status) {
   $twitter = twitter_connect($twitter_account);
+  if (empty($twitter)) {
+    return FALSE;
+  }
+
   return $twitter->statuses_update($status);
 }
 
@@ -166,6 +179,9 @@ function twitter_statuses_oembed($id) {
   else {
     // Request tweet.
     $twitter = twitter_connect();
+    if (empty($twitter)) {
+      return FALSE;
+    }
 
     // Set cache for 2 hours.
     cache_set('twitter_oembed_' . $id, $twitter, 'cache', time() + 2880*60);
@@ -190,6 +206,10 @@ function twitter_fetch_user_timeline($id) {
 
   // Connect to the Twitter's API.
   $twitter = twitter_connect();
+  if (empty($twitter)) {
+    return FALSE;
+  }
+
   $params = array();
   if ($since) {
     $params['since_id'] = $since;
@@ -213,6 +233,9 @@ function twitter_fetch_mentions_timeline($id) {
   $account = entity_load_single('twitter_account', $id);
   // Connect to Twitter's API using the authenticated account to fetch mentions.
   $twitter = twitter_connect($account);
+  if (empty($twitter)) {
+    return FALSE;
+  }
 
   $params = array();
   $statuses = $twitter->mentions_timeline($params);
