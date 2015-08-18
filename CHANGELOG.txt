@@ -78,6 +78,7 @@ By DamienMcKenna: Misspelling of "Twitter" in twitter.pages.inc.
   ensure a full user object is passed along to the various hooks.
 #2249055 by DamienMcKenna: Fixed the paths mentioned in the README.txt.
 #2553107 by DamienMcKenna: Backported Drush improvements from 7.x-5.x.
+#2214867 by DamienMcKenna: Added index on {twitter}.created_time.
 
 
 Twitter 6.x-5.1, 2013-04-19

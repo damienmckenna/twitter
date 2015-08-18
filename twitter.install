@@ -115,8 +115,11 @@ function twitter_schema() {
         'default' => 0,
       ),
     ),
-    'indexes' => array('screen_name' => array('screen_name')),
     'primary key' => array('twitter_id'),
+    'indexes' => array(
+      'screen_name' => array('screen_name'),
+      'created_time' => array('created_time'),
+    ),
   );
 
   $schema['twitter_account'] = array(
@@ -1013,6 +1016,17 @@ function twitter_update_6512() {
   $ret = array();
 
   menu_rebuild();
+
+  return $ret;
+}
+
+/**
+ * Add an extra index on {twitter}.created_time.
+ */
+function twitter_update_6513() {
+  $ret = array();
+
+  db_add_index($ret, 'twitter', 'created_time', array('created_time'));
 
   return $ret;
 }
