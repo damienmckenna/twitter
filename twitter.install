@@ -116,8 +116,11 @@ function twitter_schema() {
         'default' => 0,
       ),
     ),
-    'indexes' => array('screen_name' => array('screen_name')),
     'primary key' => array('twitter_id'),
+    'indexes' => array(
+      'screen_name' => array('screen_name'),
+      'created_time' => array('created_time'),
+    ),
   );
 
   $schema['twitter_account'] = array(
@@ -561,4 +564,13 @@ function twitter_update_7508() {
  */
 function twitter_update_7509() {
   variable_set('menu_rebuild_needed', TRUE);
+}
+
+/**
+ * Add an extra index on {twitter}.created_time.
+ */
+function twitter_update_7510() {
+  if (!db_index_exists('twitter', 'created_time')) {
+    db_add_index('twitter', 'created_time', array('created_time'));
+  }
 }
