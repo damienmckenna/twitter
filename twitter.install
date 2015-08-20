@@ -849,27 +849,53 @@ function twitter_update_6503() {
 
 /**
  * Adds field added_by_uid to twitter_account table.
- *
- * This update has been set empty afterwards as the existing field twitter_account.uid is used.
  */
-function twitter_update_6504() {}
+function twitter_update_6504() {
+  $ret = array();
+
+  $data = array(
+    'description' => "The uid of the user who added this Twitter account",
+    'type' => 'int',
+    'unsigned' => TRUE,
+    'not null' => TRUE,
+    'default' => 0,
+  );
+  db_add_field($ret, 'twitter_account', 'added_by_uid', $data);
+
+  return $ret;
+}
 
 /**
  * Renames twitter_account.added_by_uid to twitter_account.uid.
  *
- * This reverts updates 6502 and 6504.
+ * If the {twitter_account}.uid field already exists, don't do anything.
  */
 function twitter_update_6505() {
   $ret = array();
-  $spec = array(
-   'description' => "The uid of the user who added this Twitter account",
-   'type' => 'int',
-   'unsigned' => TRUE,
-   'not null' => TRUE,
-   'default' => 0,
-  );
 
-  db_change_field($ret, 'twitter_account', 'added_by_uid', 'uid', $spec);
+  // If there is no {twitter_account}.uid field, add it.
+  if (!db_field_exists('twitter_account', 'uid')) {
+    $spec = array(
+     'description' => "The uid of the user who added this Twitter account",
+     'type' => 'int',
+     'unsigned' => TRUE,
+     'not null' => TRUE,
+     'default' => 0,
+    );
+
+    // If the 'added_by_uid' field exists, as was added by update 6504 and needs
+    // to be renamed.
+    if (db_field_exists('twitter_account', 'added_by_uid')) {
+      db_change_field($ret, 'twitter_account', 'added_by_uid', 'uid', $spec);
+    }
+
+    // The old 6504 update was not added, so something strange happened and the
+    // field was not added.
+    else {
+      db_add_field($ret, 'twitter_account', 'uid', $spec);
+    }
+  }
+
   return $ret;
 }
 
