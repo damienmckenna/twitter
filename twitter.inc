@@ -254,18 +254,25 @@ function twitter_fetch_user_timeline($id) {
   $account = twitter_account_load($id);
   $since = db_result(db_query("SELECT MAX(twitter_id) FROM {twitter} WHERE screen_name = '%s'", $account->screen_name));
 
-  // Connect to the Twitter's API.
-  $twitter = twitter_connect();
+  // Connect to the Twitter's API. If the account is authenticated, use that
+  // account, otherwise grab the first authenticated account.
+  if ($account->is_auth()) {
+    $twitter = twitter_connect($account);
+  }
+  else {
+    $twitter = twitter_connect();
+  }
+
+  // That should have worked, but there might have been a problem.
   if (empty($twitter)) {
     return FALSE;
   }
 
+  // Fetch tweets.
   $params = array();
-  if ($since) {
+  if (!empty($since)) {
     $params['since_id'] = $since;
   }
-
-  // Fetch tweets.
   $statuses = $twitter->user_timeline($id, $params);
   foreach ($statuses as $status) {
     twitter_status_save($status);
