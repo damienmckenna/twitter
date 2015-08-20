@@ -287,14 +287,13 @@ function twitter_filter_info() {
   );
   $filters['twitter_hashtag'] = array(
     'title' => t('Twitter #hashtag converter'),
-    'description' => t('Converts Twitter-style #hashtags into links to hashtags.org.'),
+    'description' => t('Converts Twitter-style #hashtags into links to twitter.com. Note: this converts all text prefixed by a "#" symbol into a hashtag link, so it can cause problems with other text.'),
     'process callback' => '_twitter_filter_hashtag',
     'tips callback' => '_twitter_filter_tip_hashtag',
   );
   $filters['twitter_links'] = array(
     'title' => t('Twitter link converter'),
-    'description' => t('Makes links in Twitter messages to be opened in new windows and adds ' .
-                       'rel="nofollow" so these links do not penalize SEO.'),
+    'description' => t('Makes links in Twitter messages to be opened in new windows and adds rel="nofollow" so these links do not penalize SEO.'),
     'process callback' => '_twitter_filter_link',
     'tips callback' => '_twitter_filter_tip_link',
   );

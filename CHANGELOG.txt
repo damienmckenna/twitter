@@ -94,6 +94,8 @@ By DamienMcKenna: Initial CHANGELOG.txt file.
 #2553077 by DamienMcKenna: Option to disable loading the bundled views.
 #2055685 by DamienMcKenna, marthinal: API calls for authenticated users should
   use that account.
+#2388479 by DamienMcKenna: Warn that the hashtag text filter causes problems
+  with other HTML.
 
 
 Twitter 7.x-6.0-alpha2, 2013-03-13
