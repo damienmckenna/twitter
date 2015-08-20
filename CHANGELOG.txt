@@ -84,6 +84,8 @@ By DamienMcKenna: Misspelling of "Twitter" in twitter.pages.inc.
 #2553077 by DamienMcKenna: Option to disable loading the bundled views.
 #2055685 by DamienMcKenna, marthinal: API calls for authenticated users should
   use that account.
+#2388479 by DamienMcKenna: Warn that the hashtag text filter causes problems
+  with other HTML.
 
 
 Twitter 6.x-5.1, 2013-04-19

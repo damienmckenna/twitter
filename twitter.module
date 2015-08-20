@@ -225,11 +225,11 @@ function twitter_filter($op, $delta = 0, $format = -1, $text = '') {
         case 0:
           return t('Converts Twitter-style @usernames into links to Twitter account pages.');
         case 1:
-          return t('Converts Twitter-style #hashtags into links to hashtags.org.');
+          return t('Converts Twitter-style #hashtags into links to twitter.com. Note: this converts all text prefixed by a "#" symbol into a hashtag link, so it can cause problems with other text.');
         case 2:
-          return t('Adds rel="nofollow" and target="_blank" to all links within a Tweet.');
+          return t('Makes links in Twitter messages to be opened in new windows and adds rel="nofollow" so these links do not penalize SEO.');
         case 3:
-          return t('Converts URLs for Twitter status updates into embedded Tweets. Should be sorted after the "HTML Filter" filter, if used.');
+          return t('Converts URLs for Twitter status updates into embedded Tweets. Should be sorted after the "Limit allowed HTML tags" filter, if used.');
         default:
           return;
       }
