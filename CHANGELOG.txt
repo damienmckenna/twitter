@@ -88,6 +88,8 @@ By DamienMcKenna: Misspelling of "Twitter" in twitter.pages.inc.
   with other HTML.
 #1994362 by DamienMcKenna, mgriego: Reverted changes to update 6504, made it
   cover for more scenarios.
+#2025899 by DamienMcKenna: Give a warning if OAuth v2 is installed, v3 is
+  required.
 
 
 Twitter 6.x-5.1, 2013-04-19

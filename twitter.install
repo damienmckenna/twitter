@@ -29,6 +29,27 @@ function twitter_requirements($phase) {
       $requirements['twitter_keys']['value'] = $t('Configured');
       $requirements['twitter_keys']['severity'] = REQUIREMENT_OK;
     }
+
+    // Verify that the OAuth module is installed and supported - if the
+    // lib/OAuth.php file isn't available then the wrong version of OAuth is
+    // installed.
+    $path = drupal_get_path('module', 'oauth_common') . '/lib/OAuth.php';
+    if (!file_exists($path)) {
+      $requirements['twitter_oauth'] = array(
+        'title' => $t('Twitter module requirements'),
+        'severity' => REQUIREMENT_ERROR,
+        'value' => $t('OAuth module v6.x-3.x is required'),
+        'description' => $t('Upgrade to the latest v6.x-3.x release of the <a href="@oauth">OAuth module</a> in order for the Twitter module to work correctly, the v6.x-2.x releases will not work.', array('@oauth' => 'https://www.drupal.org/project/oauth')),
+      );
+    }
+    else {
+      $requirements['twitter_oauth'] = array(
+        'title' => $t('Twitter module requirements'),
+        'severity' => REQUIREMENT_OK,
+        'value' => $t('OAuth module v6.x-3.x is installed'),
+        'description' => $t('A compatible version of the OAuth module is installed.'),
+      );
+    }
   }
   return $requirements;
 }
