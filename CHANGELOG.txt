@@ -111,6 +111,8 @@ By DamienMcKenna: Misspelling of "Twitter" in twitter.pages.inc.
 #1911494 by DamienMcKenna, Sheldon Rampton: Don't assume twitter_connect() works
   every time, identify failures.
 #2553077 by DamienMcKenna: Option to disable loading the bundled views.
+#2055685 by DamienMcKenna, marthinal: API calls for authenticated users should
+  use that account.
 
 
 Twitter 7.x-5.8, 2013-06-03
