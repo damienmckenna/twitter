@@ -27,7 +27,24 @@ function twitter_drush_command() {
     ),
     'aliases' => array('tws'),
     'bootstrap' => DRUSH_BOOTSTRAP_DRUPAL_SITE,
-    );
+  );
+
+  $items['twitter-tweet'] = array(
+    'aliases' => array('tweet'),
+    'callback' => 'twitter_drush_tweet',
+    'drupal dependencies' => array('twitter'),
+    'description' => 'Tweets from command line, using one of authenticated accounts',
+    'arguments' => array(
+      'tweet' => 'Text of the tweet.',
+      'screen_name' => 'Screen name of the account to post from.',
+    ),
+    'examples' => array(
+      'drush tweet \'It works!\'' => 'Post a short test tweet. You will be prompted to choose among authenticated accounts.',
+      'drush tweet \'Now what?\' JohnDoe' => 'Post another short tweet on behalf of \'JohnDoe\'.',
+    ),
+    'bootstrap' => DRUSH_BOOTSTRAP_DRUPAL_FULL,
+  );
+
   return $items;
 }
 
@@ -79,5 +96,61 @@ function drush_twitter_search($keyword) {
       )));
       drush_print('');
     }
+  }
+}
+
+/**
+ * Callback for Drush command 'twitter-tweet'.
+ *
+ * Posts a new status to Twitter using one of authenticated accounts.
+ */
+function twitter_drush_tweet($tweet = NULL, $screen_name = NULL) {
+  // Bail out if no tweet was supplied.
+  if (!isset($tweet)) {
+    return drush_set_error(dt('No tweet text was supplied.'));
+  }
+
+  // Bail out if the tweet is too long.
+  if (drupal_strlen($tweet) > 140) {
+    return drush_set_error(dt('This is !chars chars long, only 140 allowed.', array('!chars' => drupal_strlen($tweet))));
+  }
+
+  module_load_include('inc', 'twitter');
+  $accounts = twitter_load_authenticated_accounts();
+  // Bail out if there are no authenticated accounts.
+  if (empty($accounts)) {
+    return drush_set_error(dt('There seems to be no authenticated Twitter account to post from.'));
+  }
+  // Assemble an array of available authenticated accounts.
+  $available = array();
+  foreach ($accounts as $key => $account) {
+    $available[$account->screen_name] = $key;
+  }
+
+  // Bail out if a screen name was supplied but is not valid.
+  if ($screen_name && !key_exists($screen_name, $available)) {
+    return drush_set_error(dt("'!name' not available. Omit screen name to be prompted to choose among available accounts.", array('!name' => $screen_name)));
+  }
+
+  // If screen name was supplied and is valid, proceed with posting.
+  if ($screen_name) {
+    $choice = $available[$screen_name];
+  }
+  // If no screen name was supplied, prompt for it.
+  else {
+    $choice = drush_choice($available, 'Choose an account to post from.', '!key');
+    if ($choice == FALSE) {
+      return;
+    }
+  }
+
+  // Tweet the message.
+  try {
+    twitter_set_status($accounts[$choice], $tweet);
+    drush_log(dt('If you see nothing above this line, we successfully posted to Twitter.'), 'success');
+  }
+  // Pretend to catch exceptions. Somehow, they're not willing to be catched.
+  catch (TwitterException $e) {
+    drush_set_error(dt('An error occurred when posting to Twitter: @message', array('@message' => $e->getMessage())));
   }
 }

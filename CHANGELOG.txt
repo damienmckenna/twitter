@@ -103,6 +103,7 @@ By DamienMcKenna: Misspelling of "Twitter" in twitter.pages.inc.
 #2357921 by mkolar, DamienMcKenna: Allow the OAuth callback URL to be changed.
 By DamienMcKenna: Renamed the twitter_account_load_all function to
   twitter_load_accounts() to match v6.
+#1890926 by Drave Robber, DamienMcKenna: Drush command for posting tweets.
 
 
 Twitter 6.x-5.1, 2013-04-19
