@@ -100,6 +100,8 @@ By DamienMcKenna: Initial CHANGELOG.txt file.
 #2119759 by djac, DamienMcKenna: Add index on {twitter_account}.uid.
 #2544672 by gurvan, DamienMcKenna: Add classes to linked inserted by the text
   filters.
+#1648970 by DamienMcKenna, HaloFX, wouters_f: Optionally hide the Twitter button
+  on login forms.
 
 
 Twitter 7.x-6.0-alpha2, 2013-03-13
