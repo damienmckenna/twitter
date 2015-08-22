@@ -105,6 +105,7 @@ By DamienMcKenna: Initial CHANGELOG.txt file.
 #1275440 by ultimateboy: Internal API for retweeting a tweet.
 #1943440 by DamienMcKenna, Sheldon Rampton: Added new hooks around the timeline
   loading process.
+#2357921 by mkolar, DamienMcKenna: Allow the OAuth callback URL to be changed.
 
 
 Twitter 7.x-6.0-alpha2, 2013-03-13
