@@ -158,6 +158,16 @@ class Twitter {
       throw new TwitterException($error);
     }
   }
+  
+  /**
+   *
+   * @see https://dev.twitter.com/docs/api/1/post/statuses/retweet/%3Aid
+   */
+  public function retweet($tweet_id, $params = array()) {
+    $params = array();
+    $values = $this->call('statuses/retweet/' . $tweet_id, $params, 'POST', TRUE);
+    return new TwitterStatus($values);
+  }
 
   /**
    * Actually performs a request.
