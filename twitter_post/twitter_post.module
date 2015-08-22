@@ -158,6 +158,9 @@ function twitter_post_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
         else {
           drupal_set_message(t('Could not post to Twitter. Please check the site reports.'));
         }
+
+        // Return something useful for module_invoke().
+        return $status;
       }
       break;
   }
