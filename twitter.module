@@ -72,7 +72,7 @@ function twitter_menu() {
     'description' => 'Twitter settings.',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('twitter_admin_form'),
-    'access arguments' => array('administer site configuration'),
+    'access arguments' => array('administer twitter'),
     'file' => 'twitter.pages.inc',
     'type' => MENU_LOCAL_TASK,
   );
@@ -96,6 +96,9 @@ function twitter_menu() {
  */
 function twitter_permission() {
   return array(
+    'administer twitter' => array(
+      'title' => t('Administer Twitter configuration'),
+    ),
     'add twitter accounts' => array(
       'title' => t('Add Twitter accounts'),
     ),
