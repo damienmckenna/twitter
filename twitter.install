@@ -338,7 +338,10 @@ function twitter_schema() {
         'default' => 0,
       ),
     ),
-    'indexes' => array('screen_name' => array('screen_name')),
+    'indexes' => array(
+      'screen_name' => array('screen_name'),
+      'uid' => array('uid'),
+    ),
     'primary key' => array('twitter_uid'),
   );
 
@@ -1103,6 +1106,17 @@ function twitter_update_6514() {
 
   // Also reload the menus so the new permission is adopted.
   menu_rebuild();
+
+  return $ret;
+}
+
+/**
+ * Add index on {twitter_account}.uid.
+ */
+function twitter_update_6515() {
+  $ret = array();
+
+  db_add_index($ret, 'twitter_account', 'uid', array('uid'));
 
   return $ret;
 }
