@@ -73,8 +73,8 @@ function twitter_account_load($screen_name) {
  * This excludes Twitter accounts added automatically when,
  * for example, pulling mentions of an account from the Twitter API.
  *
- * @return
- *   array of TwitterAccount objects.
+ * @return array
+ *   A list of TwitterAccount objects.
  */
 function twitter_load_accounts() {
   $query = new EntityFieldQuery();
@@ -90,6 +90,20 @@ function twitter_load_accounts() {
   else {
     return array();
   }
+}
+
+/**
+ * Bare list of all account names, keyed by Twitter ID.
+ *
+ * @return array
+ *   A list of TwitterUser objects.
+ */
+function twitter_load_account_names() {
+  $accounts = array();
+  foreach (twitter_load_accounts() as $account) {
+    $accounts[$account->id] = check_plain($account->name);
+  }
+  return $accounts;
 }
 
 /**

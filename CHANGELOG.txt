@@ -106,6 +106,8 @@ By DamienMcKenna: Initial CHANGELOG.txt file.
 #1943440 by DamienMcKenna, Sheldon Rampton: Added new hooks around the timeline
   loading process.
 #2357921 by mkolar, DamienMcKenna: Allow the OAuth callback URL to be changed.
+#2403315 by DamienMcKenna: Custom field type for displaying the most recent
+  tweet by a specific user.
 
 
 Twitter 7.x-6.0-alpha2, 2013-03-13
