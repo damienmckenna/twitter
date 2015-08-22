@@ -117,6 +117,7 @@ By DamienMcKenna: Misspelling of "Twitter" in twitter.pages.inc.
   with other HTML.
 #2222837 by rahulbile, DamienMcKenna: New permission for controlling settings.
 #2119759 by djac, DamienMcKenna: Add index on {twitter_account}.uid.
+#2022561 by Elijah Lynn: Return the status message in hook_node_insert/update.
 
 
 Twitter 7.x-5.8, 2013-06-03

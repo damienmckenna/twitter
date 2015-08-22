@@ -181,6 +181,9 @@ function twitter_post_node_insert($node) {
     catch (TwitterException $e) {
       drupal_set_message(t('An error occurred when posting to Twitter. Check the system log for details.'), 'error');
     }
+
+    // Return something useful for module_invoke().
+    return $status;
   }
 }
 
