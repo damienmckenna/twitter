@@ -282,7 +282,7 @@ function twitter_filter_tips($delta, $format, $long = FALSE) {
 function _twitter_filter_username($text) {
   $prefix = '@';
   $destination = variable_get('twitter_host', TWITTER_HOST) . '/';
-  return _twitter_filter_text($text, $prefix, $destination);
+  return _twitter_filter_text($text, $prefix, $destination, 'twitter-timeline-atreply');
 }
 
 /**
@@ -297,7 +297,7 @@ function _twitter_filter_username($text) {
 function _twitter_filter_hashtag($text) {
   $prefix = '#';
   $destination = variable_get('twitter_search', TWITTER_SEARCH) . '/search?q=%23';
-  return _twitter_filter_text($text, $prefix, $destination);
+  return _twitter_filter_text($text, $prefix, $destination, 'twitter-timeline-hashtag');
 }
 
 /**
@@ -312,7 +312,7 @@ function _twitter_filter_hashtag($text) {
  *   The processed string.
  */
 function _twitter_filter_link($text) {
-  return str_replace("<a ", '<a target="_blank" rel="nofollow" ', $text);
+  return str_replace('<a ', '<a target="_blank" rel="nofollow" class="twitter-timeline-link" ', $text);
 }
 
 /**
@@ -325,13 +325,18 @@ function _twitter_filter_link($text) {
  *   The string to search for.
  * @param string $destination
  *   The URL that the links will point to.
+ * @param string $class
+ *   An optional class to insert into the link.
  *
  * @return string
  *   The processed string.
  */
-function _twitter_filter_text($text, $prefix, $destination) {
+function _twitter_filter_text($text, $prefix, $destination, $class = '') {
   $match = '/(?<!\w)' . preg_quote($prefix, '/') . '(\w+)/ui';
-  $replacement = '<a href="' . $destination . '$1">' . $prefix . '$1</a>';
+  if (!empty($class)) {
+    $class = " class=\"{$class}\"";
+  }
+  $replacement = '<a href="' . $destination . '$1"' . $class . '>' . $prefix . '$1</a>';
   return preg_replace($match, $replacement, $text);
 }
 
