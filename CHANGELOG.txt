@@ -123,6 +123,8 @@ By DamienMcKenna: Misspelling of "Twitter" in twitter.pages.inc.
 #1648970 by DamienMcKenna, HaloFX, wouters_f: Optionally hide the Twitter button
   on login forms.
 #1275440 by ultimateboy: Internal API for retweeting a tweet.
+#1943440 by DamienMcKenna, Sheldon Rampton: Added new hooks around the timeline
+  loading process.
 
 
 Twitter 7.x-5.8, 2013-06-03
