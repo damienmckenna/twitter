@@ -124,7 +124,7 @@ function twitter_account_load($id, $is_uid = TRUE) {
  * @return
  *   array of TwitterUser objects.
  */
-function twitter_account_load_all() {
+function twitter_load_accounts() {
   $accounts = array();
   $result = db_query('SELECT twitter_uid
                       FROM {twitter_account}
@@ -143,7 +143,7 @@ function twitter_account_load_all() {
  *   array of TwitterUser objects.
  */
 function twitter_load_authenticated_accounts() {
-  $accounts = twitter_account_load_all();
+  $accounts = twitter_load_accounts();
   $auth_accounts = array();
   foreach ($accounts as $index => $account) {
     if ($account->is_auth()) {
