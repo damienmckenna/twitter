@@ -629,3 +629,10 @@ function twitter_update_7512() {
     db_add_index('twitter_account', 'uid', array('uid'));
   }
 }
+
+/**
+ * Rebuild the theme cache because the tweet template was renamed.
+ */
+function twitter_update_7513() {
+  drupal_theme_rebuild();
+}

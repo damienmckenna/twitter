@@ -124,7 +124,7 @@ function twitter_theme() {
         'retweet' => NULL,
         'favorite' => NULL,
       ),
-      'template' => 'tweet',
+      'template' => 'twitter_status',
       'path' => drupal_get_path('module', 'twitter'),
     ),
     'twitter_user_accounts' => array(
