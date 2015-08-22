@@ -109,6 +109,8 @@ By DamienMcKenna: Initial CHANGELOG.txt file.
 #2403315 by DamienMcKenna: Custom field type for displaying the most recent
   tweet by a specific user.
 #1890926 by Drave Robber, DamienMcKenna: Drush command for posting tweets.
+#940060 by Jon Pugh, univate, justondoge, DamienMcKenna: Pass the current domain
+  when authenticating.
 
 
 Twitter 7.x-6.0-alpha2, 2013-03-13
