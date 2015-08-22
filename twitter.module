@@ -8,12 +8,13 @@ define ('TWITTER_HOST',         'http://twitter.com');
 define ('TWITTER_API',          'https://api.twitter.com');
 define ('TWITTER_SEARCH',       'http://twitter.com');
 define ('TWITTER_TINYURL',      'http://tinyurl.com');
+define ('TWITTER_OAUTH_CALLBACK_URL', 'twitter/oauth');
 
 /**
  * Implements hook_menu().
  */
 function twitter_menu() {
-  $items['twitter/oauth'] = array(
+  $items[variable_get('twitter_oauth_callback_url', TWITTER_OAUTH_CALLBACK_URL)] = array(
     'title' => 'Twitter OAuth',
     'access callback' => TRUE,
     'page callback' => 'drupal_get_form',

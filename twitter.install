@@ -366,6 +366,7 @@ function twitter_uninstall() {
   variable_del('twitter_search');
   variable_del('twitter_tinyurl');
   variable_del('twitter_use_default_views');
+  variable_del('twitter_oauth_callback_url');
 }
 
 /**
