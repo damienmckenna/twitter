@@ -1058,12 +1058,16 @@ function twitter_update_6511() {
 }
 
 /**
- * Rebuild the menus so that the permissions can be fixed.
+ * Replaced by update 7511.
  */
 function twitter_update_6512() {
   $ret = array();
 
-  menu_rebuild();
+  // This is used to clear the caches. However, because update 7511 also runs
+  // it, remove this one so that any site that runs both updates won't
+  // inadvertently rebuild the menu multiple times, which can be a huge
+  // performance drain.
+  // menu_rebuild();
 
   return $ret;
 }
@@ -1075,6 +1079,30 @@ function twitter_update_6513() {
   $ret = array();
 
   db_add_index($ret, 'twitter', 'created_time', array('created_time'));
+
+  return $ret;
+}
+
+/**
+ * Add the new "administer twitter" permission to all roles that have the
+ * "administer site configuration" permission.
+ */
+function twitter_update_6514() {
+  $ret = array();
+
+  $result = db_query("SELECT rid
+    FROM {permission}
+    WHERE perm = 'administer site configuration'");
+  while ($row = db_fetch_object($result)) {
+    $record = new StdClass();
+    $record->rid = $row->rid;
+    $record->perm = 'administer twitter';
+    $record->tid = 0;
+    drupal_write_record('permission', $record);
+  }
+
+  // Also reload the menus so the new permission is adopted.
+  menu_rebuild();
 
   return $ret;
 }

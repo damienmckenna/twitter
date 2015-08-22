@@ -90,6 +90,7 @@ By DamienMcKenna: Misspelling of "Twitter" in twitter.pages.inc.
   cover for more scenarios.
 #2025899 by DamienMcKenna: Give a warning if OAuth v2 is installed, v3 is
   required.
+#2222837 by rahulbile, DamienMcKenna: New permission for controlling settings.
 
 
 Twitter 6.x-5.1, 2013-04-19
