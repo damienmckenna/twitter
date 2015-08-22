@@ -115,6 +115,7 @@ By DamienMcKenna: Misspelling of "Twitter" in twitter.pages.inc.
   use that account.
 #2388479 by DamienMcKenna: Warn that the hashtag text filter causes problems
   with other HTML.
+#2222837 by rahulbile, DamienMcKenna: New permission for controlling settings.
 
 
 Twitter 7.x-5.8, 2013-06-03
