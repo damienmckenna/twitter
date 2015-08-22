@@ -108,6 +108,7 @@ By DamienMcKenna: Initial CHANGELOG.txt file.
 #2357921 by mkolar, DamienMcKenna: Allow the OAuth callback URL to be changed.
 #2403315 by DamienMcKenna: Custom field type for displaying the most recent
   tweet by a specific user.
+#1890926 by Drave Robber, DamienMcKenna: Drush command for posting tweets.
 
 
 Twitter 7.x-6.0-alpha2, 2013-03-13
