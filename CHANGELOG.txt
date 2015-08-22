@@ -97,6 +97,7 @@ By DamienMcKenna: Initial CHANGELOG.txt file.
 #2388479 by DamienMcKenna: Warn that the hashtag text filter causes problems
   with other HTML.
 #2222837 by rahulbile, DamienMcKenna: New permission for controlling settings.
+#2119759 by djac, DamienMcKenna: Add index on {twitter_account}.uid.
 
 
 Twitter 7.x-6.0-alpha2, 2013-03-13
