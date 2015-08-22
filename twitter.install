@@ -382,6 +382,7 @@ function twitter_uninstall() {
   variable_del('twitter_signin_button');
   variable_del('twitter_signin_register');
   variable_del('twitter_use_default_views');
+  variable_del('twitter_oauth_callback_url');
 }
 
 /**

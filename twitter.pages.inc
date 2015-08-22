@@ -36,10 +36,11 @@ function twitter_admin_form() {
     '#access' => module_exists('oauth_common'),
     '#description' => t('To enable OAuth based access for twitter, you must <a href="@url">register your application</a> with Twitter and add the provided keys here.', array('@url' => 'https://dev.twitter.com/apps/new')),
   );
-  $form['oauth']['callback_url'] = array(
-    '#type' => 'item',
+  $form['oauth']['twitter_oauth_callback_url'] = array(
+    '#type' => 'textfield',
     '#title' => t('Callback URL'),
-    '#value' => url('twitter/oauth', array('absolute' => TRUE)),
+    '#default_value' => variable_get('twitter_oauth_callback_url', TWITTER_OAUTH_CALLBACK_URL),
+    '#description' => t('There is usually no need to modify this. Defaults to "%path".', array('%path' => TWITTER_OAUTH_CALLBACK_URL)),
   );
   $form['oauth']['twitter_consumer_key'] = array(
     '#type' => 'textfield',
