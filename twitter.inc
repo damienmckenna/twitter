@@ -223,10 +223,33 @@ function twitter_fetch_user_timeline($id) {
   if (!empty($since)) {
     $params['since_id'] = $since;
   }
-  $statuses = $twitter->user_timeline($id, $params);
-  foreach ($statuses as $status) {
-    twitter_status_save($status);
+
+  // Trigger hook_twitter_prefetch_timeline().
+  // Doing it this way so that the hook may adjust the parameters.
+  $hook = 'twitter_prefetch_timeline';
+  foreach (module_implements($hook) as $module) {
+    $function = $module . '_' . $hook;
+    if (function_exists($function)) {
+      $function($account, $params);
+    }
   }
+
+  // Load the timeline.
+  $statuses = $twitter->user_timeline($id, $params);
+
+  // Trigger hook_twitter_statuses_alter().
+  drupal_alter('twitter_statuses', $statuses, $account);
+
+  // Save each tweet.
+  if (count($statuses) > 0) {
+    foreach ($statuses as $status) {
+      twitter_status_save($status);
+    }
+  }
+
+  // Trigger hook_twitter_insert_statuses().
+  module_invoke_all('twitter_insert_statuses', $statuses, $account);
+
   // Update Twitter account data.
   if (count($statuses) > 0) {
     twitter_account_save($statuses[0]->user);
