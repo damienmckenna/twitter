@@ -119,19 +119,36 @@ function twitter_account_load($id, $is_uid = TRUE) {
 }
 
 /**
- * Loads all Twitter accounts added by a user.
+ * Loads all Twitter accounts added by a Drupal user.
  *
- * @return
- *   array of TwitterUser objects.
+ * This excludes Twitter accounts added automatically when e.g. pulling mentions
+ * of an account from the Twitter API.
+ *
+ * @return array
+ *   A list of TwitterUser objects.
  */
-function twitter_account_load_all() {
+function twitter_load_accounts() {
   $accounts = array();
   $result = db_query('SELECT twitter_uid
-                      FROM {twitter_account}
-                      WHERE uid <> 0
-                      ORDER BY screen_name');
+    FROM {twitter_account}
+    WHERE uid <> 0
+    ORDER BY screen_name');
   foreach ($result as $account) {
     $accounts[] = twitter_account_load($account->twitter_uid);
+  }
+  return $accounts;
+}
+
+/**
+ * Bare list of all account names, keyed by Twitter ID.
+ *
+ * @return array
+ *   A list of TwitterUser objects.
+ */
+function twitter_load_account_names() {
+  $accounts = array();
+  foreach (twitter_load_accounts() as $account) {
+    $accounts[$account->id] = check_plain($account->name);
   }
   return $accounts;
 }
