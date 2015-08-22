@@ -325,7 +325,10 @@ function twitter_schema() {
         'default' => 0,
       ),
     ),
-    'indexes' => array('screen_name' => array('screen_name')),
+    'indexes' => array(
+      'screen_name' => array('screen_name'),
+      'uid' => array('uid'),
+    ),
     'primary key' => array('twitter_uid'),
   );
 
@@ -615,4 +618,13 @@ function twitter_update_7511() {
 
   // Also reload the menus so the new permission is adopted.
   variable_set('menu_rebuild_needed', TRUE);
+}
+
+/**
+ * Add index on {twitter_account}.uid.
+ */
+function twitter_update_7512() {
+  if (!db_index_exists('twitter_account', 'uid')) {
+    db_add_index('twitter_account', 'uid', array('uid'));
+  }
 }
