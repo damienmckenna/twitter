@@ -123,31 +123,29 @@ function twitter_signin_form_alter(&$form, $form_state, $form_id) {
     $form['#submit'] = array_merge(array('twitter_signin_oauth_callback_submit'), $form['#submit']);
   }
 
-  if ($form_id == 'user_login' || $form_id == 'user_login_block') {
-    // Don't do anything if the credentials haven't been set up yet.
-    $key = variable_get('twitter_consumer_key', '');
-    $secret = variable_get('twitter_consumer_secret', '');
-    if (empty($key) || empty($secret)) {
-      return;
-    }
-
-    $items = array();
-    $items[] = twitter_signin_button();
-
-    $form['twitter_signin'] = array(
-      '#theme' => 'item_list',
-      '#items' => $items,
-      '#attributes' => array('class' => array('twitter_signin')),
-    );
+  // Don't do anything else if the credentials haven't been set up yet.
+  $key = variable_get('twitter_consumer_key', '');
+  $secret = variable_get('twitter_consumer_secret', '');
+  if (empty($key) || empty($secret)) {
+    return;
   }
-  elseif ($form_id == 'user_register_form' && isset($_SESSION['twitter']['values'])) {
-    // Don't do anything if the credentials haven't been set up yet.
-    $key = variable_get('twitter_consumer_key', '');
-    $secret = variable_get('twitter_consumer_secret', '');
-    if (empty($key) || empty($secret)) {
-      return;
-    }
 
+  // Login forms.
+  if ($form_id == 'user_login' || $form_id == 'user_login_block') {
+    if (variable_get('twitter_signin_login', TRUE)) {
+      $items = array();
+      $items[] = twitter_signin_button();
+
+      $form['twitter_signin'] = array(
+        '#theme' => 'item_list',
+        '#items' => $items,
+        '#attributes' => array('class' => array('twitter_signin')),
+      );
+    }
+  }
+
+  // Registration form.
+  elseif ($form_id == 'user_register_form' && isset($_SESSION['twitter']['values'])) {
     $form['account']['name']['#default_value'] = $_SESSION['twitter']['values']['screen_name'];
     $form['auth_twitter'] = array(
       '#type' => 'hidden',

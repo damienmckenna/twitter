@@ -10,11 +10,16 @@
 function twitter_signin_admin_settings($form, &$form_state) {
   $form = array();
 
-  $img_path = drupal_get_path('module', 'twitter_signin') . '/images';
-  $results = file_scan_directory($img_path, '/.png/');
+  $form['twitter_signin_login'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Add a button to user login form'),
+    '#default_value' => variable_get('twitter_signin_login', TRUE),
+    '#description' => t('Only do this if the site has another link to the <a href="!link">redirect page</a>.', array('!link' => url('twitter/redirect'))),
+  );
 
+  $img_path = drupal_get_path('module', 'twitter_signin') . '/images';
   $options = array();
-  foreach ($results as $image) {
+  foreach (file_scan_directory($img_path, '/.png/') as $image) {
     $options[$image->filename] = theme('image', array('path' => $image->uri));
   }
   $options['just-text'] = t('Just the text "Sign in with Twitter"');
@@ -24,6 +29,11 @@ function twitter_signin_admin_settings($form, &$form_state) {
     '#title' => t('Select sign-in button'),
     '#options' => $options,
     '#default_value' => variable_get('twitter_signin_button', 'Sign-in-with-Twitter-lighter-small.png'),
+    '#states' => array(
+      'visible' => array(
+        'input[name="twitter_signin_login"]' => array('checked' => TRUE),
+      ),
+    ),
   );
 
   $form['twitter_signin_register'] = array(
