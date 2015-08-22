@@ -301,6 +301,16 @@ function twitter_fetch_user_timeline($id) {
 }
 
 /**
+ * Retweet a tweet.
+ */
+function twitter_retweet($twitter_account, $tweet_id) {
+  module_load_include('lib.php', 'twitter');
+
+  $twitter = twitter_connect($twitter_account);
+  $twitter->retweet($tweet_id, $twitter_account);
+}
+
+/**
  * Fetches user's mentions of an authenticated account.
  */
 function twitter_fetch_mentions_timeline($id) {
