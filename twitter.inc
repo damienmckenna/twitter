@@ -160,7 +160,7 @@ function twitter_load_account_names() {
  *   array of TwitterUser objects.
  */
 function twitter_load_authenticated_accounts() {
-  $accounts = twitter_account_load_all();
+  $accounts = twitter_load_accounts();
   $auth_accounts = array();
   foreach ($accounts as $index => $account) {
     if ($account->is_auth()) {

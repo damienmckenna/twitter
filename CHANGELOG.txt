@@ -128,6 +128,8 @@ By DamienMcKenna: Misspelling of "Twitter" in twitter.pages.inc.
 #2357921 by mkolar, DamienMcKenna: Allow the OAuth callback URL to be changed.
 #2403315 by DamienMcKenna: Custom field type for displaying the most recent
   tweet by a specific user.
+#2403315 by DamienMcKenna: Follow-up to finish renaming the
+  twitter_account_load_all function to twitter_load_accounts() to match v6.
 
 
 Twitter 7.x-5.8, 2013-06-03
