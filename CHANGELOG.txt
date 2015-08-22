@@ -102,6 +102,7 @@ By DamienMcKenna: Initial CHANGELOG.txt file.
   filters.
 #1648970 by DamienMcKenna, HaloFX, wouters_f: Optionally hide the Twitter button
   on login forms.
+#1275440 by ultimateboy: Internal API for retweeting a tweet.
 
 
 Twitter 7.x-6.0-alpha2, 2013-03-13
