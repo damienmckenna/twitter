@@ -397,9 +397,13 @@ function twitter_auth_account_form_validate($form, &$form_state) {
 function twitter_auth_account_form_submit($form, &$form_state) {
   $key = variable_get('twitter_consumer_key', '');
   $secret = variable_get('twitter_consumer_secret', '');
+  $oauth_callback = variable_get('twitter_oauth_callback_url', TWITTER_OAUTH_CALLBACK_URL);
+  $callback_url = url($oauth_callback, array('absolute' => TRUE));
+
   $twitter = new Twitter($key, $secret);
-  $token = $twitter->get_request_token();
-  if ($token) {
+  $params = array('oauth_callback' => $callback_url);
+  $token = $twitter->get_request_token($params);
+  if (!empty($token)) {
     $_SESSION['twitter_oauth']['token'] = $token;
     $_SESSION['twitter_oauth']['destination'] = $_GET['q'];
     // Check for the overlay.
@@ -482,7 +486,7 @@ function twitter_oauth_callback_form_validate($form, &$form_state) {
 
   module_load_include('inc', 'twitter');
 
-  if ($twitter = new Twitter($key, $secret, $token['oauth_token'], $token['oauth_token_secret'])) {
+  if (!empty($token) && $twitter = new Twitter($key, $secret, $token['oauth_token'], $token['oauth_token_secret'])) {
     //Collect oauth_verifier from url
     if ($response = $twitter->get_access_token($_GET['oauth_verifier'])) {
       $form_state['twitter_oauth']['response'] = $response;

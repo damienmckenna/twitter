@@ -101,7 +101,12 @@ function twitter_signin_redirect() {
   $key = variable_get('twitter_consumer_key', '');
   $secret = variable_get('twitter_consumer_secret', '');
   $twitter = new Twitter($key, $secret);
-  $token = $twitter->get_request_token();
+
+  // Specify a callback_url when generating our token that will match the
+  // current domain.
+  $callback_url =  url('twitter/oauth', array('absolute' => TRUE));
+  $params = array('oauth_callback' => $callback_url);
+  $token = $twitter->get_request_token($params);
 
   $_SESSION['twitter_oauth']['token'] = $token;
   $_SESSION['twitter_oauth']['destination'] = $_SERVER['HTTP_REFERER'];
