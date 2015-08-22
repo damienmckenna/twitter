@@ -73,10 +73,22 @@ function twitter_signin_theme() {
  * Themable function for an image link for signing in with Twitter.
  */
 function theme_twitter_signin_button() {
-  $img_path = drupal_get_path('module', 'twitter_signin') . '/images/';
-  $img = $img_path . variable_get('twitter_signin_button', 'Sign-in-with-Twitter-lighter-small.png');
+  $button = variable_get('twitter_signin_button', 'Sign-in-with-Twitter-lighter-small.png');
+  $class = array('twitter-signin-menuitem');
 
-  return l(theme('image', $img, t('Sign in with Twitter')), 'twitter/redirect', array('html' => TRUE));
+  if ($button == 'just-text') {
+    $item = t('Sign in with Twitter');
+    $class[] = 'twitter-signin-menuitem-just-text';
+    $link = l($item, 'twitter/redirect', array('attributes' => array('class' => $class)));
+  }
+  else {
+    $img = drupal_get_path('module', 'twitter_signin') . '/images/' . $button;
+    $class[] = 'twitter-signin-menuitem-image';
+    $item = theme('image', $img, t('Sign in with Twitter'));
+    $link = l($item, 'twitter/redirect', array('html' => TRUE, 'attributes' => array('class' => $class)));
+  }
+
+  return $link;
 }
 
 /**
@@ -110,29 +122,27 @@ function twitter_signin_form_alter(&$form, $form_state, $form_id) {
     $form['#submit'] = array_merge(array('twitter_signin_oauth_callback_submit'), $form['#submit']);
   }
 
-  if ($form_id == 'user_login' || $form_id == 'user_login_block') {
-    // Don't do anything if the credentials haven't been set up yet.
-    $key = variable_get('twitter_consumer_key', '');
-    $secret = variable_get('twitter_consumer_secret', '');
-    if (empty($key) || empty($secret)) {
-      return;
-    }
-
-    $items = array();
-    $items[] = twitter_signin_button();
-
-    $form['twitter_signin'] = array(
-      '#value' => theme('item_list', $items),
-    );
+  // Don't do anything else if the credentials haven't been set up yet.
+  $key = variable_get('twitter_consumer_key', '');
+  $secret = variable_get('twitter_consumer_secret', '');
+  if (empty($key) || empty($secret)) {
+    return;
   }
-  elseif ($form_id == 'user_register' && isset($_SESSION['twitter']['values'])) {
-    // Don't do anything if the credentials haven't been set up yet.
-    $key = variable_get('twitter_consumer_key', '');
-    $secret = variable_get('twitter_consumer_secret', '');
-    if (empty($key) || empty($secret)) {
-      return;
-    }
 
+  // Login forms.
+  if ($form_id == 'user_login' || $form_id == 'user_login_block') {
+    if (variable_get('twitter_signin_login', TRUE)) {
+      $items = array();
+      $items[] = twitter_signin_button();
+
+      $form['twitter_signin'] = array(
+        '#value' => theme('item_list', $items),
+      );
+    }
+  }
+
+  // Registration form.
+  elseif ($form_id == 'user_register' && isset($_SESSION['twitter']['values'])) {
     $form['name']['#default_value'] = $_SESSION['twitter']['values']['screen_name'];
     $form['auth_twitter'] = array(
       '#type' => 'hidden',

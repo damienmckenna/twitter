@@ -10,11 +10,16 @@
 function twitter_signin_admin_settings() {
   $form = array();
 
-  $img_path = drupal_get_path('module', 'twitter_signin') . '/images';
-  $results = file_scan_directory($img_path, '/.png/');
+  $form['twitter_signin_login'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Add a button to user login form'),
+    '#default_value' => variable_get('twitter_signin_login', TRUE),
+    '#description' => t('Only do this if the site has another link to the <a href="!link">redirect page</a>.', array('!link' => url('twitter/redirect'))),
+  );
 
+  $img_path = drupal_get_path('module', 'twitter_signin') . '/images';
   $options = array();
-  foreach ($results as $image) {
+  foreach (file_scan_directory($img_path, '.png') as $image) {
     $options[$image->basename] = theme('image', $image->filename);
   }
 
