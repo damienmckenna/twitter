@@ -183,13 +183,11 @@ function twitter_post_form($account = NULL) {
 
   drupal_add_js(drupal_get_path('module', 'twitter_post') . '/twitter_post.js');
   $options = array();
-  $twitter_accounts = twitter_load_authenticated_accounts();
+  $twitter_accounts = twitter_load_authenticated_accounts($account->uid);
 
   // Only show Twitter accounts that are either global or are tied to this user.
   foreach ($twitter_accounts as $twitter_account) {
-    if ($twitter_account->is_global || $twitter_account->uid == $account->uid) {
-      $options[$twitter_account->id] = $twitter_account->screen_name;
-    }
+    $options[$twitter_account->id] = $twitter_account->screen_name;
   }
 
   if (count($options)) {

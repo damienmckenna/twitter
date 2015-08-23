@@ -85,12 +85,16 @@ function twitter_actions_set_status_action_form($context = array()) {
 /**
  * Returns a list of authenticated Twitter accounts to be used as options.
  *
+ * This will only list accounts that are either global or are owned by the
+ * current user.
+ *
  * @return
  *   array of screen_name => screen_name entries.
  */
 function twitter_actions_account_options() {
+  global $user;
   module_load_include('inc', 'twitter');
-  $twitter_accounts = twitter_load_authenticated_accounts();
+  $twitter_accounts = twitter_load_authenticated_accounts($user->uid);
   $options = array();
   foreach ($twitter_accounts as $twitter_account) {
     $options[$twitter_account->screen_name] = '@' . $twitter_account->screen_name;
