@@ -60,7 +60,7 @@ function twitter_post_form_alter(&$form, $form_state, $form_id) {
     // Load the default values; use the values submitted by the form if this is
     // a node preview.
     $enabled = variable_get('twitter_post_default_value', 0);
-    if (!empty($node->status)) {
+    if (!empty($node->nid) && !empty($node->status)) {
       $enabled = variable_get('twitter_post_on_update', 0);
     }
     if (isset($form_state['values']['twitter']['post'])) {
