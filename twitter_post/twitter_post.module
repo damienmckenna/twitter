@@ -115,7 +115,7 @@ function twitter_post_form_alter(&$form, $form_state, $form_id) {
 
     // Check the correct option based upon whether the node is published or not.
     $default = variable_get('twitter_post_default_value', 0);
-    if (!empty($node->status)) {
+    if (!empty($node->nid) && !empty($node->status)) {
       $default = variable_get('twitter_post_on_update', 0);
     }
     $form['twitter']['post']['#default_value'] = $default;
