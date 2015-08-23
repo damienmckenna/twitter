@@ -135,6 +135,7 @@ By DamienMcKenna: Misspelling of "Twitter" in twitter.pages.inc.
   when authenticating.
 #1974102 by kerasai, hussainweb, DamienMcKenna: Rename tweet.tpl.php to match
   theme hook.
+#1890926 by DamienMcKenna: Fixes to the Drush 'tweet' command.
 
 
 Twitter 7.x-5.8, 2013-06-03

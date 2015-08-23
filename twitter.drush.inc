@@ -33,7 +33,7 @@ function twitter_drush_command() {
     'aliases' => array('tweet'),
     'callback' => 'twitter_drush_tweet',
     'drupal dependencies' => array('twitter'),
-    'description' => 'Tweets from command line, using one of authenticated accounts',
+    'description' => 'Tweets from command line, using one of the authenticated global accounts or accounts owned by a specific user.',
     'arguments' => array(
       'tweet' => 'Text of the tweet.',
       'screen_name' => 'Screen name of the account to post from.',
@@ -41,6 +41,7 @@ function twitter_drush_command() {
     'examples' => array(
       'drush tweet \'It works!\'' => 'Post a short test tweet. You will be prompted to choose among authenticated accounts.',
       'drush tweet \'Now what?\' JohnDoe' => 'Post another short tweet on behalf of \'JohnDoe\'.',
+      'drush tweet --user=42 \'Now what?\' JohnDoe' => 'Post another short tweet on behalf of \'JohnDoe\', which is owned by user 42.',
     ),
     'bootstrap' => DRUSH_BOOTSTRAP_DRUPAL_FULL,
   );
@@ -115,16 +116,36 @@ function twitter_drush_tweet($tweet = NULL, $screen_name = NULL) {
     return drush_set_error(dt('This is !chars chars long, only 140 allowed.', array('!chars' => drupal_strlen($tweet))));
   }
 
+  // Work out what user account to test from.
+  $uid = intval(drush_get_option('user'));
+  $account = user_load($uid);
+  if (empty($account)) {
+    return dt('User account @uid could not be found.', array('@uid' => $uid));
+  }
+
+  // Verify the user has permission to post to Twitter.
+  if (!user_access('post to twitter', $account)) {
+    return dt('User account @uid does not have permission to tweet.', array('@uid' => $uid));
+  }
+
+  // Get a list of all authenticated accounts for the current user. If no user
+  // was selected it will default to the anonymous user and therefore only list
+  // global accounts.
   module_load_include('inc', 'twitter');
-  $accounts = twitter_load_authenticated_accounts();
+  $accounts = array();
+  foreach (twitter_load_authenticated_accounts($account->uid) as $twitter_account) {
+    $accounts[$twitter_account->screen_name] = $twitter_account;
+  }
+
   // Bail out if there are no authenticated accounts.
   if (empty($accounts)) {
-    return drush_set_error(dt('There seems to be no authenticated Twitter account to post from.'));
-  }
-  // Assemble an array of available authenticated accounts.
-  $available = array();
-  foreach ($accounts as $key => $account) {
-    $available[$account->screen_name] = $key;
+    if ($uid > 0) {
+      $message = dt('There are no global authenticated Twitter accounts or accounts owned by user @uid to post from.', array('@uid' => $uid));
+    }
+    else {
+      $message = dt('There are no global authenticated Twitter accounts to post from.');
+    }
+    return drush_set_error($message);
   }
 
   // Bail out if a screen name was supplied but is not valid.
@@ -132,21 +153,17 @@ function twitter_drush_tweet($tweet = NULL, $screen_name = NULL) {
     return drush_set_error(dt("'!name' not available. Omit screen name to be prompted to choose among available accounts.", array('!name' => $screen_name)));
   }
 
-  // If screen name was supplied and is valid, proceed with posting.
-  if ($screen_name) {
-    $choice = $available[$screen_name];
-  }
   // If no screen name was supplied, prompt for it.
-  else {
-    $choice = drush_choice($available, 'Choose an account to post from.', '!key');
-    if ($choice == FALSE) {
+  if (empty($screen_name)) {
+    $screen_name = drush_choice($accounts, 'Choose an account to post from.', '!key');
+    if ($screen_name === FALSE) {
       return;
     }
   }
 
   // Tweet the message.
   try {
-    twitter_set_status($accounts[$choice], $tweet);
+    twitter_set_status($accounts[$screen_name], $tweet);
     drush_log(dt('If you see nothing above this line, we successfully posted to Twitter.'), 'success');
   }
   // Pretend to catch exceptions. Somehow, they're not willing to be catched.
