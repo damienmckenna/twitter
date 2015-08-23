@@ -154,11 +154,9 @@ function twitter_post_field_attach_form($entity_type, $entity, &$form, &$form_st
   module_load_include('inc', 'twitter');
 
   // Only show Twitter accounts that are either global or are tied to this user.
-  $twitter_accounts = twitter_load_authenticated_accounts();
+  $twitter_accounts = twitter_load_authenticated_accounts($account->uid);
   foreach ($twitter_accounts as $twitter_account) {
-    if ($twitter_account->is_global || $twitter_account->uid == $account->uid) {
-      $options[$twitter_account->twitter_uid] = $twitter_account->screen_name;
-    }
+    $options[$twitter_account->twitter_uid] = $twitter_account->screen_name;
   }
 
   $twitter_uid = key($options);
