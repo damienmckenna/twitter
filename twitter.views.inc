@@ -370,7 +370,8 @@ function twitter_views_data() {
 
 /**
  * @todo Please document this function.
- * @see http://drupal.org/node/1354
+ *
+ * @see https://www.drupal.org/node/1354
  */
 function twitter_views_data_alter(&$data) {
   $data['users']['table']['join']['twitter'] = array(

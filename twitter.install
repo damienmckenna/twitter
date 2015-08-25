@@ -21,7 +21,7 @@ function twitter_requirements($phase) {
       $requirements['twitter_keys']['description'] =
         $t('In order to interact with Twitter, you need to create an application at !twitter_dev and set the generated Application keys at the !twitter_settings_page.',
           array(
-            '!twitter_dev' => l('http://dev.twitter.com', 'http://dev.twitter.com'),
+            '!twitter_dev' => l('https://dev.twitter.com', 'https://dev.twitter.com'),
             '!twitter_settings_page' => l($t('Twitter settings page'), 'admin/config/services/twitter'),
           ));
       $requirements['twitter_keys']['severity'] = REQUIREMENT_ERROR;
@@ -451,10 +451,10 @@ function twitter_update_7500() {
 }
 
 /**
- * Updates twitter_search variable to point to http://twitter.com
+ * Updates twitter_search variable to point to https://twitter.com/
  */
 function twitter_update_7501(&$sandbox) {
-  variable_set('twitter_search', 'http://twitter.com');
+  variable_set('twitter_search', 'https://twitter.com/');
 }
 
 /**
@@ -635,4 +635,14 @@ function twitter_update_7512() {
  */
 function twitter_update_7513() {
   drupal_theme_rebuild();
+}
+
+/**
+ * Updates twitter_search variable to point to https://twitter.com/ if they
+ * still point to the unsecured URL.
+ */
+function twitter_update_7514() {
+  if (variable_get('twitter_search', 'https://twitter.com/') == 'http://twitter.com') {
+    variable_set('twitter_search', 'https://twitter.com/');
+  }
 }
