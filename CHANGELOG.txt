@@ -117,6 +117,7 @@ By DamienMcKenna: Initial CHANGELOG.txt file.
 #2239041 by DamienMcKenna: Replaced all http:// URLs with https:// ones.
 #2556611 by DamienMcKenna: New permission for controlling who has access to
   post using a global account.
+#2556011 by DamienMcKenna: Updated the README.txt file.
 
 
 Twitter 7.x-6.0-alpha2, 2013-03-13
