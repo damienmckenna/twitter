@@ -150,11 +150,12 @@ function twitter_post_field_attach_form($entity_type, $entity, &$form, &$form_st
   $account = user_load($user->uid);
 
   $langcode = empty($langcode) ? entity_language($entity_type, $entity) : $langcode;
-  $options = array();
   module_load_include('inc', 'twitter');
 
   // Only show Twitter accounts that are either global or are tied to this user.
-  $twitter_accounts = twitter_load_authenticated_accounts($account->uid);
+  $access_global = user_access('post to twitter with global account', $account);
+  $twitter_accounts = twitter_load_authenticated_accounts($account->uid, $access_global);
+  $options = array();
   foreach ($twitter_accounts as $twitter_account) {
     $options[$twitter_account->twitter_uid] = $twitter_account->screen_name;
   }

@@ -119,7 +119,7 @@ function twitter_drush_tweet($tweet = NULL, $screen_name = NULL) {
   // Work out what user account to test from.
   $uid = intval(drush_get_option('user'));
   $account = user_load($uid);
-  if (empty($account)) {
+  if ($uid > 0 && empty($account)) {
     return dt('User account @uid could not be found.', array('@uid' => $uid));
   }
 
@@ -132,8 +132,9 @@ function twitter_drush_tweet($tweet = NULL, $screen_name = NULL) {
   // was selected it will default to the anonymous user and therefore only list
   // global accounts.
   module_load_include('inc', 'twitter');
+  $access_global = user_access('post to twitter with global account', $account);
   $accounts = array();
-  foreach (twitter_load_authenticated_accounts($account->uid) as $twitter_account) {
+  foreach (twitter_load_authenticated_accounts($account->uid, $access_global) as $twitter_account) {
     $accounts[$twitter_account->screen_name] = $twitter_account;
   }
 
