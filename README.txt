@@ -10,7 +10,7 @@ with a Twitter account.
 Installation
 ============
 The OAuth module is required:
-  http://drupal.org/project/oauth
+  https://www.drupal.org/project/oauth
 
 When installing the Twitter module without the above being available, Drupal
 will complain about a missing "oauth_common" module. This module is actually
@@ -21,7 +21,7 @@ Once OAuth and Twitter have been enabled, go to admin/config/services/twitter
 and follow the instructions in order to provide the Twitter Application keys.
 
 Further installation instructions can be found at:
-  http://drupal.org/node/1346824
+  https://www.drupal.org/node/1346824
 
 How to use the username and hashtag input filters
 =================================================
@@ -44,7 +44,7 @@ How to post to Twitter
 3. Verify permissions at admin/people/permissions.
 4. Add a Twitter account and try to edit or post content.
 
-Further information can be found at http://drupal.org/node/1016584.
+Further information can be found at https://www.drupal.org/node/1016584.
 
 How to sign in with Twitter
 ===========================

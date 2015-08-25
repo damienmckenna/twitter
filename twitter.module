@@ -4,9 +4,9 @@
  * Provides API integration with the Twitter microblogging service.
  */
 
-define ('TWITTER_HOST',         'http://twitter.com');
+define ('TWITTER_HOST',         'https://twitter.com');
 define ('TWITTER_API',          'https://api.twitter.com');
-define ('TWITTER_SEARCH',       'http://search.twitter.com');
+define ('TWITTER_SEARCH',       'https://search.twitter.com');
 define ('TWITTER_TINYURL',      'http://tinyurl.com');
 define ('TWITTER_OAUTH_CALLBACK_URL', 'twitter/oauth');
 
@@ -324,7 +324,7 @@ function _twitter_filter_tip_username($filter, $format, $long = FALSE) {
  */
 function _twitter_filter_tip_hashtag($format, $long = FALSE) {
   return t('Twitter-style #hashtags are linked to !url.', array(
-    '!url' => '<a href="http://search.twitter.com/">search.twitter.com</a>')
+    '!url' => '<a href="https://search.twitter.com/">search.twitter.com</a>')
   );
 }
 
