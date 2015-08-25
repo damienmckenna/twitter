@@ -158,25 +158,29 @@ function twitter_load_account_names() {
  *
  * @param int $uid
  *   Optional Drupal user ID to limit the results against.
+ * @param bool $access_global
+ *   Whether or not to load the global accounts too.
  *
- * @return
- *   Array of TwitterUser objects. Will always include global accounts, will
+ * @return array
+ *   List of TwitterUser objects. Will always include global accounts, will
  *   optionally include accounts from a specific user.
  */
-function twitter_load_authenticated_accounts($uid = NULL) {
-  $accounts = twitter_load_accounts();
+function twitter_load_authenticated_accounts($uid = NULL, $access_global = TRUE) {
   $auth_accounts = array();
-  foreach ($accounts as $index => $account) {
+
+  // Load every Twitter account, check to see if each one is suitable.
+  foreach (twitter_load_accounts() as $index => $twitter_account) {
     // Only include authenticated accounts.
-    if ($account->is_auth()) {
+    if ($twitter_account->is_auth()) {
       // Only include either global accounts or, if a $uid was passed in,
       // accounts that are owned by the requested user.
-      if ($account->is_global
-        || (isset($uid) && $uid == $account->uid)) {
-        $auth_accounts[] = $account;
+      if (($access_global && $twitter_account->is_global)
+        || (isset($uid) && $uid == $twitter_account->uid)) {
+        $auth_accounts[] = $twitter_account;
       }
     }
   }
+
   return $auth_accounts;
 }
 

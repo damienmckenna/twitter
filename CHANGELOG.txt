@@ -138,6 +138,8 @@ By DamienMcKenna: Misspelling of "Twitter" in twitter.pages.inc.
 #1890926 by DamienMcKenna: Fixes to the Drush 'tweet' command.
 #2556013 by DamienMcKenna: Ensure the 'post' option is respected on new content.
 #2239041 by DamienMcKenna: Replaced all http:// URLs with https:// ones.
+#2556611 by DamienMcKenna: New permission for controlling who has access to
+  post using a global account.
 
 
 Twitter 7.x-5.8, 2013-06-03
