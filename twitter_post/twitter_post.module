@@ -27,7 +27,17 @@ function twitter_post_menu() {
  * Implements hook_perm().
  */
 function twitter_post_perm() {
-  return array('post to twitter');
+  return array(
+    // This permission is limited to only allowing the user to post using
+    // authenticated accounts that they own, they may not post using a "global"
+    // account.
+    'post to twitter',
+    // Ordinarily users are only able to post using their own authenticated
+    // accounts. This option allows users to also post using someone else's
+    // account that is marked as being "global". This permission must be given
+    // in addition to 'Post a message to Twitter'.
+    'post to twitter with global account'
+  );
 }
 
 /**
@@ -119,10 +129,14 @@ function twitter_post_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
         $twitter_account = twitter_account_load($node->twitter['account']);
 
         global $user;
+        $account = user_load($user);
+        $access_global = user_access('post to twitter with global account', $account);
 
-        // Only allow the tweet to be posted if the Twitter account is either a
-        // global account or it is tied to the current user.
-        if (!$twitter_account->is_global && $twitter_account->uid != $user->uid) {
+        // Only allow the tweet to be posted if the Twitter account is either
+        // a global account and the user has access to global accounts, or it
+        // is tied to the current user.
+        if (!(($twitter_account->is_global && $access_global)
+          || $twitter_account->uid == $account->uid)) {
           return;
         }
 
@@ -182,10 +196,11 @@ function twitter_post_form($account = NULL) {
   }
 
   drupal_add_js(drupal_get_path('module', 'twitter_post') . '/twitter_post.js');
-  $options = array();
-  $twitter_accounts = twitter_load_authenticated_accounts($account->uid);
+  $access_global = user_access('post to twitter with global account', $account);
+  $twitter_accounts = twitter_load_authenticated_accounts($account->uid, $access_global);
 
   // Only show Twitter accounts that are either global or are tied to this user.
+  $options = array();
   foreach ($twitter_accounts as $twitter_account) {
     $options[$twitter_account->id] = $twitter_account->screen_name;
   }
