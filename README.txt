@@ -11,7 +11,7 @@ tweeting or login with a Twitter account.
 Installation
 ============
 The OAuth module is required:
-  http://drupal.org/project/oauth
+  https://www.drupal.org/project/oauth
 
 Note: only the v6.x-3.x releases of OAuth have been tested, the older v6.x-2.x
 releases may not work.
@@ -25,7 +25,7 @@ Once OAuth and Twitter have been enabled, go to admin/settings/twitter and
 follow the instructions in order to provide the Twitter Application keys.
 
 Further installation instructions can be found at:
-  http://drupal.org/node/1346824
+  https://www.drupal.org/node/1346824
 
 How to use the username and hashtag input filters
 =================================================
@@ -48,7 +48,7 @@ How to post to Twitter
 3. Verify permissions at admin/user/permissions.
 4. Add a Twitter account and try to edit or post content.
 
-Further information can be found at http://drupal.org/node/1016584.
+Further information can be found at https://www.drupal.org/node/1016584.
 
 How to sign in with Twitter
 ===========================

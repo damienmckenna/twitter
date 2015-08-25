@@ -20,7 +20,7 @@ function twitter_requirements($phase) {
       $requirements['twitter_keys']['description'] =
         $t('In order to interact with Twitter, you need to create an application at !twitter_dev and set the generated Application keys at the !twitter_settings_page.',
           array(
-            '!twitter_dev' => l('http://dev.twitter.com', 'http://dev.twitter.com'),
+            '!twitter_dev' => l('https://dev.twitter.com', 'https://dev.twitter.com'),
             '!twitter_settings_page' => l($t('Twitter settings page'), 'admin/config/services/twitter'),
           ));
       $requirements['twitter_keys']['severity'] = REQUIREMENT_ERROR;
@@ -456,7 +456,8 @@ function twitter_update_6003() {
  * Add NOT NULL constraint and DEFAULT value to the screen_name field of the 
  * twitter and twitter_user tables per updated schema definition.
  *
- * See http://drupal.org/node/336048 and http://drupal.org/node/430442
+ * @see https://www.drupal.org/node/336048
+ * @see https://www.drupal.org/node/430442
  */
 function twitter_update_6004() {
   $ret = array();
@@ -481,10 +482,10 @@ function twitter_update_6004() {
  * converts them to floats in memory while we work with them, but db_placeholders()
  * always treats them as %d and casts them back to dumb signed ints.
  *
- * See http://drupal.org/node/333788 for more info.
- *
  * Instead we'll set the column type to 'string' which is a little like jumping
  * off the Sears Tower because the elevator's broken. But that's life.
+ *
+ * @see https://www.drupal.org/node/333788
  */
 function twitter_update_6005() {
   $ret = array();
@@ -590,8 +591,10 @@ function twitter_update_6006() {
   return $ret;
 }
 
-/*
- * Update the last_refresh column to supply a default value. http://drupal.org/node/301317
+/**
+ * Update the last_refresh column to supply a default value.
+ *
+ * @see https://www.drupal.org/node/301317
  */
 function twitter_update_6007() {
   $ret = array();
@@ -1120,4 +1123,14 @@ function twitter_update_6515() {
   db_add_index($ret, 'twitter_account', 'uid', array('uid'));
 
   return $ret;
+}
+
+/**
+ * Updates twitter_search variable to point to https://twitter.com/ if they
+ * still point to the unsecured URL.
+ */
+function twitter_update_6516() {
+  if (variable_get('twitter_search', 'https://twitter.com/') == 'http://twitter.com') {
+    variable_set('twitter_search', 'https://twitter.com/');
+  }
 }
