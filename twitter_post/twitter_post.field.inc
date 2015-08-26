@@ -34,9 +34,29 @@ function twitter_post_field_widget_info() {
  * Implement hook_field_widget().
  */
 function twitter_post_field_widget_form(&$form, &$form_state, $field, $instance, $langcode, $items, $delta = 0, $element) {
-  $status = isset($items[$delta]['status']) ? $items[$delta]['status'] : FALSE;
-  $default_message = _twitter_post_default_message($instance['entity_type']);
-  $message = isset($items[$delta]['message']) ? $items[$delta]['message'] : $default_message;
+  // Load the default values for this field.
+  if (isset($instance['default_value'][$delta])) {
+    $defaults = $instance['default_value'][$delta];
+  }
+
+  // If none were found, start with some reasonable defaults.
+  else {
+    $defaults = array(
+      'status' => FALSE,
+      'message' => _twitter_post_default_message($instance['entity_type']),
+    );
+  }
+
+  // Work out the field's current values, use the defaults if not found.
+  $status = isset($items[$delta]['status']) ? $items[$delta]['status'] : $defaults['status'];
+  $message = isset($items[$delta]['message']) ? $items[$delta]['message'] : $defaults['message'];
+
+  // If this entity was previously published, disable the status.
+  if (isset($element['#entity']) && !empty($element['#entity']->status)) {
+    $status = FALSE;
+  }
+
+  // Build the basic fields.
   $element += array(
     '#attached' => array(
       'js' => array(drupal_get_path('module', 'twitter_post') . '/twitter_post.js'),
@@ -84,6 +104,88 @@ function twitter_post_field_widget_form(&$form, &$form_state, $field, $instance,
       ),
     ),
   );
+
+  // Only add the account selector when editing a node.
+  if (!empty($element['#entity'])) {
+    global $user;
+    $account = user_load($user->uid);
+
+    $langcode = empty($langcode) ? entity_language($entity_type, $entity) : $langcode;
+    module_load_include('inc', 'twitter');
+
+    // Only show Twitter accounts that are either global or are tied to this
+    // user.
+    $access_global = user_access('post to twitter with global account', $account);
+    $twitter_accounts = twitter_load_authenticated_accounts($account->uid, $access_global);
+    $options = array();
+    foreach ($twitter_accounts as $twitter_account) {
+      $options[$twitter_account->twitter_uid] = $twitter_account->screen_name;
+    }
+
+    // The current value on the form field.
+    $account = isset($items[$delta]['account']) ? $items[$delta]['account'] : NULL;
+
+    // No accounts were found. Oops.
+    if (empty($options)) {
+      // Save the current value.
+      $element += array(
+        'account' => array(
+          '#type' => 'value',
+          '#value' => $account,
+          '#id' => 'twitter-account',
+        ),
+      );
+      // Disable the tweet options.
+      $element['status']['#disabled'] = TRUE;
+      $element['message']['#disabled'] = TRUE;
+      $element['token_help']['#access'] = TRUE;
+    }
+    // If there is more than one account
+    elseif (count($options) > 1) {
+      $element += array(
+        'account' => array(
+          '#type' => 'select',
+          '#title' => t('Twitter Account'),
+          '#options' => $options,
+          '#id' => 'twitter-account',
+          '#default_value' => $account,
+          '#states' => array(
+            'visible' => array(
+              'input#twitter-toggle' => array(
+                'checked' => TRUE,
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+
+    // There's one account, so hardcode it.
+    else {
+      if (empty($account)) {
+        $account = key($options);
+      }
+      $element += array(
+        'account' => array(
+          '#type' => 'value',
+          '#value' => $account,
+          '#id' => 'twitter-account',
+        ),
+        'account_name' => array(
+          '#type' => 'item',
+          '#title' => t('Twitter account'),
+          '#markup' => _twitter_user_profile($screen_name),
+          '#states' => array(
+            'visible' => array(
+              'input#twitter-toggle' => array(
+                'checked' => TRUE,
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+  }
 
   return $element;
 }
@@ -139,87 +241,6 @@ function twitter_post_field_formatter_settings_summary($field, $instance, $view_
  */
 function twitter_post_field_is_empty($item, $field) {
   return strlen($item['message']) == 0;
-}
-
-/**
- * Implements hook_field_attach_form()
- *
- * Adds a select field to choose a Twitter account.
- */
-function twitter_post_field_attach_form($entity_type, $entity, &$form, &$form_state, $langcode) {
-  if (empty($form_state['field'])) {
-    return;
-  }
-
-  global $user;
-  $account = user_load($user->uid);
-
-  $langcode = empty($langcode) ? entity_language($entity_type, $entity) : $langcode;
-  module_load_include('inc', 'twitter');
-
-  // Only show Twitter accounts that are either global or are tied to this user.
-  $access_global = user_access('post to twitter with global account', $account);
-  $twitter_accounts = twitter_load_authenticated_accounts($account->uid, $access_global);
-  $options = array();
-  foreach ($twitter_accounts as $twitter_account) {
-    $options[$twitter_account->twitter_uid] = $twitter_account->screen_name;
-  }
-
-  $twitter_uid = key($options);
-  $screen_name = current($options);
-  foreach ($form_state['field'] as $field_name => $field) {
-    // Loop over each interior field. Cannot assume that the entity's langcode
-    // is the same as the field's because of EntityTranslation and others.
-    foreach ($field as $field_langcode => $field_data) {
-      if (isset($field_data['field']['type']) && ($field_data['field']['type'] == 'twitter_post')) {
-        $element = array();
-        if (count($options) > 1) {
-          $default = NULL;
-          if (isset($entity->{$field_name}[$field_langcode][0])) {
-            $default = $entity->{$field_name}[$field_langcode][0];
-          }
-          $element['account'] = array(
-            '#type' => 'select',
-            '#title' => t('Twitter Account'),
-            '#options' => $options,
-            '#id' => 'twitter-account',
-            '#default_value' => $default,
-            '#states' => array(
-              'visible' => array(
-                'input#twitter-toggle' => array(
-                  'checked' => TRUE,
-                ),
-              ),
-            ),
-          );
-        }
-        else {
-          $element['account'] = array(
-            '#type' => 'value',
-            '#value' => $twitter_uid,
-            '#id' => 'twitter-account',
-          );
-          $element['account_name'] = array(
-            '#type' => 'item',
-            '#title' => t('Twitter account'),
-            '#markup' => _twitter_user_profile($screen_name),
-            '#states' => array(
-              'visible' => array(
-                'input#twitter-toggle' => array(
-                  'checked' => TRUE,
-                ),
-              ),
-            ),
-          );
-        }
-        foreach ($form[$field_name][$field_langcode] as $delta => $field_instance) {
-          if (is_int($delta)) {
-            $form[$field_name][$field_langcode][$delta] += $element;
-          }
-        }
-      }
-    }
-  }
 }
 
 /**
