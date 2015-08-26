@@ -83,7 +83,6 @@ function twitter_post_field_widget_form(&$form, &$form_state, $field, $instance,
         '#dialog' => TRUE,
       ),
     ),
-
   );
 
   return $element;
@@ -121,7 +120,6 @@ function _twitter_post_default_message($entity_type) {
 function twitter_post_field_formatter_settings_summary($field, $instance, $view_mode) {
   $display = $instance['display'][$view_mode];
   $settings = $display['settings'];
-
 
   if ($settings['type'] != 'none') {
     $summary = t('Default status: @status. Message: @message', array(
@@ -170,45 +168,54 @@ function twitter_post_field_attach_form($entity_type, $entity, &$form, &$form_st
   $twitter_uid = key($options);
   $screen_name = current($options);
   foreach ($form_state['field'] as $field_name => $field) {
-    if (isset($field[$langcode]['field']['type']) && ($field[$langcode]['field']['type'] == 'twitter_post')) {
-      $element = array();
-      if (count($options) > 1) {
-        $element['account'] = array(
-          '#type' => 'select',
-          '#title' => t('Twitter Account'),
-          '#options' => $options,
-          '#id' => 'twitter-account',
-          '#states' => array(
-            'visible' => array(
-              'input#twitter-toggle' => array(
-                'checked' => TRUE,
+    // Loop over each interior field. Cannot assume that the entity's langcode
+    // is the same as the field's because of EntityTranslation and others.
+    foreach ($field as $field_langcode => $field_data) {
+      if (isset($field_data['field']['type']) && ($field_data['field']['type'] == 'twitter_post')) {
+        $element = array();
+        if (count($options) > 1) {
+          $default = NULL;
+          if (isset($entity->{$field_name}[$field_langcode][0])) {
+            $default = $entity->{$field_name}[$field_langcode][0];
+          }
+          $element['account'] = array(
+            '#type' => 'select',
+            '#title' => t('Twitter Account'),
+            '#options' => $options,
+            '#id' => 'twitter-account',
+            '#default_value' => $default,
+            '#states' => array(
+              'visible' => array(
+                'input#twitter-toggle' => array(
+                  'checked' => TRUE,
+                ),
               ),
             ),
-          ),
-        );
-      }
-      else {
-        $element['account'] = array(
-          '#type' => 'value',
-          '#value' => $twitter_uid,
-          '#id' => 'twitter-account',
-        );
-        $element['account_name'] = array(
-          '#type' => 'item',
-          '#title' => t('Twitter account'),
-          '#markup' => _twitter_user_profile($screen_name),
-          '#states' => array(
-            'visible' => array(
-              'input#twitter-toggle' => array(
-                'checked' => TRUE,
+          );
+        }
+        else {
+          $element['account'] = array(
+            '#type' => 'value',
+            '#value' => $twitter_uid,
+            '#id' => 'twitter-account',
+          );
+          $element['account_name'] = array(
+            '#type' => 'item',
+            '#title' => t('Twitter account'),
+            '#markup' => _twitter_user_profile($screen_name),
+            '#states' => array(
+              'visible' => array(
+                'input#twitter-toggle' => array(
+                  'checked' => TRUE,
+                ),
               ),
             ),
-          ),
-        );
-      }
-      foreach ($form[$field_name][$langcode] as $delta => $field_instance) {
-        if (is_int($delta)) {
-          $form[$field_name][$langcode][$delta] += $element;
+          );
+        }
+        foreach ($form[$field_name][$field_langcode] as $delta => $field_instance) {
+          if (is_int($delta)) {
+            $form[$field_name][$field_langcode][$delta] += $element;
+          }
         }
       }
     }

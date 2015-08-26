@@ -10,16 +10,35 @@
 function twitter_post_field_schema($field) {
   $columns = array();
   $indexes = array();
-  if ($field['type'] == 'twitter_post_tweet') {
+  if ($field['type'] == 'twitter_post') {
     $columns = array(
       'status' => array(
-        'type' => 'boolean',
+        'description' => 'Control whether or not this entity will be tweeted.',
+        'type' => 'int',
+        'length' => 1,
         'not null' => TRUE,
+        'size' => 'tiny',
+        'default' => 0,
       ),
-      'format' => array(
-        'type' => 'varchar',
-        'length' => 150,
-        'not null' => TRUE,
+      'message' => array(
+        'description' => "The text of the Twitter post.",
+        // Using a blob instead of a text type make it possible for MySQL to
+        // handle extended UTF8 characters, like emoji.
+        // @see https://www.drupal.org/node/1910376
+        'type' => 'blob',
+        // Balance size vs performance. The August 2015 update allows for DMs
+        // that are 10,000 characters in length, so in theory MySQL's default
+        // blob length of 16KB should be enough.
+        'size' => 'normal',
+        'not null' => FALSE,
+      ),
+      'account' => array(
+        'description' => "Unique identifier for the {twitter_account} this tweet is posting from to.",
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'size' => 'big',
+        'not null' => FALSE,
+        'default' => 0,
       ),
     );
     $indexes = array();
@@ -88,4 +107,132 @@ function twitter_post_update_7500() {
   }
 
   drupal_set_message(t('A new permission "Post a message to Twitter using a global account" as been added to all roles that already had the "Post a message to Twitter" permission. It is recommended to <a href="@url">review the permissions</a> to ensure they are appropriate for this site\'s needs.', array('@url' => url('admin/people/permissions'))));
+}
+
+/**
+ * Add the missing 'status' field.
+ */
+function twitter_post_update_7501() {
+  // Get the list of fields.
+  $types = array('twitter_post');
+  $fields = array();
+  foreach (field_info_fields() as $field) {
+    if (in_array($field['type'], $types)) {
+      $fields[] = $field;
+    }
+  }
+
+  if (!empty($fields)) {
+    $spec = array(
+      'description' => 'Control whether or not this entity will be tweeted.',
+      'type' => 'int',
+      'length' => 1,
+      'not null' => TRUE,
+      'size' => 'tiny',
+      'default' => 0,
+    );
+
+    foreach ($fields as $field) {
+      $tables = array(
+        _field_sql_storage_tablename($field),
+        _field_sql_storage_revision_tablename($field),
+      );
+      foreach ($tables as $table) {
+        $column = $field['field_name'] . '_status';
+        if (db_field_exists($table, $column)) {
+          db_change_field($table, $column, $column, $spec);
+        }
+        else {
+          db_add_field($table, $column, $spec);
+        }
+      }
+    }
+
+    return t('Added the missing "account" field.');
+  }
+}
+
+/**
+ * Change the 'message' field to a BLOB.
+ */
+function twitter_post_update_7502() {
+  // Get the list of fields.
+  $types = array('twitter_post');
+  $fields = array();
+  foreach (field_info_fields() as $field) {
+    if (in_array($field['type'], $types)) {
+      $fields[] = $field;
+    }
+  }
+
+  if (!empty($fields)) {
+    $spec = array(
+      'description' => "The text of the Twitter post.",
+      // Using a blob instead of a text type make it possible for MySQL to
+      // handle extended UTF8 characters, like emoji.
+      // @see https://www.drupal.org/node/1910376
+      'type' => 'blob',
+      // Balance size vs performance. The August 2015 update allows for DMs
+      // that are 10,000 characters in length, so in theory MySQL's default
+      // blob length of 16KB should be enough.
+      'size' => 'normal',
+      'not null' => FALSE,
+    );
+
+    foreach ($fields as $field) {
+      $tables = array(
+        _field_sql_storage_tablename($field),
+        _field_sql_storage_revision_tablename($field),
+      );
+      foreach ($tables as $table) {
+        $column = $field['field_name'] . '_message';
+        if (db_field_exists($table, $column)) {
+          db_change_field($table, $column, $column, $spec);
+        }
+        else {
+          db_add_field($table, $column, $spec);
+        }
+      }
+    }
+
+    return t('Converted the "message" field to BLOB.');
+  }
+}
+
+/**
+ * Add the missing 'account' field.
+ */
+function twitter_post_update_7503() {
+  // Get the list of fields.
+  $types = array('twitter_post');
+  $fields = array();
+  foreach (field_info_fields() as $field) {
+    if (in_array($field['type'], $types)) {
+      $fields[] = $field;
+    }
+  }
+
+  if (!empty($fields)) {
+    $spec = array(
+      'description' => "Unique identifier for the {twitter_account} this tweet is posting from to.",
+      'type' => 'int',
+      'unsigned' => TRUE,
+      'size' => 'big',
+      'not null' => FALSE,
+      'default' => 0,
+    );
+
+    foreach ($fields as $field) {
+      $tables = array(
+        _field_sql_storage_tablename($field),
+        _field_sql_storage_revision_tablename($field),
+      );
+      foreach ($tables as $table) {
+        $column = $field['field_name'] . '_account';
+        db_add_field($table, $column, $spec);
+      }
+    }
+
+    return t('Added the missing "account" field.');
+  }
 }

@@ -119,6 +119,7 @@ By DamienMcKenna: Initial CHANGELOG.txt file.
   post using a global account.
 #2556011 by DamienMcKenna: Updated the README.txt file.
 #2557757 by DamienMcKenna: Hide fields if the 'announce' checkbox is unchecked.
+#2557783 by DamienMcKenna: Field schema was broken, wasn't saving anything.
 
 
 Twitter 7.x-6.0-alpha2, 2013-03-13
