@@ -120,6 +120,7 @@ By DamienMcKenna: Initial CHANGELOG.txt file.
 #2556011 by DamienMcKenna: Updated the README.txt file.
 #2557757 by DamienMcKenna: Hide fields if the 'announce' checkbox is unchecked.
 #2557783 by DamienMcKenna: Field schema was broken, wasn't saving anything.
+#2557773 by DamienMcKenna: Posting didn't work when using EntityTranslation.
 #2461937 by DamienMcKenna: Field widget improvements, don't post when editing
   content that's already published.
 
