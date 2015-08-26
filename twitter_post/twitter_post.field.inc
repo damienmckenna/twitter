@@ -38,6 +38,9 @@ function twitter_post_field_widget_form(&$form, &$form_state, $field, $instance,
   $default_message = _twitter_post_default_message($instance['entity_type']);
   $message = isset($items[$delta]['message']) ? $items[$delta]['message'] : $default_message;
   $element += array(
+    '#attached' => array(
+      'js' => array(drupal_get_path('module', 'twitter_post') . '/twitter_post.js'),
+    ),
     'status' => array(
       '#type' => 'checkbox',
       '#title' => t('Announce this post on Twitter'),
@@ -50,13 +53,10 @@ function twitter_post_field_widget_form(&$form, &$form_state, $field, $instance,
       '#default_value' => $message,
       '#description' => t('The given text will be posted to Twitter.com. See Replacement Patterns below for a list of available tokens. Note that if a URL is being included, the maximum length of the rest of the tweet is 117 characters.'),
       '#maxlength' => 150,
-      '#attached' => array(
-        'js' => array(drupal_get_path('module', 'twitter_post') . '/twitter_post.js'),
-      ),
       '#attributes' => array('class' => array('twitter-post-message')),
       '#states' => array(
         'visible' => array(
-          '#twitter-toggle' => array(
+          'input#twitter-toggle' => array(
             'checked' => TRUE,
           ),
         ),
@@ -68,6 +68,13 @@ function twitter_post_field_widget_form(&$form, &$form_state, $field, $instance,
       '#collapsible' => TRUE,
       '#collapsed' => TRUE,
       '#description' => t('Prefer raw-text replacements for text to avoid problems with HTML entities!'),
+      '#states' => array(
+        'visible' => array(
+          'input#twitter-toggle' => array(
+            'checked' => TRUE,
+          ),
+        ),
+      ),
       'help' => array(
         '#theme' => 'token_tree',
         '#token_types' => array($instance['entity_type']),
@@ -171,6 +178,13 @@ function twitter_post_field_attach_form($entity_type, $entity, &$form, &$form_st
           '#title' => t('Twitter Account'),
           '#options' => $options,
           '#id' => 'twitter-account',
+          '#states' => array(
+            'visible' => array(
+              'input#twitter-toggle' => array(
+                'checked' => TRUE,
+              ),
+            ),
+          ),
         );
       }
       else {
@@ -183,6 +197,13 @@ function twitter_post_field_attach_form($entity_type, $entity, &$form, &$form_st
           '#type' => 'item',
           '#title' => t('Twitter account'),
           '#markup' => _twitter_user_profile($screen_name),
+          '#states' => array(
+            'visible' => array(
+              'input#twitter-toggle' => array(
+                'checked' => TRUE,
+              ),
+            ),
+          ),
         );
       }
       foreach ($form[$field_name][$langcode] as $delta => $field_instance) {
