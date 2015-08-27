@@ -59,7 +59,7 @@ function drush_twitter_search($keyword) {
   module_load_include('inc', 'twitter');
   $twitter = twitter_connect();
   if (empty($twitter)) {
-    drush_set_error(dt('At least one Twitter account must be authenticated at admin/config/services/twitter in order to perform requests to the Twitter API.'));
+    drush_set_error(dt('At least one Twitter account must be authenticated at admin/settings/twitter in order to perform requests to the Twitter API.'));
     return FALSE;
   }
 

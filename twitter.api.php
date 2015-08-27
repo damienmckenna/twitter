@@ -75,7 +75,7 @@ function hook_twitter_status_save($status) {}
  *     well be administrator's user ID. The presence of this key, however, lets
  *     you tell apart new accounts from accounts being updated.
  *   For accounts whose import settings are being updated on
- *   admin/config/services/twitter page, $values contains ONLY the following
+ *   admin/settings/twitter page, $values contains ONLY the following
  *   keys:
  *   - screen_name: (string) Twitter "handle", e.g. 'juampytest'.
  *   - import: (int 0|1) whether statuses of this account are being imported.

@@ -186,7 +186,7 @@ function twitter_signin_oauth_callback_submit(&$form, &$form_state) {
     if (!empty($uid)) {
       $account = user_load($uid);
       $edit['authname_twitter'] = $response['user_id'];
-      $edit['name'] = $account['name'];
+      $edit['name'] = $account->name;
       user_save($account, $edit);
       $user = $account;
       $form_state['twitter_oauth']['account'] = $account;
