@@ -279,6 +279,7 @@ function twitter_fetch_user_timeline($id) {
 
   // That should have worked, but there might have been a problem.
   if (empty($twitter)) {
+    watchdog('twitter', 'Unable to authenticate to download tweets for the %name account.', array('%name' => $account->screen_name));
     return FALSE;
   }
 
@@ -335,9 +336,11 @@ function twitter_retweet($twitter_account, $tweet_id) {
  */
 function twitter_fetch_mentions_timeline($id) {
   $account = twitter_account_load($id);
+
   // Connect to Twitter's API using the authenticated account to fetch mentions.
   $twitter = twitter_connect($account);
   if (empty($twitter)) {
+    watchdog('twitter', 'Unable to authenticate to download mentions for the %name account.', array('%name' => $account->screen_name));
     return FALSE;
   }
 

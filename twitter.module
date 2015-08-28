@@ -162,44 +162,57 @@ function twitter_shorten_url($url) {
  */
 function twitter_cron() {
   if (!variable_get('twitter_import', TRUE)) {
+    watchdog('twitter', 'The Twitter module is configured to not download tweets right now.');
     return;
   }
+
+  watchdog('twitter', 'Starting to download tweets.');
 
   // Check if we can connect to Twitter before proceeding.
   module_load_include('inc', 'twitter');
   $twitter = twitter_connect();
   if (empty($twitter)) {
+    watchdog('twitter', 'Unable to connect using an active account, unable to log into Twitter to download new tweets.');
     return FALSE;
   }
 
-  // Pull up a list of Twitter accounts that are flagged for updating,
-  // sorted by how long it's been since we last updated them. This ensures
-  // that the most out-of-date accounts get updated first.
+  // Pull up a list of Twitter accounts that are flagged for updating, sorted
+  // by how long it's been since we last updated them. This ensures that the
+  // most out-of-date accounts get updated first.
   module_load_include('inc', 'twitter');
   $sql  = "SELECT twitter_uid
-           FROM {twitter_account}
-           WHERE uid <> 0 AND import = 1
-           ORDER BY last_refresh ASC";
+     FROM {twitter_account}
+     WHERE uid <> 0 AND import = 1
+     ORDER BY last_refresh ASC";
   $result = db_query_range($sql, 0, 20);
   try {
     while ($account = db_fetch_object($result)) {
       $twitter_account = twitter_account_load($account->twitter_uid);
-      // Fetch tweets and mentions.
+
+      // Fetch tweets for this account.
       twitter_fetch_user_timeline($twitter_account->id);
+
+      // Optionally fetch mentions.
       if ($twitter_account->is_auth() && $twitter_account->mentions) {
         twitter_fetch_mentions_timeline($twitter_account->id);
       }
+
       // Mark the time this account was updated.
       db_query("UPDATE {twitter_account} SET last_refresh = %d WHERE twitter_uid=%d", $_SERVER['REQUEST_TIME'], $twitter_account->id);
     }
-  } catch (TwitterException $e) {
-    // The exception has already been logged so we do not need to do anything here apart from catching it.
+  }
+  catch (TwitterException $e) {
+    // The exception has already been logged so we do not need to do anything
+    // here apart from catching it.
+    watchdog('twitter', 'There was a problem loading tweets during cron.');
   }
 
   // Nuke old statuses.
   if ($age = variable_get('twitter_expire', 0)) {
     db_query('DELETE FROM {twitter} WHERE created_time < %d', time() - $age);
   }
+
+  watchdog('twitter', 'Finished downloading tweets.');
 }
 
 

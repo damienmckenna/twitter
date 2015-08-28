@@ -113,6 +113,7 @@ By DamienMcKenna: Renamed the twitter_account_load_all function to
   post using a global account.
 #2556011 by DamienMcKenna: Updated the README.txt file.
 #2558443 by DamienMcKenna: Fixed D7-style paths in documentation & help text.
+#2558457 by DamienMcKenna: Additional logging during cron.
 
 
 Twitter 6.x-5.1, 2013-04-19
