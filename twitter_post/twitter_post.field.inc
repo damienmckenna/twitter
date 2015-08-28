@@ -123,7 +123,7 @@ function twitter_post_field_widget_form(&$form, &$form_state, $field, $instance,
     }
 
     // The current value on the form field.
-    $account = isset($items[$delta]['account']) ? $items[$delta]['account'] : NULL;
+    $twitter_uid = isset($items[$delta]['account']) ? $items[$delta]['account'] : NULL;
 
     // No accounts were found. Oops.
     if (empty($options)) {
@@ -131,7 +131,7 @@ function twitter_post_field_widget_form(&$form, &$form_state, $field, $instance,
       $element += array(
         'account' => array(
           '#type' => 'value',
-          '#value' => $account,
+          '#value' => $twitter_uid,
           '#id' => 'twitter-account',
         ),
       );
@@ -140,6 +140,7 @@ function twitter_post_field_widget_form(&$form, &$form_state, $field, $instance,
       $element['message']['#disabled'] = TRUE;
       $element['token_help']['#access'] = TRUE;
     }
+
     // If there is more than one account
     elseif (count($options) > 1) {
       $element += array(
@@ -162,13 +163,14 @@ function twitter_post_field_widget_form(&$form, &$form_state, $field, $instance,
 
     // There's one account, so hardcode it.
     else {
-      if (empty($account)) {
-        $account = key($options);
+      if (empty($twitter_uid)) {
+        $twitter_uid = key($options);
       }
+      $screen_name = twitter_screen_name_from_uid($twitter_uid);
       $element += array(
         'account' => array(
           '#type' => 'value',
-          '#value' => $account,
+          '#value' => $twitter_uid,
           '#id' => 'twitter-account',
         ),
         'account_name' => array(

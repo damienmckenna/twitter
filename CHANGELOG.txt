@@ -123,6 +123,7 @@ By DamienMcKenna: Initial CHANGELOG.txt file.
 #2557773 by DamienMcKenna: Posting didn't work when using EntityTranslation.
 #2461937 by DamienMcKenna: Field widget improvements, don't post when editing
   content that's already published.
+#2559129 by DamienMcKenna: Fixed error when only one account to post from.
 
 
 Twitter 7.x-6.0-alpha2, 2013-03-13
