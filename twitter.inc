@@ -243,6 +243,7 @@ function twitter_fetch_user_timeline($id) {
 
   // That should have worked, but there might have been a problem.
   if (empty($twitter)) {
+    watchdog('twitter', 'Unable to authenticate to download tweets for the %name account.', array('%name' => $account->screen_name));
     return FALSE;
   }
 
@@ -302,6 +303,7 @@ function twitter_fetch_mentions_timeline($id) {
   // Connect to Twitter's API using the authenticated account to fetch mentions.
   $twitter = twitter_connect($account);
   if (empty($twitter)) {
+    watchdog('twitter', 'Unable to authenticate to download mentions for the %name account.', array('%name' => $account->screen_name));
     return FALSE;
   }
 
@@ -369,4 +371,23 @@ function twitter_account_delete($twitter_uid) {
   $query->condition('authname', $twitter_uid);
   $query->condition('module', 'twitter');
   $query->execute();
+}
+
+/**
+ * Obtain an account screen name from its Twitter UID.
+ *
+ * @param int $twitter_uid
+ *   The Twitter user account ID.
+ *
+ * @return string
+ *   The corresponding Twitter screen name.
+ */
+function twitter_screen_name_from_uid($twitter_uid) {
+  return db_select('twitter_account', 'ta')
+    ->fields('ta', array('screen_name'))
+    ->condition('twitter_uid', $twitter_uid)
+    // Only want the first occurrence of this screen name.
+    ->range(0, 1)
+    ->execute()
+    ->fetchField();
 }

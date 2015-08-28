@@ -231,18 +231,23 @@ function twitter_shorten_url($url) {
  */
 function twitter_cron() {
   if (!variable_get('twitter_import', TRUE)) {
+    watchdog('twitter', 'The Twitter module is configured to not download tweets right now.');
     return;
   }
+
+  watchdog('twitter', 'Starting to download tweets.');
+
   // Check if we can connect to Twitter before proceeding.
   module_load_include('inc', 'twitter');
   $twitter = twitter_connect();
   if (empty($twitter)) {
+    watchdog('twitter', 'Unable to connect using an active account, unable to log into Twitter to download new tweets.');
     return FALSE;
   }
 
-  // Pull up a list of Twitter accounts that are flagged for updating,
-  // sorted by how long it's been since we last updated them. This ensures
-  // that the most out-of-date accounts get updated first.
+  // Pull up a list of Twitter accounts that are flagged for updating, sorted
+  // by how long it's been since we last updated them. This ensures that the
+  // most out-of-date accounts get updated first.
   $query = new EntityFieldQuery();
   $query->entityCondition('entity_type', 'twitter_account')
     ->propertyCondition('uid', 0, '<>')
@@ -256,17 +261,22 @@ function twitter_cron() {
     // Iterate over Twitter accounts and fetch tweets.
     try {
       foreach ($twitter_accounts as $twitter_account) {
-        // Fetch tweets and mentions.
+        // Fetch tweets for this account.
         twitter_fetch_user_timeline($twitter_account->twitter_uid);
+
+        // Optionally fetch mentions.
         if ($twitter_account->is_auth() && $twitter_account->mentions) {
           twitter_fetch_mentions_timeline($twitter_account->twitter_uid);
         }
+
         // Mark the time this account was updated.
         $twitter_account->last_refresh = REQUEST_TIME;
         twitter_account_save($twitter_account);
       }
-    } catch (TwitterException $e) {
-      // The exception has already been logged so we do not need to do anything here apart from catching it.
+    }
+    catch (TwitterException $e) {
+      // The exception has already been logged so we do not need to do anything
+      // here apart from catching it.
     }
   }
 
@@ -278,6 +288,8 @@ function twitter_cron() {
     $result = $query->execute();
     entity_delete_multiple('twitter_account', array_keys($result['twitter_account']));
   }
+
+  watchdog('twitter', 'Finished downloading tweets.');
 }
 
 /**
