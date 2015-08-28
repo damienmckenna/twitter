@@ -222,12 +222,13 @@ class Twitter {
   /********************************************//**
    * Helpers used to convert responses in objects
    ***********************************************/
+
   /**
-   * Get an array of TwitterStatus objects from an API endpoint
+   * Get an array of TwitterStatus objects from an API endpoint.
    */
   protected function get_statuses($path, $params = array()) {
     $values = $this->call($path, $params, 'GET');
-    // Check on successfull call
+    // Check on successfull call.
     if ($values) {
       $statuses = array();
       foreach ($values as $status) {
@@ -235,9 +236,9 @@ class Twitter {
       }
       return $statuses;
     }
-    // Call might return FALSE , e.g. on failed authentication
+    // Call might return FALSE, e.g. on failed authentication.
     else {
-      // As call allready throws an exception, we can return an empty array to
+      // As call already throws an exception, we can return an empty array to
       // break no code.
       return array();
     }

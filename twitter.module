@@ -199,8 +199,12 @@ function twitter_shorten_url($url) {
  */
 function twitter_cron() {
   if (!variable_get('twitter_import', TRUE)) {
+    watchdog('twitter', 'The Twitter module is configured to not download tweets right now.');
     return;
   }
+
+  watchdog('twitter', 'Starting to download tweets.');
+
   // Check if we can connect to Twitter before proceeding.
   module_load_include('inc', 'twitter');
   $twitter = twitter_connect();
@@ -208,22 +212,25 @@ function twitter_cron() {
     return FALSE;
   }
 
-  // Pull up a list of Twitter accounts that are flagged for updating,
-  // sorted by how long it's been since we last updated them. This ensures
-  // that the most out-of-date accounts get updated first.
+  // Pull up a list of Twitter accounts that are flagged for updating, sorted
+  // by how long it's been since we last updated them. This ensures that the
+  // most out-of-date accounts get updated first.
   $result = db_query_range("SELECT twitter_uid
-                            FROM {twitter_account}
-                            WHERE uid <> 0 AND import = 1
-                            ORDER BY last_refresh ASC",
-                            0, 20);
+    FROM {twitter_account}
+    WHERE uid <> 0 AND import = 1
+    ORDER BY last_refresh ASC",
+    0, 20);
   try {
     foreach ($result as $account) {
-      // Fetch tweets and mentions.
+      // Fetch tweets for this account.
       twitter_fetch_user_timeline($account->twitter_uid);
       $twitter_account = twitter_account_load($account->twitter_uid);
+
+      // Optionally fetch mentions.
       if ($twitter_account->is_auth() && $twitter_account->mentions) {
         twitter_fetch_mentions_timeline($twitter_account->id);
       }
+
       // Mark the time this account was updated.
       db_update('twitter_account')
         ->fields(array(
@@ -232,8 +239,10 @@ function twitter_cron() {
         ->condition('twitter_uid', $twitter_account->id)
         ->execute();
     }
-  } catch (TwitterException $e) {
-    // The exception has already been logged so we do not need to do anything here apart from catching it.
+  }
+  catch (TwitterException $e) {
+    // The exception has already been logged so we do not need to do anything
+    // here apart from catching it.
   }
 
   // Nuke old statuses.
@@ -242,6 +251,8 @@ function twitter_cron() {
       ->condition('created_time', REQUEST_TIME - $age, '<')
       ->execute();
   }
+
+  watchdog('twitter', 'Finished downloading tweets.');
 }
 
 /**
