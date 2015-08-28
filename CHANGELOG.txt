@@ -142,6 +142,7 @@ By DamienMcKenna: Misspelling of "Twitter" in twitter.pages.inc.
   post using a global account.
 #2556011 by DamienMcKenna: Updated the README.txt file.
 #2558457 by DamienMcKenna: Additional logging during cron.
+#2559153 by DamienMcKenna: Incorrect use of user_load() when posting tweets.
 
 
 Twitter 7.x-5.8, 2013-06-03
