@@ -46,7 +46,7 @@ function twitter_post_entity_insert($entity, $entity_type) {
           $twitter_account = entity_load_single('twitter_account', $field_instance['account']);
 
           global $user;
-          $account = user_load($user);
+          $account = user_load($user->uid);
           $access_global = user_access('post to twitter with global account', $account);
 
           // Only allow the tweet to be posted if the Twitter account is either

@@ -125,6 +125,7 @@ By DamienMcKenna: Initial CHANGELOG.txt file.
   content that's already published.
 #2559129 by DamienMcKenna: Fixed error when only one account to post from.
 #2558457 by DamienMcKenna: Additional logging during cron.
+#2559153 by DamienMcKenna: Incorrect use of user_load() when posting tweets.
 
 
 Twitter 7.x-6.0-alpha2, 2013-03-13
