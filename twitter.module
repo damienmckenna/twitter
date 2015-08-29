@@ -203,21 +203,24 @@ function twitter_cron() {
     return;
   }
 
-  watchdog('twitter', 'Starting to download tweets.');
-
-  // Check if we can connect to Twitter before proceeding.
   module_load_include('inc', 'twitter');
-  $twitter = twitter_connect();
+
+  // Verify that there's at least one authenticated account that can be used to
+  // do API calls.
+  $twitter = twitter_connect(NULL, TRUE, TRUE);
   if (empty($twitter)) {
+    watchdog('twitter', 'Unable to find an authenticated account to do API calls from.');
     return FALSE;
   }
+
+  watchdog('twitter', 'Starting to download tweets.');
 
   // Pull up a list of Twitter accounts that are flagged for updating, sorted
   // by how long it's been since we last updated them. This ensures that the
   // most out-of-date accounts get updated first.
   $result = db_query_range("SELECT twitter_uid
     FROM {twitter_account}
-    WHERE uid <> 0 AND import = 1
+    WHERE uid > 0 AND import = 1
     ORDER BY last_refresh ASC",
     0, 20);
   try {
@@ -243,6 +246,7 @@ function twitter_cron() {
   catch (TwitterException $e) {
     // The exception has already been logged so we do not need to do anything
     // here apart from catching it.
+    watchdog('twitter', 'There was a problem loading tweets during cron.');
   }
 
   // Nuke old statuses.
@@ -459,6 +463,7 @@ function _twitter_filter_embed_tweet($text, $filter) {
   // replacements are made.
   $open_tag = '';
 
+  // Loop through all of the text chunks.
   foreach ($chunks as $i => $chunk) {
     if ($chunk_type == 'text') {
       // Only process this text if there are no unclosed $ignore_tags.
@@ -494,6 +499,7 @@ function _twitter_filter_embed_tweet($text, $filter) {
       $chunk_type = 'text';
     }
   }
+
   return implode($chunks);
 }
 

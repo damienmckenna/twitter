@@ -577,7 +577,7 @@ function twitter_non_auth_account_form_validate($form, &$form_state) {
  */
 function twitter_non_auth_account_form_submit($form, &$form_state) {
   $name = $form_state['values']['screen_name'];
-  $twitter = twitter_connect();
+  $twitter = twitter_connect(NULL, TRUE, TRUE);
   if (!$twitter) {
    return FALSE;
   }
