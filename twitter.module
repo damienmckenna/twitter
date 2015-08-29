@@ -166,28 +166,30 @@ function twitter_cron() {
     return;
   }
 
-  watchdog('twitter', 'Starting to download tweets.');
-
-  // Check if we can connect to Twitter before proceeding.
   module_load_include('inc', 'twitter');
-  $twitter = twitter_connect();
+
+  // Verify that there's at least one authenticated account that can be used to
+  // do API calls.
+  $twitter = twitter_connect(NULL, TRUE, TRUE);
   if (empty($twitter)) {
-    watchdog('twitter', 'Unable to connect using an active account, unable to log into Twitter to download new tweets.');
+    watchdog('twitter', 'Unable to find an authenticated account to do API calls from.');
     return FALSE;
   }
+
+  watchdog('twitter', 'Starting to download tweets.');
 
   // Pull up a list of Twitter accounts that are flagged for updating, sorted
   // by how long it's been since we last updated them. This ensures that the
   // most out-of-date accounts get updated first.
   module_load_include('inc', 'twitter');
-  $sql  = "SELECT twitter_uid
-     FROM {twitter_account}
-     WHERE uid <> 0 AND import = 1
-     ORDER BY last_refresh ASC";
-  $result = db_query_range($sql, 0, 20);
+  $result = db_query_range("SELECT twitter_uid
+    FROM {twitter_account}
+    WHERE uid > 0 AND import = 1
+    ORDER BY last_refresh ASC",
+    0, 20);
   try {
-    while ($account = db_fetch_object($result)) {
-      $twitter_account = twitter_account_load($account->twitter_uid);
+    while ($twitter_account = db_fetch_object($result)) {
+      $twitter_account = twitter_account_load($twitter_account->twitter_uid);
 
       // Fetch tweets for this account.
       twitter_fetch_user_timeline($twitter_account->id);
@@ -419,6 +421,7 @@ function _twitter_filter_embed_tweet($text) {
   // replacements are made.
   $open_tag = '';
 
+  // Loop through all of the text chunks.
   foreach ($chunks as $i => $chunk) {
     if ($chunk_type == 'text') {
       // Only process this text if there are no unclosed $ignore_tags.
@@ -454,6 +457,7 @@ function _twitter_filter_embed_tweet($text) {
       $chunk_type = 'text';
     }
   }
+
   return implode($chunks);
 }
 

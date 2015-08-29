@@ -10,31 +10,37 @@ require_once('twitter.lib.php');
 /**
  * Connect to the Twitter API.
  *
- * @param object $account
+ * @param object $twitter_account
  *   An authenticated twitter_account object to be used to authenticate against
  *   Twitter.
+ * @param bool $access_global
+ *   Whether or not to load the global accounts too.
+ * @param bool $force
+ *   Loads accounts regardless of other access limits. Should be used with care
+ *   and only for limited scenarios that do would not pose a security risk.
  *
  * @return mixed
  *   A Twitter object ready to be used to query the Twitter API or FALSE.
  */
-function twitter_connect($account = NULL) {
+function twitter_connect($twitter_account = NULL, $access_global = FALSE, $force = FALSE) {
   // If no account was specified, load the first authenticated account.
-  if (empty($account)) {
-    $twitter_uid = db_result(db_query("SELECT twitter_uid
-      FROM {twitter_account}
-      WHERE oauth_token <> '' && oauth_token IS NOT NULL
-        AND oauth_token_secret <> '' && oauth_token_secret IS NOT NULL"));
+  if (empty($twitter_account)) {
+    // Load all authenticated accounts, passing in the same access requirements.
+    $accounts = twitter_load_authenticated_accounts(NULL, $access_global, $force);
 
-    if (empty($twitter_uid)) {
+    // If no accounts were found, there's a problem.
+    if (empty($accounts)) {
       watchdog('twitter', 'There are no authenticated Twitter accounts to use for API connections.');
     }
+
+    // Grab the first authenticated account.
     else {
-      $account = twitter_account_load($twitter_uid);
+      $twitter_account = reset($accounts);
     }
   }
 
-  if (!empty($account)) {
-    $auth = $account->get_auth();
+  if (!empty($twitter_account)) {
+    $auth = $twitter_account->get_auth();
     if (isset($auth['oauth_token']) && isset($auth['oauth_token_secret'])) {
       return new Twitter(
         variable_get('twitter_consumer_key', ''),
@@ -143,12 +149,15 @@ function twitter_load_accounts() {
  *   Optional Drupal user ID to limit the results against.
  * @param bool $access_global
  *   Whether or not to load the global accounts too.
+ * @param bool $force
+ *   Loads accounts regardless of other access limits. Should be used with care
+ *   and only for limited scenarios that do would not pose a security risk.
  *
  * @return array
  *   List of TwitterUser objects. Will always include global accounts, will
  *   optionally include accounts from a specific user.
  */
-function twitter_load_authenticated_accounts($uid = NULL, $access_global = TRUE) {
+function twitter_load_authenticated_accounts($uid = NULL, $access_global = TRUE, $force = FALSE) {
   $auth_accounts = array();
 
   // Load every Twitter account, check to see if each one is suitable.
@@ -157,7 +166,8 @@ function twitter_load_authenticated_accounts($uid = NULL, $access_global = TRUE)
     if ($twitter_account->is_auth()) {
       // Only include either global accounts or, if a $uid was passed in,
       // accounts that are owned by the requested user.
-      if (($access_global && $twitter_account->is_global)
+      if ($force
+        || ($access_global && $twitter_account->is_global)
         || (isset($uid) && $uid == $twitter_account->uid)) {
         $auth_accounts[] = $twitter_account;
       }
@@ -224,40 +234,27 @@ function twitter_set_status($twitter_account, $status) {
 /**
  * Retrieve an embedded Tweet.
  *
- * @param $id
+ * @param int $tweet_id
  *   Status ID of the tweet.
  *
  * @return array
  *   Response from Twitter API.
  */
-function twitter_statuses_oembed($id) {
-  if ($cache = cache_get('twitter_oembed_' . $id)) {
-    if ($cache->expire > time()) {
-      // Return cache.
-      $twitter = $cache->data;
-    }
-    else {
-      cache_clear_all('twitter_oembed_' . $id, 'cache');
-    }
+function twitter_statuses_oembed($tweet_id) {
+  // Need to request any global account, though preferably a global account.
+  $twitter = twitter_connect(NULL, TRUE, TRUE);
+  if (empty($twitter)) {
+    watchdog('twitter', 'Unable to load an authenticated Twitter account to embed a tweet.');
+    return FALSE;
   }
+
   else {
-    // Request tweet.
-    $twitter = twitter_connect();
-    if (empty($twitter)) {
-        return FALSE;
-    }
-
-    // Set cache for 2 hours.
-    cache_set('twitter_oembed_' . $id, $twitter, 'cache', time() + 2880*60);
-  }
-
-  if (!empty($twitter)) {
     $params = array(
       'hide_media' => !variable_get('twitter_media', FALSE),
       'hide_thread' => !variable_get('twitter_conversation', FALSE),
       'align' => variable_get('twitter_align', 'none'),
     );
-    return $twitter->statuses_oembed($id, $params);
+    return $twitter->statuses_oembed($tweet_id, $params);
   }
 }
 
@@ -265,21 +262,21 @@ function twitter_statuses_oembed($id) {
  * Fetches a user's timeline.
  */
 function twitter_fetch_user_timeline($id) {
-  $account = twitter_account_load($id);
-  $since = db_result(db_query("SELECT MAX(twitter_id) FROM {twitter} WHERE screen_name = '%s'", $account->screen_name));
+  $twitter_account = twitter_account_load($id);
+  $since = db_result(db_query("SELECT MAX(twitter_id) FROM {twitter} WHERE screen_name = '%s'", $twitter_account->screen_name));
 
   // Connect to the Twitter's API. If the account is authenticated, use that
   // account, otherwise grab the first authenticated account.
-  if ($account->is_auth()) {
-    $twitter = twitter_connect($account);
+  if ($twitter_account->is_auth()) {
+    $twitter = twitter_connect($twitter_account);
   }
   else {
-    $twitter = twitter_connect();
+    $twitter = twitter_connect(NULL, TRUE, TRUE);
   }
 
   // That should have worked, but there might have been a problem.
   if (empty($twitter)) {
-    watchdog('twitter', 'Unable to authenticate to download tweets for the %name account.', array('%name' => $account->screen_name));
+    watchdog('twitter', 'Unable to authenticate to download tweets for the %name account.', array('%name' => $twitter_account->screen_name));
     return FALSE;
   }
 
@@ -303,17 +300,19 @@ function twitter_fetch_user_timeline($id) {
   $statuses = $twitter->user_timeline($id, $params);
 
   // Trigger hook_twitter_statuses_alter().
-  drupal_alter('twitter_statuses', $statuses, $account);
+  drupal_alter('twitter_statuses', $statuses, $twitter_account);
 
   // Save each tweet.
   if (count($statuses) > 0) {
+    watchdog('twitter', 'Downloaded %count tweets for the %name account.', array('%count' => count($statuses), '%name' => $twitter_account->screen_name));
+
     foreach ($statuses as $status) {
       twitter_status_save($status);
     }
   }
 
   // Trigger hook_twitter_insert_statuses().
-  module_invoke_all('twitter_insert_statuses', $statuses, $account);
+  module_invoke_all('twitter_insert_statuses', $statuses, $twitter_account);
 
   // Update account details.
   if (count($statuses) > 0) {
@@ -335,10 +334,10 @@ function twitter_retweet($twitter_account, $tweet_id) {
  * Fetches user's mentions of an authenticated account.
  */
 function twitter_fetch_mentions_timeline($id) {
-  $account = twitter_account_load($id);
+  $twitter_account = twitter_account_load($id);
 
   // Connect to Twitter's API using the authenticated account to fetch mentions.
-  $twitter = twitter_connect($account);
+  $twitter = twitter_connect($twitter_account);
   if (empty($twitter)) {
     watchdog('twitter', 'Unable to authenticate to download mentions for the %name account.', array('%name' => $account->screen_name));
     return FALSE;

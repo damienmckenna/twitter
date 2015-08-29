@@ -115,6 +115,8 @@ By DamienMcKenna: Renamed the twitter_account_load_all function to
 #2558443 by DamienMcKenna: Fixed D7-style paths in documentation & help text.
 #2558457 by DamienMcKenna: Additional logging during cron.
 #2559153 by DamienMcKenna: Incorrect use of user_load() when posting tweets.
+#2559239 by DamienMcKenna: Fixed embedded tweets, other functionality after
+  recent changes to twitter_connect().
 
 
 Twitter 6.x-5.1, 2013-04-19
