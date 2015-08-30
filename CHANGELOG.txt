@@ -1,5 +1,5 @@
-Twitter 7.x-6.x-dev, xxxx-xx-xx
--------------------------------
+Twitter 7.x-6.0, 2015-08-30
+---------------------------
 #1963524 by Sheldon Rampton: Fixed search_tweets() method not working in
   Twitter API library.
 #2015965 by Jaypan, juampy: Twitter settings page cannot be overridden.
