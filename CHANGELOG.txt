@@ -1,5 +1,5 @@
-Twitter 6.x-5.x-dev, xxxx-xx-xx
--------------------------------
+Twitter 6.x-5.2, 2015-08-30
+---------------------------
 #1045304 by escore: Rules: Post to current user's Twitter account.
 By DamienMcKenna: Initial CHANGELOG.txt file.
 #2369833 by Jorrit: twitter_twitter_accounts() shouldn't return any accounts
