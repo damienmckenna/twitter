@@ -145,6 +145,8 @@ By DamienMcKenna: Misspelling of "Twitter" in twitter.pages.inc.
 #2559153 by DamienMcKenna: Incorrect use of user_load() when posting tweets.
 #2559239 by DamienMcKenna: Fixed embedded tweets, other functionality after
   recent changes to twitter_connect().
+#2163715 by migrad, hideaway, mkolar, DamienMcKenna: Optionally hide the
+  new-user password message.
 
 
 Twitter 7.x-5.8, 2013-06-03

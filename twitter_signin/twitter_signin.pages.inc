@@ -44,6 +44,19 @@ function twitter_signin_admin_settings($form, &$form_state) {
     '#description' => t('Warning, if you enable this, new user accounts will be created without email addresses.'),
   );
 
+  $form['twitter_signin_show_password'] = array(
+    '#title' => t('Show password to new users'),
+    '#type' => 'radios',
+    '#options' => array(t('No'), t('Yes')),
+    '#default_value' => variable_get('twitter_signin_show_password', 1),
+    '#description' => t('When a new user account is created, display their password in a message on the page.'),
+    '#states' => array(
+      'visible' => array(
+        'input[name="twitter_signin_register"]' => array('checked' => TRUE),
+      ),
+    ),
+  );
+
   $form['twitter_signin_maintenance_mode'] = array(
     '#title' => t('Allow signins when site in maintenance mode'),
     '#type' => 'radios',
