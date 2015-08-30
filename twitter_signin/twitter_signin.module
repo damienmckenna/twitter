@@ -227,7 +227,9 @@ function twitter_signin_oauth_callback_submit(&$form, &$form_state) {
           '!password' => $password,
           '!link' => l('set your account settings', 'user/' . $account->uid . '/edit'),
         );
-        drupal_set_message(t('You have been automatically registered with the password !password. Copy it to !link.', $args));
+        if (variable_get('twitter_signin_show_password', TRUE)) {
+          drupal_set_message(t('You have been automatically registered with the password !password. Copy it to !link.', $args));
+        }
         $success = TRUE;
       }
       else {

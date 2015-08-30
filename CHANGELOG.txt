@@ -117,6 +117,8 @@ By DamienMcKenna: Renamed the twitter_account_load_all function to
 #2559153 by DamienMcKenna: Incorrect use of user_load() when posting tweets.
 #2559239 by DamienMcKenna: Fixed embedded tweets, other functionality after
   recent changes to twitter_connect().
+#2163715 by migrad, hideaway, mkolar, DamienMcKenna: Optionally hide the
+  new-user password message.
 
 
 Twitter 6.x-5.1, 2013-04-19
