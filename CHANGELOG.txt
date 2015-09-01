@@ -1,3 +1,7 @@
+Twitter 6.x-5.x-dev, xxxx-xx-xx
+-------------------------------
+
+
 Twitter 6.x-5.2, 2015-08-30
 ---------------------------
 #1045304 by escore: Rules: Post to current user's Twitter account.
