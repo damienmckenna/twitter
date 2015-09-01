@@ -104,7 +104,8 @@ function twitter_signin_redirect() {
 
   // Specify a callback_url when generating our token that will match the
   // current domain.
-  $callback_url =  url('twitter/oauth', array('absolute' => TRUE));
+  $oauth_callback = variable_get('twitter_oauth_callback_url', TWITTER_OAUTH_CALLBACK_URL);
+  $callback_url =  url($oauth_callback, array('absolute' => TRUE));
   $params = array('oauth_callback' => $callback_url);
   $token = $twitter->get_request_token($params);
 
