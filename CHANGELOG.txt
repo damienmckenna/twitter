@@ -1,6 +1,7 @@
 Twitter 7.x-5.x-dev, xxxx-xx-xx
 -------------------------------
 #2560911 by mkolar: Regression to custom OAuth path functionality.
+#2561255 by DamienMcKenna: Fixes for tests.
 
 
 Twitter 7.x-5.9, 2015-08-30

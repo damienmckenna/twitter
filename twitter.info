@@ -8,3 +8,6 @@ files[] = tests/core.test
 files[] = tests/input_filters.test
 dependencies[] = oauth_common
 configure = admin/config/services/twitter
+
+; Dependencies that are only used with the tests.
+test_dependencies[] = views
