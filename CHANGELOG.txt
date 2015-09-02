@@ -2,6 +2,7 @@ Twitter 6.x-5.x-dev, xxxx-xx-xx
 -------------------------------
 #2560585 by DamienMcKenna: Follow-on from #2556611 to fix regression caused by
   D7 patch being applied to D6 module.
+#2561255 by DamienMcKenna: Fixes for tests.
 
 
 Twitter 6.x-5.2, 2015-08-30
