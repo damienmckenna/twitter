@@ -220,7 +220,7 @@ function twitter_signin_oauth_callback_submit(&$form, &$form_state) {
         }
 
         // Reload the user's account object.
-        $account = user_login($account->uid);
+        $account = user_load($account->uid);
 
         $args = array(
           '!password' => $password,
