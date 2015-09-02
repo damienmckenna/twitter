@@ -1,6 +1,7 @@
 Twitter 7.x-6.x-dev, xxxx-xx-xx
 -------------------------------
 #2561255 by DamienMcKenna: Fixes for tests.
+#2561609 by DamienMcKenna: Fixed wrong function used to load a user object.
 
 
 Twitter 7.x-6.0, 2015-08-30
