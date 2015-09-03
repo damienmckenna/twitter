@@ -23,7 +23,17 @@ class TwitterInputFilterTest extends DrupalWebTestCase {
    * Prepares the testing environment
    */
   function setUp() {
-    parent::setUp('libraries', 'twitter');
+    parent::setUp(
+      'twitter'
+
+      // Not needed for these tests.
+      // 'oauth',
+      // 'views',
+      // 'twitter_mock',
+
+      // This is needed by the OAuth module.
+      // 'autoload',
+    );
   }
 
   /**

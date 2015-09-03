@@ -7,3 +7,6 @@ dependencies[] = oauth_common
 ; Dependencies that are only used with the tests.
 test_dependencies[] = oauth
 test_dependencies[] = views
+
+; This is needed by oauth.
+test_dependencies[] = autoload

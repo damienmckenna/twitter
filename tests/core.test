@@ -20,10 +20,18 @@ class TwitterTest extends DrupalWebTestCase {
   }
 
   /**
-   * Prepares the testing environment
+   * Prepares the testing environment.
    */
   function setUp() {
-    parent::setUp('autoload', 'libraries', 'twitter', 'views', 'twitter_mock');
+    parent::setUp(
+      'oauth',
+      'twitter',
+      'views',
+      'twitter_mock',
+
+      // This is needed by the OAuth module.
+      'autoload'
+    );
   }
 
   /**
