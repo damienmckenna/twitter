@@ -10,4 +10,5 @@ dependencies[] = oauth_common
 configure = admin/config/services/twitter
 
 ; Dependencies that are only used with the tests.
+test_dependencies[] = oauth
 test_dependencies[] = views
