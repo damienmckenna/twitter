@@ -1,5 +1,6 @@
 Twitter 7.x-5.x-dev, xxxx-xx-xx
 -------------------------------
+#2565907 by anbuece: Undefined variable in twitter_post_field_extra_fields().
 
 
 Twitter 7.x-5.10, 2015-09-04
