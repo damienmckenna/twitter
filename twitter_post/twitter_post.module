@@ -101,7 +101,7 @@ function twitter_post_form_alter(&$form, $form_state, $form_id) {
  * Let's the Twitter field be positioned within the edit node form.
  */
 function twitter_post_content_extra_fields($type) {
-  $allowed_types = variable_get('twitter_post_types', array('story' => 'story', 'blog' => 'blog'));
+  $allowed_types = variable_get('twitter_post_types', array());
 
   if (empty($allowed_types[$type])) {
     return;
