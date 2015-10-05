@@ -1,5 +1,5 @@
-Twitter 7.x-6.x-dev, xxxx-xx-xx
--------------------------------
+Twitter 7.x-6.2, 2015-10-05
+---------------------------
 #2544672 by gurvan: Fixed the classes added to embedded links to match what is
   recommended/required by the Twitter API.
 #2580175 by kenwest, DamienMcKenna: Wasn't saving is_global account option.
