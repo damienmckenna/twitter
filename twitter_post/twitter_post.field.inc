@@ -149,7 +149,7 @@ function twitter_post_field_widget_form(&$form, &$form_state, $field, $instance,
           '#title' => t('Twitter Account'),
           '#options' => $options,
           '#id' => 'twitter-account',
-          '#default_value' => $account,
+          '#default_value' => $twitter_uid,
           '#states' => array(
             'visible' => array(
               'input#twitter-toggle' => array(
