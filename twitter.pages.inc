@@ -350,7 +350,12 @@ function twitter_account_list_form_submit($form, &$form_state) {
   foreach ($accounts as $account) {
     $twitter_account = entity_load_single('twitter_account', $account['twitter_uid']);
     if (empty($account['delete'])) {
-      $twitter_account->import = $account['import'];
+      if (!empty($account['import'])) {
+        $twitter_account->import = $account['import'];
+      }
+      if (!empty($account['is_global'])) {
+        $twitter_account->is_global = $account['is_global'];
+      }
       if (isset($account['mentions'])) {
         $twitter_account->mentions = $account['mentions'];
       }
