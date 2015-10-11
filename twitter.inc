@@ -262,7 +262,7 @@ function twitter_fetch_user_timeline($id) {
   foreach (module_implements($hook) as $module) {
     $function = $module . '_' . $hook;
     if (function_exists($function)) {
-      $function($account, $params);
+      $function($twitter_account, $params);
     }
   }
 
