@@ -2,6 +2,7 @@ Twitter 7.x-6.x-dev, xxxx-xx-xx
 -------------------------------
 #2584385 by joelpittet: Wrong variable used to trigger
   hook_twitter_prefetch_timeline.
+#1829712 by DamienMcKenna: Expanded dependency information for Drupal 7.40.
 
 
 Twitter 7.x-6.2, 2015-10-05
